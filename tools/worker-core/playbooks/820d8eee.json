@@ -1,0 +1,26 @@
+{
+  "task_id": "820d8eee",
+  "task_description": "Usa el adaptador \"data\" con op \"summarize\" para resumir con IA el archivo tasks/tests/holatest.txt y guardar el resultado en tasks/output/summary22.txt. Parametros exactos: src = \"tasks/tests/holatest.txt\", dst = \"tasks/output/summary22.txt\". Solo una subtarea, adaptador data, op summarize.\n",
+  "recorded_at": "2026-04-15T19:57:10.510952+00:00",
+  "subtasks": [
+    {
+      "index": 0,
+      "description": "Resumir con IA el archivo tasks/tests/holatest.txt y guardar el resultado en tasks/output/summary22.txt",
+      "adapter": "data",
+      "params": {
+        "op": "summarize",
+        "src": "tasks/tests/holatest.txt",
+        "dst": "tasks/output/summary22.txt"
+      },
+      "status": "success",
+      "attempts": 1,
+      "result": {
+        "success": true,
+        "content": "# Resumen de Problemas - Sentinelas del Juego\n\n## Dentro de la Taberna\n- Los dos sentinelas se quedan al lado del barril sin moverse\n- Deberían recorrer toda la taberna (esquinas, centro, inferior, superior)\n- Cada uno debe ir por su lado, no quedarse juntos\n\n## Shop Keeper\n- Se mueve de forma rara y tosca\n- Se queda pegado con todo\n\n## Sentinelas Exteriores\n- **Derecha:** Se quedaron pegados en la esquina sin moverse\n- **Izquierda:** Se mueven bien y se separan ✓\n- **Entrada:** Muy tiesos, siempre en el mismo punto\n- **Superior/Izquierda/Derecha:** Se quedaron en la esquina permanentemente\n\n## Comportamiento Deseado\n- Los sentinelas deben separarse y alejarse entre sí para verse dinámicos\n- Los de la entrada deberían turnarse o elegir al azar para entrar y salir periódicamente (esto funciona bien)\n\n## Sistema de Detección (Principal)\n- Si atacas a uno solo, los demás no se enteran\n- **Necesitan reaccionar TODOS** cuando:\n  - Atacas a cualquier sentinela\n  - Abres sus barriles\n  - Pegas a la pared de la taberna\n- Desde nivel 1 de hostilidad, todos deben perseguirte y sacarte\n\n**Punto clave:** Falta un sistema de alarma o detección grupal. Cuando uno es atacado, los demás deben saberlo."
+      },
+      "error": null,
+      "started_at": 1776283012.7708416,
+      "finished_at": 1776283030.5109522
+    }
+  ]
+}

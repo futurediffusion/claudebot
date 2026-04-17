@@ -1,0 +1,25 @@
+task: >
+  Trabaja con el archivo que está en tasks/tests/ llamado exactamente
+  "empieza el juego los sentinels de l.txt".
+  Realiza estas 5 operaciones en orden:
+
+  1. Copia el archivo tasks/tests/empieza el juego los sentinels de l.txt
+     a tasks/output/sentinels_backup.txt
+
+  2. Mueve (renombra) tasks/output/sentinels_backup.txt
+     a tasks/output/sentinels_ai_feedback.txt
+
+  3. Lee el contenido del archivo tasks/output/sentinels_ai_feedback.txt
+
+  4. Escribe un resumen en tasks/output/sentinels_report.txt con estas líneas exactas:
+     "Archivo original: empieza el juego los sentinels de l.txt"
+     "Renombrado a: sentinels_ai_feedback.txt"
+     "Tema: comportamiento de centinelas NPC en taberna de videojuego"
+     "Estado: procesado correctamente"
+
+  5. Escribe el archivo tasks/output/sentinels_meta.json con estos datos:
+     archivo_original igual a "empieza el juego los sentinels de l.txt",
+     archivo_final igual a "sentinels_ai_feedback.txt",
+     carpeta_origen igual a "tasks/tests",
+     carpeta_destino igual a "tasks/output",
+     operaciones igual a la lista ["copy", "rename", "read", "summary", "json"]

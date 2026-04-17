@@ -1,0 +1,5 @@
+task: >
+  Usa el adaptador "data" con op "summarize" para resumir con IA el archivo
+  tasks/tests/holatest.txt y guardar el resultado en tasks/output/summary22.txt.
+  Parametros exactos: src = "tasks/tests/holatest.txt", dst = "tasks/output/summary22.txt".
+  Solo una subtarea, adaptador data, op summarize.

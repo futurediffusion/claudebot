@@ -1,0 +1,62 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local agent/editor state
+.claude/
+gemini_memory/
+
+# Secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+credentials.json
+token.json
+browser_cookies.json
+cookies.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+**/.venv/
+**/venv/
+
+# Node / frontend
+node_modules/
+**/node_modules/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Runtime logs and generated outputs
+*.log
+*.jsonl
+orchestrator/memory/logs/
+tools/worker-core/logs/
+tools/worker-core/tasks/output/
+tools/worker-core/tasks/tests/
+
+# Local screenshots / temporary files
+screenshot.png
+tmp/
+temp/

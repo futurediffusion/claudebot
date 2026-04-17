@@ -1,0 +1,24 @@
+[project]
+name = "worker-core"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.68.1",
+    "browser-use",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0",
+    "langchain-anthropic>=0.3.0",
+]
+
+[tool.uv.sources]
+windows-use = { path = "../windows-use", editable = true }
+browser-use  = { path = "../browser-use", editable = true }
+
+[project.scripts]
+worker = "app.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "browser_e2e: opt-in browser-use end-to-end checks against external sites",
+]

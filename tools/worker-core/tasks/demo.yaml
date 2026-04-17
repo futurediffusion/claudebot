@@ -1,0 +1,8 @@
+task: >
+  Abre https://example.com en el navegador, guarda el contenido HTML completo de
+  la página en el archivo tasks/output/demo_output.html dentro de worker-core
+  (ruta absoluta: D:/IA/CODE/pc-worker/worker-core/tasks/output/demo_output.html).
+  Luego mueve ese archivo a tasks/output/archive/demo_output.html
+  (ruta absoluta: D:/IA/CODE/pc-worker/worker-core/tasks/output/archive/demo_output.html).
+  Por último, escribe una línea de resumen en logs/demo_summary.txt
+  que diga exactamente "Descargado example.com".

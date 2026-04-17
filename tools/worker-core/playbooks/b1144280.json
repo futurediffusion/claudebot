@@ -1,0 +1,64 @@
+{
+  "task_id": "b1144280",
+  "task_description": "Escribe el texto \"smoke test ok\" en el archivo tasks/output/smoke.txt. Mueve tasks/output/smoke.txt a tasks/output/smoke_done.txt. Escribe una línea de resumen en logs/smoke_summary.txt que diga \"Smoke test completado\".\n",
+  "recorded_at": "2026-04-15T19:37:34.953868+00:00",
+  "subtasks": [
+    {
+      "index": 0,
+      "description": "Escribir texto 'smoke test ok' en tasks/output/smoke.txt",
+      "adapter": "files",
+      "params": {
+        "op": "write",
+        "path": "tasks/output/smoke.txt",
+        "content": "smoke test ok"
+      },
+      "status": "success",
+      "attempts": 1,
+      "result": {
+        "success": true,
+        "content": "Escrito: tasks/output/smoke.txt"
+      },
+      "error": null,
+      "started_at": 1776281854.9483042,
+      "finished_at": 1776281854.949908
+    },
+    {
+      "index": 1,
+      "description": "Mover tasks/output/smoke.txt a tasks/output/smoke_done.txt",
+      "adapter": "files",
+      "params": {
+        "op": "move",
+        "src": "tasks/output/smoke.txt",
+        "dst": "tasks/output/smoke_done.txt"
+      },
+      "status": "success",
+      "attempts": 1,
+      "result": {
+        "success": true,
+        "content": "Movido: tasks/output/smoke.txt → tasks/output/smoke_done.txt"
+      },
+      "error": null,
+      "started_at": 1776281854.949908,
+      "finished_at": 1776281854.9518843
+    },
+    {
+      "index": 2,
+      "description": "Escribir resumen en logs/smoke_summary.txt",
+      "adapter": "files",
+      "params": {
+        "op": "write",
+        "path": "logs/smoke_summary.txt",
+        "content": "Smoke test completado"
+      },
+      "status": "success",
+      "attempts": 1,
+      "result": {
+        "success": true,
+        "content": "Escrito: logs/smoke_summary.txt"
+      },
+      "error": null,
+      "started_at": 1776281854.9518843,
+      "finished_at": 1776281854.9538682
+    }
+  ]
+}

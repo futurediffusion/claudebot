@@ -1,0 +1,5 @@
+task: >
+  Escribe el texto "smoke test ok" en el archivo tasks/output/smoke.txt.
+  Mueve tasks/output/smoke.txt a tasks/output/smoke_done.txt.
+  Escribe una línea de resumen en logs/smoke_summary.txt
+  que diga "Smoke test completado".
