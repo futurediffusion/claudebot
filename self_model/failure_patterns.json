@@ -46,6 +46,14 @@
       "signature": "Target page, context or browser has been closed",
       "root_cause": "Edge already open blocking the User Data profile directory",
       "fix": "Kill all msedge.exe processes before launching persistent context"
+    },
+    "shared:mouse_calibration::mouse_automation::ui_coordinate_drift": {
+      "model": "shared:mouse_calibration",
+      "task_type": "mouse_automation",
+      "signature": "ui_coordinate_drift",
+      "count": 11,
+      "last_seen": "2026-04-17T06:29:28+00:00",
+      "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
     }
   }
 }

@@ -17,6 +17,11 @@ from pathlib import Path
 from typing import Any, Optional
 
 try:
+    import win32com.client
+except ImportError:
+    win32com = None
+
+try:
     from PIL import ImageChops, ImageGrab, ImageStat
 except ImportError:  # pragma: no cover - optional runtime dependency
     ImageChops = None
@@ -196,7 +201,7 @@ class WindowsMouseBackend:
             return
         if normalized == "double_click":
             self._button_click("left")
-            time.sleep(0.05)
+            time.sleep(0.12)
             self._button_click("left")
             return
         raise ValueError(f"Unsupported mouse action: {action}")

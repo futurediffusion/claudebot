@@ -67,10 +67,10 @@
       ],
       "observed_stats": {
         "shared_cli": {
-          "runs": 1,
-          "successes": 1,
-          "failures": 0,
-          "last_error": null
+          "runs": 42,
+          "successes": 31,
+          "failures": 11,
+          "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
         }
       }
     },
@@ -171,9 +171,9 @@
       ],
       "observed_stats": {
         "mouse": {
-          "runs": 1,
-          "successes": 1,
-          "failures": 0
+          "runs": 42,
+          "successes": 31,
+          "failures": 11
         }
       }
     }

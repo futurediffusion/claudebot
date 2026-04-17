@@ -248,21 +248,21 @@
   "observed_stats": {
     "shared:mouse_calibration": {
       "mouse_automation": {
-        "runs": 1,
-        "successes": 1,
-        "failures": 0,
+        "runs": 42,
+        "successes": 31,
+        "failures": 11,
         "avg_time_ms": 0,
         "last_agent": "shared_cli",
-        "last_used": "2026-04-17T06:07:51+00:00",
-        "last_error": null
+        "last_used": "2026-04-17T06:29:28+00:00",
+        "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
       }
     }
   },
   "recent_decisions": [
     {
-      "timestamp": "2026-04-17T06:07:51+00:00",
+      "timestamp": "2026-04-17T06:20:56+00:00",
       "agent": "shared_cli",
-      "task": "Mouse move at (0.5, 0.5) [normalized]",
+      "task": "Mouse click at (750.0, 1055.0) for Barra de Tareas: Reenfocar Explorador",
       "task_type": "mouse_automation",
       "model": "shared:mouse_calibration",
       "success": true,
@@ -275,9 +275,537 @@
         "error": null,
         "decision": null,
         "extra": {
-          "verification_mode": "cursor",
-          "coordinate_space": "normalized",
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:21:00+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse click at (40.0, 145.0) for Explorer: Re-clic Nuevo (Cerrar)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
           "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:21:05+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse click at (260.0, 145.0) for Explorer: Re-clic Ordenar (Cerrar)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:21:10+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse click at (320.0, 145.0) for Explorer: Re-clic Ver (Cerrar)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:21:55+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (600.0, 500.0) for Explorer: Área Vacía (Centro)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:00+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (1800.0, 900.0) for Escritorio: Área Inferior Derecha",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 3
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:05+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (1000.0, 1055.0) for Barra de Tareas: Área Vacía",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:10+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (100.0, 200.0) for Explorer Sidebar: Acceso Rápido",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:14+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (600.0, 500.0) for Explorer: Re-clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:19+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (1800.0, 900.0) for Escritorio: Re-clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 3
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:24+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (1000.0, 1055.0) for Barra de Tareas: Re-clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:29+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (100.0, 200.0) for Explorer Sidebar: Re-clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:34+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (960.0, 540.0) for Centro de Pantalla: Clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 2
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:22:38+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse right_click at (500.0, 500.0) for Área Aleatoria: Clic Derecho",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "absolute",
+          "attempt_count": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:23:21+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 220.0) for Explorer: Abrir Carpeta .opera",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:23:46+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (100.0, 45.0) for Explorer: Botón Atrás",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:24:11+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 250.0) for Explorer: Abrir Carpeta Temporal",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:24:35+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (100.0, 45.0) for Explorer: Botón Atrás (2)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:25:00+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 280.0) for Explorer: Abrir Carpeta .windows-use",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:25:32+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse click at (230.0, 215.0) for Explorer: Seleccionar .opera (Imagen) [image]",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: screen_change_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "screen_change",
+          "coordinate_space": "image",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:27:42+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 220.0) for Explorer: Abrir Carpeta .opera",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:28:07+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (100.0, 45.0) for Explorer: Botón Atrás",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:28:32+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 250.0) for Explorer: Abrir Carpeta Temporal",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:29:03+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (100.0, 45.0) for Explorer: Botón Atrás (2)",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-17T06:29:28+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse double_click at (200.0, 280.0) for Explorer: Abrir Carpeta .windows-use",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": "shared:mouse_calibration::mouse_automation::ui_coordinate_drift",
+      "metadata": {
+        "error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts",
+        "decision": null,
+        "extra": {
+          "verification_mode": "window",
+          "coordinate_space": "absolute",
+          "attempt_count": 5
         }
       }
     }
