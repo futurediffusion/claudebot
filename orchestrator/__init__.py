@@ -17,6 +17,7 @@ _LAZY_EXPORTS = {
     "Router": ("orchestrator.core.router", "Router"),
     "TaskLogger": ("orchestrator.core.task_logger", "TaskLogger"),
     "ContextManager": ("orchestrator.core.context_manager", "ContextManager"),
+    "SelfModelEngine": ("orchestrator.core.self_model_engine", "SelfModelEngine"),
     "TaskDecomposer": ("orchestrator.core.task_decomposer", "TaskDecomposer"),
     "MultiModelOrchestrator": ("orchestrator.core.task_decomposer", "MultiModelOrchestrator"),
     "ModelType": ("orchestrator.models.model_registry", "ModelType"),

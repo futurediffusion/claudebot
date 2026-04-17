@@ -1,0 +1,84 @@
+{
+  "engine_version": "1.0.0",
+  "event_schema_version": "1.0",
+  "policies": {
+    "default_rule_mode": "enforced",
+    "promotion_thresholds": {
+      "min_observations": 5,
+      "min_success_rate": 0.8,
+      "min_confidence": 0.9
+    },
+    "retirement_thresholds": {
+      "max_failure_rate": 0.3,
+      "stale_after_hours": 720
+    }
+  },
+  "handlers": [
+    {
+      "handler_id": "kill_and_retry_edge",
+      "type": "retry_step",
+      "description": "Cierra procesos de Edge y reintenta la conexión CDP",
+      "supported_params": ["timeout", "retries"]
+    }
+  ],
+  "rules_active": [
+    {
+      "rule_id": "RULE-001",
+      "title": "Bypass Edge Lock",
+      "status": "active",
+      "mode": "enforced",
+      "priority": 10,
+      "scope": {
+        "agent_ids": ["gemini_cli"],
+        "workflow_ids": ["*"],
+        "tool_ids": ["chatgpt"],
+        "step_ids": ["cdp_connect"],
+        "environments": ["win32"]
+      },
+      "pattern": {
+        "event_type": "tool_failed",
+        "error_types": ["Target closed", "lock"],
+        "within_ms": 5000,
+        "match": {
+          "any": [
+            { "path": "error_msg", "op": "contains", "value": "Target closed" },
+            { "path": "error_msg", "op": "contains", "value": "lock" }
+          ]
+        }
+      },
+      "action": {
+        "handler_id": "kill_and_retry_edge",
+        "params": { "kill_first": true, "max_retries": 2 }
+      },
+      "guardrails": {
+        "max_applications_per_run": 1,
+        "cooldown_ms": 30000,
+        "requires_human_approval": false
+      },
+      "metrics": {
+        "observations": 1,
+        "matches": 1,
+        "applied": 1,
+        "successes": 1,
+        "failures": 0,
+        "success_rate": 1.0,
+        "last_matched_at": "2026-04-16T21:00:00Z"
+      },
+      "evidence": {
+        "source": "auto_mined",
+        "confidence": 1.0,
+        "feature_signature": "edge_profiling_lock",
+        "derived_from_runs": ["session-2c45cc6e"]
+      },
+      "lifecycle": {
+        "version": 1,
+        "created_at": "2026-04-16T21:00:00Z",
+        "updated_at": "2026-04-16T21:00:00Z",
+        "created_by": "Gemini-Architect",
+        "approved_by": "Willy-Comandante",
+        "last_triggered_at": "2026-04-16T21:00:00Z"
+      }
+    }
+  ],
+  "rules_candidates": []
+}

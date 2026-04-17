@@ -10,6 +10,8 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [run_browser.py](D:/IA/CODE/claudebot/run_browser.py): direct browser automation wrapper.
 - [run_windows.py](D:/IA/CODE/claudebot/run_windows.py): direct Windows automation wrapper.
 - [run_worker.py](D:/IA/CODE/claudebot/run_worker.py): full `worker-core` wrapper.
+- [self_model/README.md](D:/IA/CODE/claudebot/self_model/README.md): shared self-model used by Claude, Gemini, Codex, and wrappers.
+- [self_model_cli.py](D:/IA/CODE/claudebot/self_model_cli.py): inspect or simulate the shared self-model from the repo root.
 
 ## Archived
 
@@ -52,3 +54,25 @@ python run_browser.py "Abre https://example.com y extrae el titulo"
 python run_windows.py "Abre Notepad y escribe hola mundo"
 python run_worker.py "Abre https://example.com y guarda un resumen en tasks/output/resumen.txt"
 ```
+
+## Shared Self-Model
+
+The repo now includes a live `self_model/` directory at the root.
+This is the explicit model of how the system understands itself.
+
+It is shared across:
+
+- Claude-style orchestrator runs
+- Gemini bridge runs
+- Codex or other CLI agents using the root wrappers
+
+Examples:
+
+```bash
+python self_model_cli.py summary
+python self_model_cli.py plan "Fix this broken project and validate the output"
+python gemini_bridge.py auto "Abre Chrome y ve a https://example.com"
+python run_browser.py --agent codex_cli "Abre https://example.com y extrae el titulo"
+```
+
+The key point is that routing decisions and outcomes now update the same structured state instead of living only in ad-hoc logs.

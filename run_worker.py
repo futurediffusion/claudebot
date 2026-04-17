@@ -11,7 +11,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+ORCHESTRATOR_ROOT = ROOT / "orchestrator"
+if str(ORCHESTRATOR_ROOT) not in sys.path:
+    sys.path.insert(0, str(ORCHESTRATOR_ROOT))
 
+from core.self_model_engine import SelfModelEngine
 from orchestrator.tools.worker_core_bridge import WorkerOrchestratorTool
 
 
@@ -19,10 +23,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run worker-core orchestration")
     parser.add_argument("task", nargs="+", help="Task description")
     parser.add_argument("--config", help="Optional path to tools/worker-core .env file")
+    parser.add_argument("--agent", default="shared_cli", help="Agent identity for self-model tracking")
     args = parser.parse_args()
 
     tool = WorkerOrchestratorTool()
     result = tool.execute(" ".join(args.task), config_path=args.config)
+    SelfModelEngine(agent_name=args.agent).record_execution(
+        task=" ".join(args.task),
+        task_type="worker_automation",
+        model_name="worker-core:orchestrator",
+        success=result.get("success", False),
+        execution_time_ms=0,
+        error=result.get("error"),
+        tools_used=["worker"],
+        metadata={"source": "run_worker.py"},
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     sys.exit(0 if result.get("success") else 1)
 

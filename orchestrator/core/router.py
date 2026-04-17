@@ -4,6 +4,7 @@ Router - classifies tasks and selects the optimal model.
 
 from typing import Any, Dict, Tuple
 
+from core.self_model_engine import SelfModelEngine
 from models.model_registry import (
     MODELS,
     ModelType,
@@ -25,12 +26,16 @@ class Router:
     - Always route before executing
     - One model per decision phase
     - Groq is only for fast processing, not for thinking
+    - The self-model can override defaults when repeated evidence says so
     """
 
-    def __init__(self):
+    def __init__(self, agent_name: str = "claude_code"):
+        self.agent_name = agent_name
         self.classify = classify_task
         self.get_model = get_model_by_task
         self.get_fallback = get_fallback_model
+        self.self_model = SelfModelEngine(agent_name=agent_name)
+        self._last_decision_meta: Dict[str, Any] = {}
 
     def route(self, task: str) -> Tuple[ModelType, TaskType, str]:
         """
@@ -40,7 +45,21 @@ class Router:
             Tuple of (model_type, task_type, reasoning)
         """
         task_type = self.classify(task)
-        model_type = self.get_model(task_type)
+        default_model = self.get_model(task_type)
+        model_type = default_model
+
+        decision_simulation = self.self_model.simulate_routing(
+            task=task,
+            task_type=task_type.value,
+            default_model=default_model.value,
+            candidate_models=[candidate.value for candidate in self._candidate_models(task_type, default_model)],
+        )
+
+        selected_name = decision_simulation.get("selected_model")
+        if selected_name:
+            selected_model = self._find_model_type(selected_name)
+            if selected_model is not None:
+                model_type = selected_model
 
         is_valid, validation_reason = self.validate_task_model_match(task, model_type)
         if not is_valid:
@@ -60,8 +79,27 @@ class Router:
             f"Strengths: {', '.join(model_config.strengths[:2])}."
         )
 
+        if decision_simulation.get("selected_model") != default_model.value:
+            reasoning += (
+                f" Self-model preferred '{decision_simulation.get('selected_model')}' "
+                f"over registry default '{default_model.value}'."
+            )
+
+        critic_notes = decision_simulation.get("critic_notes", [])
+        if critic_notes:
+            reasoning += f" Critic: {critic_notes[0]}"
+
         if not is_valid:
             reasoning += f" Rerouted because: {validation_reason}."
+
+        self._last_decision_meta = {
+            "task": task,
+            "task_type": task_type.value,
+            "default_model": default_model.value,
+            "selected_model": model_type.value,
+            "decision_simulation": decision_simulation,
+            "validation_reason": validation_reason,
+        }
 
         return model_type, task_type, reasoning
 
@@ -91,6 +129,12 @@ class Router:
                 used_fallback = True
                 model_config = MODELS[model_type]
                 reasoning += f" [FALLBACK: using lighter model {model_config.name}]"
+                if self._last_decision_meta:
+                    self._last_decision_meta["selected_model"] = model_type.value
+                    decision = self._last_decision_meta.get("decision_simulation", {})
+                    if decision:
+                        decision["selected_model"] = model_type.value
+                        decision.setdefault("critic_notes", []).append("Cost fallback applied after simulation.")
 
         return model_type, task_type, reasoning, used_fallback
 
@@ -122,6 +166,10 @@ class Router:
             "local_only": not config.cloud,
         }
 
+    def get_last_decision_meta(self) -> Dict[str, Any]:
+        """Return the last self-model routing simulation."""
+        return dict(self._last_decision_meta)
+
     def validate_task_model_match(self, task: str, model_type: ModelType) -> Tuple[bool, str]:
         """
         Validate that a model is appropriate for a task.
@@ -152,3 +200,36 @@ class Router:
                 return False, f"{model_type.value} is reserved for parsing, validation, formatting, classification, or json tasks"
 
         return True, "Match validated"
+
+    def _candidate_models(self, task_type: TaskType, default_model: ModelType) -> list[ModelType]:
+        """Build a compact set of candidate models for self-model simulation."""
+        candidates = [default_model]
+        fallback = self.get_fallback(default_model)
+        if fallback is not None and fallback not in candidates:
+            candidates.append(fallback)
+
+        if task_type in {TaskType.PLANNING, TaskType.ARCHITECTURE}:
+            candidates.extend([ModelType.PLANNING, ModelType.FAST_CODING])
+        elif task_type in {TaskType.HEAVY_REFACTOR, TaskType.MULTI_FILE_FIX, TaskType.FAST_CODING, TaskType.SCAFFOLDING}:
+            candidates.extend([ModelType.HEAVY_CODING, ModelType.FAST_CODING, ModelType.LIGHTWEIGHT])
+        elif task_type in {TaskType.LOG_ANALYSIS, TaskType.PARSING, TaskType.VALIDATION}:
+            candidates.extend([ModelType.GROQ_FAST, ModelType.GROQ_ULTRA_CHEAP, ModelType.LIGHTWEIGHT])
+        elif task_type in {TaskType.FORMATTING, TaskType.CLASSIFICATION, TaskType.JSON_GEN}:
+            candidates.extend([ModelType.GROQ_ULTRA_CHEAP, ModelType.GROQ_FAST, ModelType.LIGHTWEIGHT])
+        elif task_type in {TaskType.VISION, TaskType.SCREENSHOT, TaskType.UI_ANALYSIS}:
+            candidates.extend([ModelType.GROQ_VISION_SCOUT, ModelType.VISION])
+        else:
+            candidates.extend([ModelType.LIGHTWEIGHT, ModelType.FAST_CODING])
+
+        unique_candidates: list[ModelType] = []
+        for candidate in candidates:
+            if candidate not in unique_candidates:
+                unique_candidates.append(candidate)
+        return unique_candidates
+
+    def _find_model_type(self, model_name: str) -> ModelType | None:
+        """Resolve a model string back to ModelType when possible."""
+        for candidate in ModelType:
+            if candidate.value == model_name:
+                return candidate
+        return None

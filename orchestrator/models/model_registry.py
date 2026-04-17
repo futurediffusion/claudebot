@@ -15,6 +15,7 @@ class ModelType(Enum):
     LIGHTWEIGHT = "gemma4:latest"
     GROQ_FAST = "groq_qwen_32b"
     GROQ_ULTRA_CHEAP = "groq_gpt_oss_20b"
+    GROQ_VISION_SCOUT = "groq_vision_scout"
 
 
 class TaskType(Enum):
@@ -183,6 +184,24 @@ MODELS: dict[ModelType, ModelConfig] = {
         cloud=True,
         timeout_seconds=10,
     ),
+    ModelType.GROQ_VISION_SCOUT: ModelConfig(
+        name="llama-3.2-90b-vision-preview",
+        provider="groq",
+        role="Fast Vision Scout",
+        strengths=[
+            "Instant UI analysis",
+            "Coordinate detection",
+            "Success verification",
+            "Zero cost (free tier)",
+        ],
+        weaknesses=[
+            "Lower resolution than Gemini",
+            "May hallucinate complex UI text",
+        ],
+        cost_level="zero",
+        cloud=True,
+        timeout_seconds=20,
+    ),
 }
 
 
@@ -195,9 +214,9 @@ def get_model_by_task(task_type: TaskType) -> ModelType:
         TaskType.MULTI_FILE_FIX: ModelType.HEAVY_CODING,
         TaskType.FAST_CODING: ModelType.FAST_CODING,
         TaskType.SCAFFOLDING: ModelType.FAST_CODING,
-        TaskType.VISION: ModelType.VISION,
-        TaskType.SCREENSHOT: ModelType.VISION,
-        TaskType.UI_ANALYSIS: ModelType.VISION,
+        TaskType.VISION: ModelType.GROQ_VISION_SCOUT,
+        TaskType.SCREENSHOT: ModelType.GROQ_VISION_SCOUT,
+        TaskType.UI_ANALYSIS: ModelType.GROQ_VISION_SCOUT,
         TaskType.SIMPLE_CLASSIFY: ModelType.LIGHTWEIGHT,
         TaskType.SUMMARY: ModelType.LIGHTWEIGHT,
         TaskType.SIMPLE_EXEC: ModelType.LIGHTWEIGHT,
@@ -218,6 +237,7 @@ def get_fallback_model(model_type: ModelType) -> Optional[ModelType]:
         ModelType.HEAVY_CODING: ModelType.FAST_CODING,
         ModelType.FAST_CODING: ModelType.LIGHTWEIGHT,
         ModelType.VISION: None,
+        ModelType.GROQ_VISION_SCOUT: ModelType.VISION,
         ModelType.LIGHTWEIGHT: None,
         ModelType.GROQ_FAST: ModelType.LIGHTWEIGHT,
         ModelType.GROQ_ULTRA_CHEAP: ModelType.LIGHTWEIGHT,
@@ -234,6 +254,9 @@ def can_use_groq(task_type: TaskType) -> bool:
         TaskType.FORMATTING,
         TaskType.CLASSIFICATION,
         TaskType.JSON_GEN,
+        TaskType.VISION,
+        TaskType.SCREENSHOT,
+        TaskType.UI_ANALYSIS,
     }
     return task_type in groq_safe
 
@@ -247,9 +270,6 @@ def should_not_use_groq(task_type: TaskType) -> bool:
         TaskType.MULTI_FILE_FIX,
         TaskType.FAST_CODING,
         TaskType.SCAFFOLDING,
-        TaskType.VISION,
-        TaskType.SCREENSHOT,
-        TaskType.UI_ANALYSIS,
         TaskType.SIMPLE_EXEC,
     }
     return task_type in groq_forbidden

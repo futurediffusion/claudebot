@@ -11,7 +11,7 @@ from core.context_manager import ContextManager
 from core.router import Router
 from core.task_logger import TaskLogger
 from models.gemma4_adapter import Gemma4Adapter
-from models.groq_adapter import GroqGPTAdapter, GroqQwenAdapter
+from models.groq_adapter import GroqGPTAdapter, GroqQwenAdapter, GroqVisionScoutAdapter
 from models.minimax_adapter import MinimaxAdapter
 from models.model_registry import MODELS, ModelType, TaskType
 from models.qwen480b_adapter import Qwen480bAdapter
@@ -40,8 +40,10 @@ class Orchestrator:
     6. Log execution
     """
 
-    def __init__(self):
-        self.router = Router()
+    def __init__(self, agent_name: str = "claude_code"):
+        self.agent_name = agent_name
+        self.router = Router(agent_name=agent_name)
+        self.self_model = self.router.self_model
         self.logger = TaskLogger()
         self.context = ContextManager()
 
@@ -53,6 +55,7 @@ class Orchestrator:
             ModelType.LIGHTWEIGHT: Gemma4Adapter(),
             ModelType.GROQ_FAST: GroqQwenAdapter(),
             ModelType.GROQ_ULTRA_CHEAP: GroqGPTAdapter(),
+            ModelType.GROQ_VISION_SCOUT: GroqVisionScoutAdapter(),
         }
 
         self.shell = RunShellTool()
@@ -87,6 +90,8 @@ class Orchestrator:
                 return self._execute_automation_route(task, automation_route, start_time)
 
         model_type, task_type, reasoning, used_fallback = self.router.route_with_fallback(task, max_fallbacks)
+        decision_meta = self.router.get_last_decision_meta()
+        self._set_self_model_context(task, task_type.value, model_type.value, decision_meta)
 
         result = self._execute_with_model(
             task=task,
@@ -96,6 +101,7 @@ class Orchestrator:
             used_fallback=used_fallback,
             use_tools=use_tools,
             start_time=start_time,
+            decision_meta=decision_meta,
         )
 
         if result.get("success") or max_fallbacks <= 0:
@@ -156,6 +162,25 @@ class Orchestrator:
 
         task_type = forced_task_type or self.router.classify(task)
         reasoning = f"Forced model selection: {model_name}"
+        decision_meta = {
+            "task": task,
+            "task_type": task_type.value,
+            "default_model": model_name,
+            "selected_model": model_name,
+            "decision_simulation": {
+                "selected_model": model_name,
+                "default_model": model_name,
+                "critic_notes": ["Forced model selection bypassed routing simulation."],
+                "ranked_options": [
+                    {
+                        "model": model_name,
+                        "score": 0,
+                        "reasons": ["Forced model selection."],
+                    }
+                ],
+            },
+        }
+        self._set_self_model_context(task, task_type.value, model_name, decision_meta)
 
         return self._execute_with_model(
             task=task,
@@ -165,6 +190,7 @@ class Orchestrator:
             used_fallback=False,
             use_tools=use_tools,
             start_time=start_time,
+            decision_meta=decision_meta,
         )
 
     def _execute_with_model(
@@ -175,12 +201,14 @@ class Orchestrator:
         reasoning: str,
         used_fallback: bool,
         use_tools: bool,
-        start_time: float
+        start_time: float,
+        decision_meta: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Internal method to execute with a specific model."""
         adapter = self.adapters[model_type]
         context = self.context.get_context()
         response = adapter.generate_response(task, context)
+        decision_meta = decision_meta or self.router.get_last_decision_meta()
 
         follow_up = None
         tools_used = []
@@ -213,7 +241,25 @@ class Orchestrator:
                 "used_fallback": used_fallback,
                 "follow_up_model": follow_up.get("model") if follow_up else None,
                 "follow_up_task_type": follow_up.get("task_type") if follow_up else None,
+                "self_model": self._compact_self_model_meta(decision_meta),
             },
+        )
+
+        self.self_model.record_execution(
+            task=task,
+            task_type=task_type.value,
+            model_name=model_type.value,
+            success=response.get("success", False),
+            execution_time_ms=execution_time_ms,
+            error=response.get("error"),
+            tools_used=tools_used,
+            metadata={
+                "reasoning": reasoning,
+                "used_fallback": used_fallback,
+                "follow_up_model": follow_up.get("model") if follow_up else None,
+                "follow_up_task_type": follow_up.get("task_type") if follow_up else None,
+            },
+            decision_simulation=decision_meta.get("decision_simulation") if decision_meta else None,
         )
 
         pipeline = [
@@ -244,6 +290,7 @@ class Orchestrator:
             "success": response.get("success", False),
             "follow_up": follow_up,
             "pipeline": pipeline,
+            "self_model": self._compact_self_model_meta(decision_meta),
         }
 
     def _execute_automation_route(
@@ -281,6 +328,7 @@ class Orchestrator:
         automation_result = config["executor"](task)
         execution_time_ms = int((time.time() - start_time) * 1000)
         success = automation_result.get("success", False)
+        tool_plan = self.self_model.suggest_tool(task, available_tools=["browser", "windows", "worker"])
         response_text = self._coerce_result_text(
             automation_result.get("content")
             or automation_result.get("response")
@@ -291,6 +339,8 @@ class Orchestrator:
             f"Natural-language automation route detected. "
             f"Delegated directly to {config['model']} without LLM model selection."
         )
+        if tool_plan.get("selected_tool") and tool_plan.get("selected_tool") != config["tool_name"]:
+            reasoning += f" Self-model tool critic suggested '{tool_plan['selected_tool']}' but direct route won."
 
         log_id = self.logger.log(
             task=task,
@@ -304,7 +354,20 @@ class Orchestrator:
                 "reasoning": reasoning,
                 "used_fallback": False,
                 "automation_route": route,
+                "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
             },
+        )
+
+        self.self_model.record_execution(
+            task=task,
+            task_type=config["task_type"],
+            model_name=config["model"],
+            success=success,
+            execution_time_ms=execution_time_ms,
+            error=automation_result.get("error"),
+            tools_used=[config["tool_name"]],
+            metadata={"reasoning": reasoning, "automation_route": route},
+            decision_simulation=tool_plan,
         )
 
         return {
@@ -328,6 +391,7 @@ class Orchestrator:
                 }
             ],
             "automation_route": route,
+            "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
         }
 
     def _maybe_run_lightweight_follow_up(
@@ -419,6 +483,40 @@ class Orchestrator:
             return json.dumps(value, ensure_ascii=False, indent=2)
         except TypeError:
             return str(value)
+
+    def _set_self_model_context(
+        self,
+        task: str,
+        task_type: str,
+        selected_model: str,
+        decision_meta: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Inject the current self-model brief into the execution context."""
+        decision_meta = decision_meta or self.router.get_last_decision_meta()
+        self.context.set_state(
+            "self_model",
+            self.self_model.build_execution_brief(
+                task=task,
+                task_type=task_type,
+                selected_model=selected_model,
+                decision=decision_meta.get("decision_simulation") if decision_meta else None,
+            ),
+        )
+
+    def _compact_self_model_meta(self, decision_meta: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Keep only the high-signal self-model metadata in results and logs."""
+        if not decision_meta:
+            return {}
+
+        decision = decision_meta.get("decision_simulation", decision_meta)
+        return {
+            "selected_model": decision.get("selected_model"),
+            "default_model": decision.get("default_model"),
+            "selected_tool": decision.get("selected_tool"),
+            "critic_notes": decision.get("critic_notes", [])[:2],
+            "ranked_options": decision.get("ranked_options", [])[:2],
+            "ranked_tools": decision.get("ranked_tools", [])[:2],
+        }
 
     def _response_requests_tool(self, response: str) -> bool:
         """Return True when the model output contains an executable tool directive."""

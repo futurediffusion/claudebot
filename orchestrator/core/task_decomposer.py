@@ -257,7 +257,8 @@ class TaskDecomposer:
 class MultiModelOrchestrator:
     """Execute a task as a sequence of routed subtasks."""
 
-    def __init__(self):
+    def __init__(self, agent_name: str = "claude_code"):
+        self.agent_name = agent_name
         self.decomposer = TaskDecomposer()
         from core.orchestrator import Orchestrator
         self.base_orchestrator = Orchestrator
@@ -288,7 +289,7 @@ class MultiModelOrchestrator:
                 print(f"\n--- Subtask {index}/{len(subtasks)} ---")
                 print(f"Phase: {subtask['phase']}")
 
-            orchestrator = self.base_orchestrator()
+            orchestrator = self.base_orchestrator(agent_name=self.agent_name)
             forced_model = subtask.get("model")
 
             if forced_model:

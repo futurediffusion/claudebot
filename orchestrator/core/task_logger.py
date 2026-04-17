@@ -54,7 +54,7 @@ class TaskLogger:
         date = datetime.now().strftime("%Y-%m-%d")
         log_file = self.log_dir / f"tasks_{date}.jsonl"
 
-        with open(log_file, "a") as f:
+        with open(log_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(entry) + "\n")
 
         return entry_id
@@ -63,7 +63,7 @@ class TaskLogger:
         """Get recent task logs."""
         logs = []
         for log_file in sorted(self.log_dir.glob("tasks_*.jsonl"), reverse=True)[:5]:
-            with open(log_file, "r") as f:
+            with open(log_file, "r", encoding="utf-8") as f:
                 for line in f:
                     if line.strip():
                         logs.append(json.loads(line))
@@ -78,7 +78,7 @@ class TaskLogger:
         """Get logs for a specific model."""
         logs = []
         for log_file in sorted(self.log_dir.glob("tasks_*.jsonl"), reverse=True):
-            with open(log_file, "r") as f:
+            with open(log_file, "r", encoding="utf-8") as f:
                 for line in f:
                     if line.strip():
                         entry = json.loads(line)
@@ -94,7 +94,7 @@ class TaskLogger:
         """Get recent error logs."""
         errors = []
         for log_file in sorted(self.log_dir.glob("tasks_*.jsonl"), reverse=True):
-            with open(log_file, "r") as f:
+            with open(log_file, "r", encoding="utf-8") as f:
                 for line in f:
                     if line.strip():
                         entry = json.loads(line)

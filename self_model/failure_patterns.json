@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "known_signatures": {
+    "timeout": {
+      "meaning": "request or tool took too long",
+      "recommended_response": "fallback or split task"
+    },
+    "api_key_missing": {
+      "meaning": "provider credentials were missing",
+      "recommended_response": "stop and request configuration"
+    },
+    "tool_unavailable": {
+      "meaning": "wrapper or runtime tool was missing",
+      "recommended_response": "check local setup and bridges"
+    },
+    "invalid_json": {
+      "meaning": "output was malformed or schema-invalid",
+      "recommended_response": "re-run formatting or validation layer"
+    },
+    "navigation_failed": {
+      "meaning": "browser or desktop navigation did not complete",
+      "recommended_response": "inspect runtime and UI drift"
+    },
+    "permission_denied": {
+      "meaning": "environment blocked the requested action",
+      "recommended_response": "check permissions or execution environment"
+    },
+    "bot_detection_triggered": {
+      "meaning": "Site detected automation (e.g. Google Abuse, Cloudflare)",
+      "recommended_response": "Use Stealth Mode, human typing delays, and avoid deep URL navigation."
+    },
+    "ui_coordinate_drift": {
+      "meaning": "Clicks failing due to static X,Y coordinates on dynamic UI",
+      "recommended_response": "Switch to DOM/Playwright automation or use real-time Vision to re-calibrate."
+    }
+  },
+  "observed_patterns": {
+    "google_deep_link_block": {
+      "task": "browser_search",
+      "signature": "GOOGLE_ABUSE_EXEMPTION",
+      "root_cause": "Navigating directly to search results URL instead of home page",
+      "fix": "Navigate to home, type query with delay, and click search button"
+    },
+    "edge_profiling_lock": {
+      "task": "persistent_context",
+      "signature": "Target page, context or browser has been closed",
+      "root_cause": "Edge already open blocking the User Data profile directory",
+      "fix": "Kill all msedge.exe processes before launching persistent context"
+    }
+  }
+}

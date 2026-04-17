@@ -58,9 +58,9 @@ class GroqAdapter(BaseAdapter):
         self,
         task: str,
         context: Optional[Dict[str, Any]] = None
-    ) -> list[Dict[str, str]]:
-        """Build Groq chat messages without leaking sensitive config."""
-        messages: list[Dict[str, str]] = []
+    ) -> list[Dict[str, Any]]:
+        """Build Groq chat messages with vision support if image is provided."""
+        messages: list[Dict[str, Any]] = []
 
         if self.system_prompt:
             messages.append({"role": "system", "content": self.system_prompt})
@@ -68,13 +68,23 @@ class GroqAdapter(BaseAdapter):
         if context and "history" in context:
             messages.extend(context["history"])
 
-        if context and "target_file" in context:
-            messages.append({
-                "role": "system",
-                "content": f"Target file: {context['target_file']}"
-            })
-
-        messages.append({"role": "user", "content": task})
+        # Soporte para Vision: Si hay una imagen en el contexto, la añadimos al mensaje del usuario
+        image_base64 = context.get("image_base64") if context else None
+        
+        if image_base64:
+            user_content = [
+                {"type": "text", "text": task},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{image_base64}"
+                    }
+                }
+            ]
+            messages.append({"role": "user", "content": user_content})
+        else:
+            messages.append({"role": "user", "content": task})
+            
         return messages
 
     def _call_api(
@@ -176,21 +186,20 @@ Be concise and literal.
         )
 
 
-class GroqGPTAdapter(GroqAdapter):
-    """Ultra-cheap formatter/classifier backed by GPT-OSS 20B on Groq."""
+class GroqVisionScoutAdapter(GroqAdapter):
+    """Ultra-fast vision scout for screen analysis and coordinate generation."""
 
     def __init__(self):
         super().__init__(
-            model_name="openai/gpt-oss-20b",
+            model_name="llama-3.2-11b-vision-preview", # Modelo más accesible y rápido
             system_prompt="""
-You are a fast formatting and transformation worker.
+You are a high-speed vision scout for Windows and Browser automation.
+Task: Analyze screenshots and provide precise descriptions, element locations, or coordinate estimates.
 Focus on:
-- classification
-- formatting
-- JSON generation
-- simple structured transforms
+- identifying UI elements (buttons, inputs, images)
+- confirming if a task (like 'save as' or 'notepad open') was successful
+- providing approximate coordinates (X, Y) if requested
 
-Do not plan, brainstorm, or over-explain.
-Return compact outputs.
+Be lightning fast and concise. No conversational filler.
 """,
         )

@@ -7,10 +7,13 @@ Task input
   -> detect_automation_route()
     -> browser/windows/worker-core when the task is desktop automation
   -> classify_task()
+  -> self_model simulate_routing()
+    -> compare registry default vs learned strengths/weaknesses/failure patterns
   -> get_model_by_task()
   -> validate_task_model_match()
   -> execute with adapter
   -> optional Groq follow-up for validation/formatting
+  -> record outcome back into self_model/
 ```
 
 ## Core Rules
@@ -24,6 +27,27 @@ Task input
 - Architecture and coding tasks must not be routed to Groq.
 - Browser and Windows automation are exposed as tool bridges through `worker-core`, not as primary models.
 - Natural-language automation is intercepted before LLM model routing.
+- A shared self-model can override the registry default when repeated evidence says it should.
+
+## Self-Model Layer
+
+The self-model lives at [self_model/](D:/IA/CODE/claudebot/self_model) in the repo root.
+
+It stores:
+
+- capabilities
+- weaknesses
+- routing knowledge
+- tool map
+- failure patterns
+
+The router uses that layer to simulate options before committing to a model.
+This gives the system a compact internal critic:
+
+- "what is the default choice?"
+- "what has worked before?"
+- "what should be avoided for this task shape?"
+- "is there a cheaper or safer option?"
 
 ## Natural Language Automation Rules
 

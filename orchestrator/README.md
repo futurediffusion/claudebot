@@ -24,6 +24,27 @@ orchestrator = MultiModelOrchestrator()
 result = orchestrator.execute_complex_task("Your task here")
 ```
 
+## Self-Model Engine
+
+The orchestrator now consults a shared self-model before routing.
+That state lives in [self_model/](D:/IA/CODE/claudebot/self_model) at the repo root so Claude, Gemini, Codex, and wrapper CLIs can all read and update the same knowledge.
+
+Key pieces:
+
+- [self_model/capabilities.json](D:/IA/CODE/claudebot/self_model/capabilities.json)
+- [self_model/weaknesses.json](D:/IA/CODE/claudebot/self_model/weaknesses.json)
+- [self_model/routing_knowledge.json](D:/IA/CODE/claudebot/self_model/routing_knowledge.json)
+- [self_model/tool_map.json](D:/IA/CODE/claudebot/self_model/tool_map.json)
+- [self_model/failure_patterns.json](D:/IA/CODE/claudebot/self_model/failure_patterns.json)
+- [docs/SELF_MODEL.md](D:/IA/CODE/claudebot/orchestrator/docs/SELF_MODEL.md)
+
+You can inspect it from the repo root:
+
+```bash
+python ../self_model_cli.py summary
+python ../self_model_cli.py plan "Fix this broken project and validate the output"
+```
+
 ## Models
 
 | Model | Role | Typical Use |
@@ -91,6 +112,14 @@ Routing behavior:
 - multi-step automation with save/export/summary steps -> `worker-core:orchestrator`
 
 Coding and architecture requests still go through the normal model router. Groq is not used for this automation path.
+
+## Gemini And Other Agents
+
+The shared self-model is not exclusive to the orchestrator.
+
+- `gemini_bridge.py auto "<task>"` now chooses browser/windows/worker using the same self-model.
+- `run_browser.py`, `run_windows.py`, and `run_worker.py` now record outcomes back into the same shared state.
+- External agents can pass `--agent claude_code`, `--agent gemini_cli`, or `--agent codex_cli` to the wrappers when they want attribution.
 
 ## Example Groq Routing
 
