@@ -18,7 +18,10 @@ if str(ORCHESTRATOR_ROOT) not in sys.path:
     sys.path.insert(0, str(ORCHESTRATOR_ROOT))
 
 try:
+    from core.episodic_memory import EpisodicMemoryEngine
     from core.self_model_engine import SelfModelEngine
+    from core.world_model import WorldModelEngine
+    from orchestrator.tools.mouse_calibration import MouseAutomationTool
     from orchestrator.tools.worker_core_bridge import (
         BrowserAutomationTool,
         WindowsAutomationTool,
@@ -34,7 +37,10 @@ class GeminiBridge:
         self.browser = BrowserAutomationTool()
         self.windows = WindowsAutomationTool()
         self.worker = WorkerOrchestratorTool()
+        self.mouse = MouseAutomationTool(agent_name="gemini_cli")
         self.self_model = SelfModelEngine(agent_name="gemini_cli")
+        self.episodic_memory = EpisodicMemoryEngine(agent_name="gemini_cli")
+        self.world_model = WorldModelEngine(agent_name="gemini_cli")
         self.log_dir = ROOT / "gemini_memory"
         self.log_dir.mkdir(exist_ok=True)
 
@@ -58,6 +64,7 @@ class GeminiBridge:
             "browser": ("worker-core:browser", "browser_automation"),
             "windows": ("worker-core:windows", "windows_automation"),
             "worker": ("worker-core:orchestrator", "worker_automation"),
+            "mouse": ("shared:mouse_calibration", "mouse_automation"),
             "surgical_edit": ("gemini:surgical_edit", "file_edit"),
         }
         model_name, task_type = model_map[tool_name]
@@ -72,25 +79,138 @@ class GeminiBridge:
             metadata={"source": "gemini_bridge"},
         )
 
+    def _record_episode(self, tool_name, task, result):
+        """Update the shared episodic memory from Gemini executions."""
+        model_map = {
+            "browser": ("worker-core:browser", "browser_automation", "automation"),
+            "windows": ("worker-core:windows", "windows_automation", "automation"),
+            "worker": ("worker-core:orchestrator", "worker_automation", "automation"),
+            "mouse": ("shared:mouse_calibration", "mouse_automation", "automation"),
+            "surgical_edit": ("gemini:surgical_edit", "file_edit", "file_edit"),
+        }
+        model_name, task_type, episode_type = model_map[tool_name]
+        steps = [
+            {
+                "stage": f"tool:{tool_name}",
+                "status": "completed" if result.get("success") else "failed",
+                "detail": str(
+                    result.get("content")
+                    or result.get("response")
+                    or result.get("path")
+                    or result.get("error")
+                    or ""
+                )[:220],
+            }
+        ]
+        if tool_name == "surgical_edit":
+            steps.insert(
+                0,
+                {
+                    "stage": "edit",
+                    "status": "completed" if result.get("success") else "failed",
+                    "detail": f"Applied surgical edit to {task}",
+                },
+            )
+
+        self.episodic_memory.record_episode(
+            task=task,
+            task_type=task_type,
+            success=result.get("success", False),
+            execution_time_ms=0,
+            episode_type=episode_type,
+            model_name=model_name,
+            tools_used=[tool_name],
+            steps=steps,
+            response=result.get("content") or result.get("response") or result.get("path"),
+            error=result.get("error"),
+            tool_results={tool_name: result},
+            metadata={"source": "gemini_bridge"},
+        )
+
+    def _record_world_model(self, tool_name, task, result):
+        """Update the shared world model from Gemini executions."""
+        model_map = {
+            "browser": ("worker-core:browser", "browser_automation", "browser"),
+            "windows": ("worker-core:windows", "windows_automation", "windows"),
+            "worker": ("worker-core:orchestrator", "worker_automation", "worker"),
+            "mouse": ("shared:mouse_calibration", "mouse_automation", "windows"),
+            "surgical_edit": ("gemini:surgical_edit", "file_edit", None),
+        }
+        model_name, task_type, route = model_map[tool_name]
+        self.world_model.record_execution(
+            task=task,
+            task_type=task_type,
+            success=result.get("success", False),
+            model_name=model_name,
+            route=route,
+            tools_used=[tool_name],
+            response=result.get("content") or result.get("response") or result.get("path"),
+            error=result.get("error"),
+            tool_results={tool_name: result},
+            playbook_path=result.get("playbook"),
+            metadata={"source": "gemini_bridge"},
+        )
+
     def run_browser(self, task: str):
         print(f"Gemini -> Browser: {task}")
+        self.world_model.record_task_start(
+            task=task,
+            task_type="browser_automation",
+            route="browser",
+            model_name="worker-core:browser",
+        )
         result = self.browser.execute(task)
         self.log_action("browser", task, result)
         self._record_self_model("browser", task, result)
+        self._record_episode("browser", task, result)
+        self._record_world_model("browser", task, result)
         return result
 
     def run_windows(self, task: str):
         print(f"Gemini -> Windows: {task}")
+        self.world_model.record_task_start(
+            task=task,
+            task_type="windows_automation",
+            route="windows",
+            model_name="worker-core:windows",
+        )
         result = self.windows.execute(task)
         self.log_action("windows", task, result)
         self._record_self_model("windows", task, result)
+        self._record_episode("windows", task, result)
+        self._record_world_model("windows", task, result)
         return result
 
     def run_worker(self, task: str):
         print(f"Gemini -> Worker Core: {task}")
+        self.world_model.record_task_start(
+            task=task,
+            task_type="worker_automation",
+            route="worker",
+            model_name="worker-core:orchestrator",
+        )
         result = self.worker.execute(task)
         self.log_action("worker", task, result)
         self._record_self_model("worker", task, result)
+        self._record_episode("worker", task, result)
+        self._record_world_model("worker", task, result)
+        return result
+
+    def run_mouse(self, request: str | dict[str, object]):
+        payload = json.loads(request) if isinstance(request, str) else request
+        label = str(payload.get("label") or f"Mouse {payload.get('action', 'move')}")
+        print(f"Gemini -> Mouse: {label}")
+        self.world_model.record_task_start(
+            task=label,
+            task_type="mouse_automation",
+            route="windows",
+            model_name="shared:mouse_calibration",
+        )
+        result = self.mouse.execute(payload)
+        self.log_action("mouse", label, result)
+        self._record_self_model("mouse", label, result)
+        self._record_episode("mouse", label, result)
+        self._record_world_model("mouse", label, result)
         return result
 
     def run_auto(self, task: str):
@@ -117,13 +237,23 @@ class GeminiBridge:
     def surgical_edit(self, file_path: str, old_text: str, new_text: str):
         """Gemini's signature tool: precise text replacement."""
         print(f"Gemini -> Surgical Edit: {file_path}")
+        self.world_model.record_task_start(
+            task=f"Edit {file_path}",
+            task_type="file_edit",
+            route=None,
+            model_name="gemini:surgical_edit",
+        )
         path = Path(file_path)
         if not path.exists():
-            return {"success": False, "error": f"File {file_path} not found"}
+            result = {"success": False, "error": f"File {file_path} not found"}
+            self._record_world_model("surgical_edit", f"Edit {file_path}", result)
+            return result
 
         content = path.read_text(encoding="utf-8")
         if old_text not in content:
-            return {"success": False, "error": "Original text not found in file"}
+            result = {"success": False, "error": "Original text not found in file"}
+            self._record_world_model("surgical_edit", f"Edit {file_path}", result)
+            return result
 
         new_content = content.replace(old_text, new_text, 1)
         path.write_text(new_content, encoding="utf-8")
@@ -131,18 +261,24 @@ class GeminiBridge:
         result = {"success": True, "path": str(path)}
         self.log_action("surgical_edit", f"Edit {file_path}", result)
         self._record_self_model("surgical_edit", f"Edit {file_path}", result)
+        self._record_episode("surgical_edit", f"Edit {file_path}", result)
+        self._record_world_model("surgical_edit", f"Edit {file_path}", result)
         return result
 
     def summary(self):
-        """Return the shared self-model summary as seen by Gemini."""
-        return self.self_model.get_summary()
+        """Return shared self-model, episodic, and world summaries as seen by Gemini."""
+        return {
+            "self_model": self.self_model.get_summary(),
+            "episodic_memory": self.episodic_memory.get_summary(),
+            "world_model": self.world_model.get_summary(),
+        }
 
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Gemini Bridge CLI")
-    parser.add_argument("tool", choices=["browser", "windows", "worker", "auto", "edit", "summary"])
+    parser.add_argument("tool", choices=["browser", "windows", "worker", "mouse", "auto", "edit", "summary"])
     parser.add_argument("task", nargs="?", help="Task or file path")
     parser.add_argument("--old", help="Old text for edit")
     parser.add_argument("--new", help="New text for edit")
@@ -158,6 +294,8 @@ if __name__ == "__main__":
         print(json.dumps(bridge.run_windows(args.task), indent=2))
     elif args.tool == "worker":
         print(json.dumps(bridge.run_worker(args.task), indent=2))
+    elif args.tool == "mouse":
+        print(json.dumps(bridge.run_mouse(args.task), indent=2))
     elif args.tool == "auto":
         print(json.dumps(bridge.run_auto(args.task), indent=2))
     elif args.tool == "edit":

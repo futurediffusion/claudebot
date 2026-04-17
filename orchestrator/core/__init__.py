@@ -8,6 +8,8 @@ from typing import Any
 _LAZY_EXPORTS = {
     "Router": ("core.router", "Router"),
     "SelfModelEngine": ("core.self_model_engine", "SelfModelEngine"),
+    "EpisodicMemoryEngine": ("core.episodic_memory", "EpisodicMemoryEngine"),
+    "WorldModelEngine": ("core.world_model", "WorldModelEngine"),
     "TaskLogger": ("core.task_logger", "TaskLogger"),
     "ContextManager": ("core.context_manager", "ContextManager"),
     "Orchestrator": ("core.orchestrator", "Orchestrator"),

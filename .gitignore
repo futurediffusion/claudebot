@@ -55,6 +55,8 @@ orchestrator/memory/logs/
 tools/worker-core/logs/
 tools/worker-core/tasks/output/
 tools/worker-core/tasks/tests/
+world_model/state.json
+world_model/mouse_calibration.json
 
 # Local screenshots / temporary files
 screenshot.png

@@ -70,6 +70,7 @@ class SelfModelEngine:
         "browser_automation": ["browser", "chrome", "edge", "website", "url", "navigate", "web"],
         "windows_automation": ["notepad", "paint", "calculator", "desktop", "windows", "explorer"],
         "worker_automation": ["save", "summary", "output", "tasks/output", "report"],
+        "mouse_automation": ["mouse", "cursor", "click", "double click", "right click", "coordinate", "coordenada"],
         "file_edit": ["replace", "exact text", "surgical edit", "swap text"],
         "debugging": ["bug", "error", "traceback", "stack trace", "debug"],
         "test": ["test", "spec", "assert"],
@@ -677,6 +678,8 @@ class SelfModelEngine:
             return "worker"
 
         normalized = task.lower()
+        if any(keyword in normalized for keyword in ["mouse", "cursor", "coordinate", "coordenada", "click at", "click on coordinate"]):
+            return "mouse"
         if any(keyword in normalized for keyword in ["replace ", "exact text", "swap text", "surgical"]):
             return "surgical_edit"
         return None
@@ -687,6 +690,8 @@ class SelfModelEngine:
             return f"{route}_automation"
 
         normalized = task.lower()
+        if any(keyword in normalized for keyword in ["mouse", "cursor", "coordinate", "coordenada", "click at", "click on coordinate"]):
+            return "mouse_automation"
         if any(keyword in normalized for keyword in ["replace ", "exact text", "swap text", "surgical"]):
             return "file_edit"
         return "tool_task"
@@ -707,6 +712,8 @@ class SelfModelEngine:
             return "permission_denied"
         if "navigate" in normalized or "browser" in normalized or "page" in normalized:
             return "navigation_failed"
+        if any(keyword in normalized for keyword in ["ui_coordinate_drift", "coordinate", "cursor", "mouse"]):
+            return "ui_coordinate_drift"
         return "unknown_failure"
 
     def _compact_decision(self, decision_simulation: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:

@@ -45,6 +45,63 @@ python ../self_model_cli.py summary
 python ../self_model_cli.py plan "Fix this broken project and validate the output"
 ```
 
+## Episodic Memory
+
+The orchestrator now also reads and writes shared episodic memory in [episodic_memory/](D:/IA/CODE/claudebot/episodic_memory).
+That layer stores real execution episodes instead of abstract routing knowledge.
+
+It captures:
+
+- task attempted
+- steps executed
+- app/web/screen context
+- exact failure
+- working fix or successful path
+
+Before a model run, the orchestrator injects similar recent episodes into context.
+After a model run or automation route, it records a new episode.
+
+Entrypoints:
+
+- [episodic_memory_cli.py](D:/IA/CODE/claudebot/episodic_memory_cli.py)
+- [docs/EPISODIC_MEMORY.md](D:/IA/CODE/claudebot/orchestrator/docs/EPISODIC_MEMORY.md)
+
+Examples:
+
+```bash
+python ../episodic_memory_cli.py summary
+python ../episodic_memory_cli.py find "Abre Chrome y ve a https://example.com y revisa el login" --task-type browser_automation
+```
+
+## World Model
+
+The orchestrator now also reads and writes shared world state in [world_model/](D:/IA/CODE/claudebot/world_model).
+This layer is for live operational state, not abstract routing knowledge and not old episodes.
+
+It tracks:
+
+- open desktop apps
+- active window
+- tracked browser tabs
+- files created or touched
+- downloads in progress
+- pending objectives
+
+Before execution, the orchestrator injects a compact world-state brief into context.
+After execution, it updates the world model with touched files, routes, tabs, and objective status.
+
+Entrypoints:
+
+- [world_model_cli.py](D:/IA/CODE/claudebot/world_model_cli.py)
+- [docs/WORLD_MODEL.md](D:/IA/CODE/claudebot/orchestrator/docs/WORLD_MODEL.md)
+
+Examples:
+
+```bash
+python ../world_model_cli.py summary --refresh
+python ../world_model_cli.py focus "Abre Chrome y ve a https://example.com y guarda un resumen"
+```
+
 ## Models
 
 | Model | Role | Typical Use |
@@ -118,7 +175,7 @@ Coding and architecture requests still go through the normal model router. Groq 
 The shared self-model is not exclusive to the orchestrator.
 
 - `gemini_bridge.py auto "<task>"` now chooses browser/windows/worker using the same self-model.
-- `run_browser.py`, `run_windows.py`, and `run_worker.py` now record outcomes back into the same shared state.
+- `run_browser.py`, `run_windows.py`, and `run_worker.py` now record outcomes back into the same shared state, episodic memory, and world model.
 - External agents can pass `--agent claude_code`, `--agent gemini_cli`, or `--agent codex_cli` to the wrappers when they want attribution.
 
 ## Example Groq Routing

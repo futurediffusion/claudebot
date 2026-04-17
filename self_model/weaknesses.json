@@ -2,69 +2,168 @@
   "version": 1,
   "models": {
     "minimax-m2.7:cloud": {
-      "weaknesses": ["cost", "overthinking"],
-      "avoid_for": ["formatting", "classification", "json"]
+      "weaknesses": [
+        "cost",
+        "overthinking"
+      ],
+      "avoid_for": [
+        "formatting",
+        "classification",
+        "json"
+      ]
     },
     "qwen3-coder:480b-cloud": {
-      "weaknesses": ["cost", "latency"],
-      "avoid_for": ["simple_classify", "formatting"]
+      "weaknesses": [
+        "cost",
+        "latency"
+      ],
+      "avoid_for": [
+        "simple_classify",
+        "formatting"
+      ]
     },
     "qwen3-coder-next:cloud": {
-      "weaknesses": ["less_strategic", "edge_cases"],
-      "avoid_for": ["architecture"]
+      "weaknesses": [
+        "less_strategic",
+        "edge_cases"
+      ],
+      "avoid_for": [
+        "architecture"
+      ]
     },
     "qwen3-vl:latest": {
-      "weaknesses": ["not_for_code_generation", "limited_context"],
-      "avoid_for": ["planning", "fast_coding"]
+      "weaknesses": [
+        "not_for_code_generation",
+        "limited_context"
+      ],
+      "avoid_for": [
+        "planning",
+        "fast_coding"
+      ]
     },
     "gemma4:latest": {
-      "weaknesses": ["limited_reasoning", "small_context"],
-      "avoid_for": ["planning", "heavy_refactor", "architecture"]
+      "weaknesses": [
+        "limited_reasoning",
+        "small_context"
+      ],
+      "avoid_for": [
+        "planning",
+        "heavy_refactor",
+        "architecture"
+      ]
     },
     "groq_qwen_32b": {
-      "weaknesses": ["not_for_complex_reasoning", "not_for_architecture"],
-      "avoid_for": ["planning", "architecture", "heavy_refactor", "fast_coding"]
+      "weaknesses": [
+        "not_for_complex_reasoning",
+        "not_for_architecture"
+      ],
+      "avoid_for": [
+        "planning",
+        "architecture",
+        "heavy_refactor",
+        "fast_coding"
+      ]
     },
     "groq_gpt_oss_20b": {
-      "weaknesses": ["very_limited_reasoning", "not_for_planning"],
-      "avoid_for": ["planning", "architecture", "heavy_refactor", "fast_coding"]
+      "weaknesses": [
+        "very_limited_reasoning",
+        "not_for_planning"
+      ],
+      "avoid_for": [
+        "planning",
+        "architecture",
+        "heavy_refactor",
+        "fast_coding"
+      ]
     },
     "groq_vision_scout": {
-      "weaknesses": ["limited_detail", "not_for_code_generation"],
-      "avoid_for": ["planning", "fast_coding"]
+      "weaknesses": [
+        "limited_detail",
+        "not_for_code_generation"
+      ],
+      "avoid_for": [
+        "planning",
+        "fast_coding"
+      ]
     },
     "worker-core:browser": {
-      "weaknesses": ["needs_browser_runtime", "site_specific_failures"],
-      "avoid_for": ["planning", "heavy_refactor"]
+      "weaknesses": [
+        "needs_browser_runtime",
+        "site_specific_failures"
+      ],
+      "avoid_for": [
+        "planning",
+        "heavy_refactor"
+      ]
     },
     "worker-core:windows": {
-      "weaknesses": ["needs_desktop_runtime", "ui_drift"],
-      "avoid_for": ["planning", "heavy_refactor"]
+      "weaknesses": [
+        "needs_desktop_runtime",
+        "ui_drift"
+      ],
+      "avoid_for": [
+        "planning",
+        "heavy_refactor"
+      ]
     },
     "worker-core:orchestrator": {
-      "weaknesses": ["tool_overhead", "runtime_dependencies"],
-      "avoid_for": ["architecture"]
+      "weaknesses": [
+        "tool_overhead",
+        "runtime_dependencies"
+      ],
+      "avoid_for": [
+        "architecture"
+      ]
+    },
+    "shared:mouse_calibration": {
+      "weaknesses": [
+        "needs_windows_runtime",
+        "needs_visual_ground_truth_for_high_confidence"
+      ],
+      "avoid_for": [
+        "planning",
+        "heavy_refactor"
+      ]
     },
     "gemini:surgical_edit": {
-      "weaknesses": ["exact_match_required"],
-      "avoid_for": ["architecture", "multi_file_fix"]
+      "weaknesses": [
+        "exact_match_required"
+      ],
+      "avoid_for": [
+        "architecture",
+        "multi_file_fix"
+      ]
     }
   },
   "agents": {
     "claude_code": {
-      "weaknesses": ["cannot_directly_own_external_gui_state"],
-      "avoid_for": ["native_desktop_control"]
+      "weaknesses": [
+        "cannot_directly_own_external_gui_state"
+      ],
+      "avoid_for": [
+        "native_desktop_control"
+      ]
     },
     "gemini_cli": {
-      "weaknesses": ["needs_structured_entry_points"],
-      "avoid_for": ["deep_architecture_without_context"]
+      "weaknesses": [
+        "needs_structured_entry_points"
+      ],
+      "avoid_for": [
+        "deep_architecture_without_context"
+      ]
     },
     "codex_cli": {
-      "weaknesses": ["depends_on_repo_entrypoints"],
-      "avoid_for": ["desktop_control_without_wrappers"]
+      "weaknesses": [
+        "depends_on_repo_entrypoints"
+      ],
+      "avoid_for": [
+        "desktop_control_without_wrappers"
+      ]
     },
     "shared_cli": {
-      "weaknesses": ["no_agent_specific_strengths"],
+      "weaknesses": [
+        "no_agent_specific_strengths"
+      ],
       "avoid_for": []
     }
   },

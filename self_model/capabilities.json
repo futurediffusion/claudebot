@@ -2,82 +2,216 @@
   "version": 1,
   "models": {
     "minimax-m2.7:cloud": {
-      "strengths": ["planning", "architecture", "ambiguity", "strategy"],
-      "preferred_tasks": ["planning", "architecture"],
+      "strengths": [
+        "planning",
+        "architecture",
+        "ambiguity",
+        "strategy"
+      ],
+      "preferred_tasks": [
+        "planning",
+        "architecture"
+      ],
       "execution_style": "deliberate"
     },
     "qwen3-coder:480b-cloud": {
-      "strengths": ["heavy_refactor", "multi_file_fix", "coding", "debugging"],
-      "preferred_tasks": ["heavy_refactor", "multi_file_fix", "fast_coding"],
+      "strengths": [
+        "heavy_refactor",
+        "multi_file_fix",
+        "coding",
+        "debugging"
+      ],
+      "preferred_tasks": [
+        "heavy_refactor",
+        "multi_file_fix",
+        "fast_coding"
+      ],
       "execution_style": "deep_implementation"
     },
     "qwen3-coder-next:cloud": {
-      "strengths": ["fast_coding", "scaffolding", "coding", "iteration"],
-      "preferred_tasks": ["fast_coding", "scaffolding"],
+      "strengths": [
+        "fast_coding",
+        "scaffolding",
+        "coding",
+        "iteration"
+      ],
+      "preferred_tasks": [
+        "fast_coding",
+        "scaffolding"
+      ],
       "execution_style": "fast_execution"
     },
     "qwen3-vl:latest": {
-      "strengths": ["vision", "screenshot", "ui_analysis"],
-      "preferred_tasks": ["vision", "screenshot", "ui_analysis"],
+      "strengths": [
+        "vision",
+        "screenshot",
+        "ui_analysis"
+      ],
+      "preferred_tasks": [
+        "vision",
+        "screenshot",
+        "ui_analysis"
+      ],
       "execution_style": "visual_analysis"
     },
     "gemma4:latest": {
-      "strengths": ["summary", "simple_classify", "cheap"],
-      "preferred_tasks": ["summary", "simple_classify"],
+      "strengths": [
+        "summary",
+        "simple_classify",
+        "cheap"
+      ],
+      "preferred_tasks": [
+        "summary",
+        "simple_classify"
+      ],
       "execution_style": "lightweight"
     },
     "groq_qwen_32b": {
-      "strengths": ["validation", "parsing", "log_analysis", "fast"],
-      "preferred_tasks": ["validation", "parsing", "log_analysis"],
+      "strengths": [
+        "validation",
+        "parsing",
+        "log_analysis",
+        "fast"
+      ],
+      "preferred_tasks": [
+        "validation",
+        "parsing",
+        "log_analysis"
+      ],
       "execution_style": "fast_processing"
     },
     "groq_gpt_oss_20b": {
-      "strengths": ["formatting", "classification", "json", "cheap"],
-      "preferred_tasks": ["formatting", "classification", "json"],
+      "strengths": [
+        "formatting",
+        "classification",
+        "json",
+        "cheap"
+      ],
+      "preferred_tasks": [
+        "formatting",
+        "classification",
+        "json"
+      ],
       "execution_style": "transform_worker"
     },
     "groq_vision_scout": {
-      "strengths": ["vision", "screenshot", "ui_analysis", "fast"],
-      "preferred_tasks": ["vision", "screenshot", "ui_analysis"],
+      "strengths": [
+        "vision",
+        "screenshot",
+        "ui_analysis",
+        "fast"
+      ],
+      "preferred_tasks": [
+        "vision",
+        "screenshot",
+        "ui_analysis"
+      ],
       "execution_style": "fast_visual_scout"
     },
     "worker-core:browser": {
-      "strengths": ["browser_automation", "navigation", "web_extraction"],
-      "preferred_tasks": ["browser_automation"],
+      "strengths": [
+        "browser_automation",
+        "navigation",
+        "web_extraction"
+      ],
+      "preferred_tasks": [
+        "browser_automation"
+      ],
       "execution_style": "tool_execution"
     },
     "worker-core:windows": {
-      "strengths": ["windows_automation", "desktop_control", "ui_interaction"],
-      "preferred_tasks": ["windows_automation"],
+      "strengths": [
+        "windows_automation",
+        "desktop_control",
+        "ui_interaction"
+      ],
+      "preferred_tasks": [
+        "windows_automation"
+      ],
       "execution_style": "tool_execution"
     },
     "worker-core:orchestrator": {
-      "strengths": ["worker_automation", "multi_step", "tool_orchestration"],
-      "preferred_tasks": ["worker_automation"],
+      "strengths": [
+        "worker_automation",
+        "multi_step",
+        "tool_orchestration"
+      ],
+      "preferred_tasks": [
+        "worker_automation"
+      ],
       "execution_style": "tool_orchestration"
     },
+    "shared:mouse_calibration": {
+      "strengths": [
+        "mouse_automation",
+        "coordinate_calibration",
+        "ui_interaction",
+        "verification"
+      ],
+      "preferred_tasks": [
+        "mouse_automation"
+      ],
+      "execution_style": "calibrated_tool_execution"
+    },
     "gemini:surgical_edit": {
-      "strengths": ["file_edit", "surgical_edit", "text_replacement"],
-      "preferred_tasks": ["file_edit"],
+      "strengths": [
+        "file_edit",
+        "surgical_edit",
+        "text_replacement"
+      ],
+      "preferred_tasks": [
+        "file_edit"
+      ],
       "execution_style": "precise_edit"
     }
   },
   "agents": {
     "claude_code": {
-      "strengths": ["planning", "repo_reasoning", "careful_edits"],
-      "best_for": ["planning", "implementation", "review"]
+      "strengths": [
+        "planning",
+        "repo_reasoning",
+        "careful_edits"
+      ],
+      "best_for": [
+        "planning",
+        "implementation",
+        "review"
+      ]
     },
     "gemini_cli": {
-      "strengths": ["tool_execution", "filesystem", "desktop_automation"],
-      "best_for": ["browser_automation", "windows_automation", "worker_automation"]
+      "strengths": [
+        "tool_execution",
+        "filesystem",
+        "desktop_automation"
+      ],
+      "best_for": [
+        "browser_automation",
+        "windows_automation",
+        "worker_automation"
+      ]
     },
     "codex_cli": {
-      "strengths": ["codebase_edits", "shell_workflows", "verification"],
-      "best_for": ["implementation", "refactor", "validation"]
+      "strengths": [
+        "codebase_edits",
+        "shell_workflows",
+        "verification"
+      ],
+      "best_for": [
+        "implementation",
+        "refactor",
+        "validation"
+      ]
     },
     "shared_cli": {
-      "strengths": ["simple_execution", "wrapper_access"],
-      "best_for": ["browser_automation", "windows_automation", "worker_automation"]
+      "strengths": [
+        "simple_execution",
+        "wrapper_access"
+      ],
+      "best_for": [
+        "browser_automation",
+        "windows_automation",
+        "worker_automation"
+      ]
     }
   }
 }

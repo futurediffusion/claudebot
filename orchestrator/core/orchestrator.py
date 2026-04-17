@@ -8,8 +8,10 @@ from typing import Any, Dict, Optional
 
 from core.automation_detection import detect_automation_route
 from core.context_manager import ContextManager
+from core.episodic_memory import EpisodicMemoryEngine
 from core.router import Router
 from core.task_logger import TaskLogger
+from core.world_model import WorldModelEngine
 from models.gemma4_adapter import Gemma4Adapter
 from models.groq_adapter import GroqGPTAdapter, GroqQwenAdapter, GroqVisionScoutAdapter
 from models.minimax_adapter import MinimaxAdapter
@@ -44,6 +46,8 @@ class Orchestrator:
         self.agent_name = agent_name
         self.router = Router(agent_name=agent_name)
         self.self_model = self.router.self_model
+        self.episodic_memory = EpisodicMemoryEngine(agent_name=agent_name)
+        self.world_model = WorldModelEngine(agent_name=agent_name)
         self.logger = TaskLogger()
         self.context = ContextManager()
 
@@ -87,11 +91,45 @@ class Orchestrator:
         if use_tools:
             automation_route = detect_automation_route(task)
             if automation_route:
-                return self._execute_automation_route(task, automation_route, start_time)
+                world_brief = self.world_model.build_context_brief(
+                    task,
+                    task_type=f"{automation_route}_automation",
+                    refresh=True,
+                )
+                self._set_world_model_context(world_brief)
+                self.world_model.record_task_start(
+                    task=task,
+                    task_type=f"{automation_route}_automation",
+                    route=automation_route,
+                    model_name=f"worker-core:{'orchestrator' if automation_route == 'worker' else automation_route}",
+                    refresh_desktop=False,
+                )
+                memory_brief = self.episodic_memory.build_context_brief(
+                    task,
+                    task_type=f"{automation_route}_automation",
+                )
+                return self._execute_automation_route(
+                    task,
+                    automation_route,
+                    start_time,
+                    memory_brief,
+                    world_brief,
+                )
 
         model_type, task_type, reasoning, used_fallback = self.router.route_with_fallback(task, max_fallbacks)
         decision_meta = self.router.get_last_decision_meta()
+        world_brief = self.world_model.build_context_brief(task, task_type=task_type.value, refresh=True)
+        memory_brief = self.episodic_memory.build_context_brief(task, task_type=task_type.value)
         self._set_self_model_context(task, task_type.value, model_type.value, decision_meta)
+        self._set_episodic_memory_context(memory_brief)
+        self._set_world_model_context(world_brief)
+        self.world_model.record_task_start(
+            task=task,
+            task_type=task_type.value,
+            route=None,
+            model_name=model_type.value,
+            refresh_desktop=False,
+        )
 
         result = self._execute_with_model(
             task=task,
@@ -102,6 +140,8 @@ class Orchestrator:
             use_tools=use_tools,
             start_time=start_time,
             decision_meta=decision_meta,
+            memory_brief=memory_brief,
+            world_brief=world_brief,
         )
 
         if result.get("success") or max_fallbacks <= 0:
@@ -115,6 +155,13 @@ class Orchestrator:
             f"{reasoning} Runtime fallback to '{MODELS[fallback_model].name}' "
             f"after error: {result.get('error', 'unknown error')}"
         )
+        self.world_model.record_task_start(
+            task=task,
+            task_type=task_type.value,
+            route=None,
+            model_name=fallback_model.value,
+            refresh_desktop=False,
+        )
 
         return self._execute_with_model(
             task=task,
@@ -124,6 +171,8 @@ class Orchestrator:
             used_fallback=True,
             use_tools=use_tools,
             start_time=start_time,
+            memory_brief=memory_brief,
+            world_brief=world_brief,
         )
 
     def execute_with_model(
@@ -180,7 +229,18 @@ class Orchestrator:
                 ],
             },
         }
+        world_brief = self.world_model.build_context_brief(task, task_type=task_type.value, refresh=True)
+        memory_brief = self.episodic_memory.build_context_brief(task, task_type=task_type.value)
         self._set_self_model_context(task, task_type.value, model_name, decision_meta)
+        self._set_episodic_memory_context(memory_brief)
+        self._set_world_model_context(world_brief)
+        self.world_model.record_task_start(
+            task=task,
+            task_type=task_type.value,
+            route=None,
+            model_name=model_name,
+            refresh_desktop=False,
+        )
 
         return self._execute_with_model(
             task=task,
@@ -191,6 +251,8 @@ class Orchestrator:
             use_tools=use_tools,
             start_time=start_time,
             decision_meta=decision_meta,
+            memory_brief=memory_brief,
+            world_brief=world_brief,
         )
 
     def _execute_with_model(
@@ -203,6 +265,8 @@ class Orchestrator:
         use_tools: bool,
         start_time: float,
         decision_meta: Optional[Dict[str, Any]] = None,
+        memory_brief: Optional[Dict[str, Any]] = None,
+        world_brief: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Internal method to execute with a specific model."""
         adapter = self.adapters[model_type]
@@ -227,6 +291,16 @@ class Orchestrator:
                 tools_used = list(tool_results.keys())
 
         execution_time_ms = int((time.time() - start_time) * 1000)
+        episode_steps = self._build_model_episode_steps(
+            task_type=task_type,
+            model_type=model_type,
+            used_fallback=used_fallback,
+            response=response,
+            follow_up=follow_up,
+            tools_used=tools_used,
+            tool_results=tool_results,
+            memory_brief=memory_brief,
+        )
 
         log_id = self.logger.log(
             task=task,
@@ -242,6 +316,8 @@ class Orchestrator:
                 "follow_up_model": follow_up.get("model") if follow_up else None,
                 "follow_up_task_type": follow_up.get("task_type") if follow_up else None,
                 "self_model": self._compact_self_model_meta(decision_meta),
+                "episodic_memory": self._compact_episodic_memory(memory_brief),
+                "world_model": self._compact_world_model(world_brief),
             },
         )
 
@@ -260,6 +336,46 @@ class Orchestrator:
                 "follow_up_task_type": follow_up.get("task_type") if follow_up else None,
             },
             decision_simulation=decision_meta.get("decision_simulation") if decision_meta else None,
+        )
+
+        episode = self.episodic_memory.record_episode(
+            task=task,
+            task_type=task_type.value,
+            success=response.get("success", False),
+            execution_time_ms=execution_time_ms,
+            episode_type="model_execution",
+            model_name=model_type.value,
+            tools_used=tools_used,
+            steps=episode_steps,
+            response=response.get("response"),
+            error=response.get("error"),
+            tool_results=tool_results,
+            log_id=log_id,
+            metadata={
+                "reasoning": reasoning,
+                "used_fallback": used_fallback,
+                "follow_up": follow_up,
+                "decision": self._compact_self_model_meta(decision_meta),
+                "memory_hits": (memory_brief or {}).get("match_count", 0),
+            },
+        )
+        world_update = self.world_model.record_execution(
+            task=task,
+            task_type=task_type.value,
+            success=response.get("success", False),
+            model_name=model_type.value,
+            route=self._infer_world_route(task, tools_used),
+            tools_used=tools_used,
+            response=response.get("response"),
+            error=response.get("error"),
+            tool_results=tool_results,
+            playbook_path=self._extract_playbook_path(tool_results),
+            metadata={
+                "reasoning": reasoning,
+                "used_fallback": used_fallback,
+                "follow_up": follow_up,
+                "world_context": self._compact_world_model(world_brief),
+            },
         )
 
         pipeline = [
@@ -291,13 +407,19 @@ class Orchestrator:
             "follow_up": follow_up,
             "pipeline": pipeline,
             "self_model": self._compact_self_model_meta(decision_meta),
+            "episodic_memory": self._compact_episodic_memory(memory_brief),
+            "world_model": self._compact_world_model(world_brief),
+            "world_update": world_update,
+            "episode_id": episode.get("id"),
         }
 
     def _execute_automation_route(
         self,
         task: str,
         route: str,
-        start_time: float
+        start_time: float,
+        memory_brief: Optional[Dict[str, Any]] = None,
+        world_brief: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Run direct browser/windows/worker automation from natural language."""
         route_map = {
@@ -341,6 +463,33 @@ class Orchestrator:
         )
         if tool_plan.get("selected_tool") and tool_plan.get("selected_tool") != config["tool_name"]:
             reasoning += f" Self-model tool critic suggested '{tool_plan['selected_tool']}' but direct route won."
+        if memory_brief and memory_brief.get("match_count"):
+            recent_fix = next(
+                (
+                    item.get("resolution")
+                    for item in memory_brief.get("matches", [])
+                    if item.get("resolution")
+                ),
+                None,
+            )
+            reasoning += f" Episodic memory found {memory_brief['match_count']} similar run(s)."
+            if recent_fix:
+                reasoning += f" Latest known fix: {recent_fix}"
+        if world_brief:
+            active_window = (world_brief.get("active_window") or {}).get("title")
+            pending_count = len(world_brief.get("pending_objectives", []))
+            if active_window:
+                reasoning += f" Active window before execution: {active_window}."
+            if pending_count:
+                reasoning += f" World model sees {pending_count} pending objective(s)."
+
+        episode_steps = self._build_automation_episode_steps(
+            route=route,
+            success=success,
+            response_text=response_text,
+            tool_name=config["tool_name"],
+            memory_brief=memory_brief,
+        )
 
         log_id = self.logger.log(
             task=task,
@@ -355,6 +504,8 @@ class Orchestrator:
                 "used_fallback": False,
                 "automation_route": route,
                 "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
+                "episodic_memory": self._compact_episodic_memory(memory_brief),
+                "world_model": self._compact_world_model(world_brief),
             },
         )
 
@@ -368,6 +519,43 @@ class Orchestrator:
             tools_used=[config["tool_name"]],
             metadata={"reasoning": reasoning, "automation_route": route},
             decision_simulation=tool_plan,
+        )
+
+        episode = self.episodic_memory.record_episode(
+            task=task,
+            task_type=config["task_type"],
+            success=success,
+            execution_time_ms=execution_time_ms,
+            episode_type="automation",
+            model_name=config["model"],
+            tools_used=[config["tool_name"]],
+            steps=episode_steps,
+            response=response_text,
+            error=automation_result.get("error"),
+            tool_results={config["tool_name"]: automation_result},
+            log_id=log_id,
+            metadata={
+                "reasoning": reasoning,
+                "automation_route": route,
+                "memory_hits": (memory_brief or {}).get("match_count", 0),
+            },
+        )
+        world_update = self.world_model.record_execution(
+            task=task,
+            task_type=config["task_type"],
+            success=success,
+            model_name=config["model"],
+            route=route,
+            tools_used=[config["tool_name"]],
+            response=response_text,
+            error=automation_result.get("error"),
+            tool_results={config["tool_name"]: automation_result},
+            playbook_path=automation_result.get("playbook"),
+            metadata={
+                "reasoning": reasoning,
+                "automation_route": route,
+                "world_context": self._compact_world_model(world_brief),
+            },
         )
 
         return {
@@ -392,6 +580,10 @@ class Orchestrator:
             ],
             "automation_route": route,
             "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
+            "episodic_memory": self._compact_episodic_memory(memory_brief),
+            "world_model": self._compact_world_model(world_brief),
+            "world_update": world_update,
+            "episode_id": episode.get("id"),
         }
 
     def _maybe_run_lightweight_follow_up(
@@ -500,7 +692,25 @@ class Orchestrator:
                 task_type=task_type,
                 selected_model=selected_model,
                 decision=decision_meta.get("decision_simulation") if decision_meta else None,
-            ),
+                ),
+        )
+
+    def _set_episodic_memory_context(self, memory_brief: Optional[Dict[str, Any]]) -> None:
+        """Inject relevant past episodes into the execution context."""
+        self.context.set_state("episodic_memory", memory_brief or {"matches": [], "match_count": 0})
+
+    def _set_world_model_context(self, world_brief: Optional[Dict[str, Any]]) -> None:
+        """Inject the current desktop world model brief into the execution context."""
+        self.context.set_state(
+            "world_model",
+            world_brief or {
+                "active_window": {},
+                "open_apps": [],
+                "tabs": [],
+                "files": [],
+                "downloads_in_progress": [],
+                "pending_objectives": [],
+            },
         )
 
     def _compact_self_model_meta(self, decision_meta: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -517,6 +727,148 @@ class Orchestrator:
             "ranked_options": decision.get("ranked_options", [])[:2],
             "ranked_tools": decision.get("ranked_tools", [])[:2],
         }
+
+    def _compact_episodic_memory(self, memory_brief: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Keep only the high-signal episodic hints in results and logs."""
+        if not memory_brief:
+            return {}
+
+        return {
+            "match_count": memory_brief.get("match_count", 0),
+            "matches": [
+                {
+                    "task": item.get("task"),
+                    "success": item.get("success"),
+                    "failure": item.get("failure"),
+                    "resolution": item.get("resolution"),
+                }
+                for item in memory_brief.get("matches", [])[:2]
+            ],
+        }
+
+    def _compact_world_model(self, world_brief: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Keep only the high-signal world-state metadata in results and logs."""
+        if not world_brief:
+            return {}
+
+        return {
+            "active_window": world_brief.get("active_window"),
+            "open_apps": world_brief.get("open_apps", [])[:3],
+            "tabs": world_brief.get("tabs", [])[:2],
+            "files": world_brief.get("files", [])[:3],
+            "downloads_in_progress": world_brief.get("downloads_in_progress", [])[:3],
+            "pending_objectives": world_brief.get("pending_objectives", [])[:3],
+        }
+
+    def _infer_world_route(self, task: str, tools_used: list[str]) -> Optional[str]:
+        """Infer which desktop/browser route affected the world state."""
+        route = detect_automation_route(task)
+        if route:
+            return route
+        for tool_name in tools_used:
+            if tool_name in {"browser", "windows", "worker"}:
+                return tool_name
+        return None
+
+    def _extract_playbook_path(self, tool_results: Dict[str, Any]) -> Optional[str]:
+        """Find a worker-core playbook path inside nested tool results."""
+        for result in tool_results.values():
+            if isinstance(result, dict) and result.get("playbook"):
+                return result["playbook"]
+        return None
+
+    def _build_model_episode_steps(
+        self,
+        task_type: TaskType,
+        model_type: ModelType,
+        used_fallback: bool,
+        response: Dict[str, Any],
+        follow_up: Optional[Dict[str, Any]],
+        tools_used: list[str],
+        tool_results: Dict[str, Any],
+        memory_brief: Optional[Dict[str, Any]],
+    ) -> list[Dict[str, Any]]:
+        steps = [
+            {
+                "stage": "route",
+                "status": "completed",
+                "detail": (
+                    f"Classified as {task_type.value} and selected {model_type.value}."
+                    + (" Runtime fallback path was active." if used_fallback else "")
+                ),
+            }
+        ]
+        if memory_brief and memory_brief.get("match_count"):
+            steps.append(
+                {
+                    "stage": "episodic_recall",
+                    "status": "completed",
+                    "detail": f"Loaded {memory_brief['match_count']} similar episode(s) into context.",
+                }
+            )
+        steps.append(
+            {
+                "stage": "model_execution",
+                "status": "completed" if response.get("success") else "failed",
+                "detail": self._coerce_result_text(response.get("response") or response.get("error"))[:220],
+            }
+        )
+
+        for tool_name in tools_used:
+            result = tool_results.get(tool_name, {})
+            steps.append(
+                {
+                    "stage": f"tool:{tool_name}",
+                    "status": "completed" if result.get("success", True) else "failed",
+                    "detail": self._coerce_result_text(
+                        result.get("content") or result.get("response") or result.get("error")
+                    )[:220],
+                }
+            )
+
+        if follow_up:
+            steps.append(
+                {
+                    "stage": "follow_up",
+                    "status": "completed" if follow_up.get("success") else "failed",
+                    "detail": (
+                        f"{follow_up.get('model')} handled {follow_up.get('task_type')}."
+                    ),
+                }
+            )
+        return steps
+
+    def _build_automation_episode_steps(
+        self,
+        route: str,
+        success: bool,
+        response_text: str,
+        tool_name: str,
+        memory_brief: Optional[Dict[str, Any]],
+    ) -> list[Dict[str, Any]]:
+        steps = [
+            {
+                "stage": "route",
+                "status": "completed",
+                "detail": f"Natural-language automation routed to {route}.",
+            }
+        ]
+        if memory_brief and memory_brief.get("match_count"):
+            steps.append(
+                {
+                    "stage": "episodic_recall",
+                    "status": "completed",
+                    "detail": f"Reviewed {memory_brief['match_count']} similar automation episode(s).",
+                }
+            )
+        steps.append(
+            {
+                "stage": f"tool:{tool_name}",
+                "status": "completed" if success else "failed",
+                "detail": response_text[:220],
+            }
+        )
+        return steps
 
     def _response_requests_tool(self, response: str) -> bool:
         """Return True when the model output contains an executable tool directive."""

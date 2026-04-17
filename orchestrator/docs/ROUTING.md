@@ -9,11 +9,15 @@ Task input
   -> classify_task()
   -> self_model simulate_routing()
     -> compare registry default vs learned strengths/weaknesses/failure patterns
+  -> retrieve similar episodic_memory matches
+  -> retrieve live world_model state
   -> get_model_by_task()
   -> validate_task_model_match()
   -> execute with adapter
   -> optional Groq follow-up for validation/formatting
   -> record outcome back into self_model/
+  -> record concrete episode into episodic_memory/
+  -> update live world_model state
 ```
 
 ## Core Rules
@@ -48,6 +52,35 @@ This gives the system a compact internal critic:
 - "what has worked before?"
 - "what should be avoided for this task shape?"
 - "is there a cheaper or safer option?"
+
+## Episodic Memory Layer
+
+The episodic memory lives at [episodic_memory/](D:/IA/CODE/claudebot/episodic_memory) in the repo root.
+
+It stores concrete runs:
+
+- which task was attempted
+- what steps were executed
+- which app or web context was involved
+- what failed exactly
+- what fix or route worked
+
+The orchestrator injects a compact brief of similar episodes into model context before execution and records a fresh episode after execution.
+
+## World Model Layer
+
+The world model lives at [world_model/](D:/IA/CODE/claudebot/world_model) in the repo root.
+
+It stores live state:
+
+- open apps
+- active window
+- tracked tabs
+- touched files
+- downloads in progress
+- pending objectives
+
+The orchestrator refreshes a compact world-state brief before execution and updates that state after execution.
 
 ## Natural Language Automation Rules
 

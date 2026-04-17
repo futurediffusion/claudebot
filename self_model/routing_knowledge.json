@@ -2,134 +2,284 @@
   "version": 1,
   "task_preferences": {
     "planning": {
-      "preferred_models": ["minimax-m2.7:cloud"],
-      "avoid_models": ["groq_qwen_32b", "groq_gpt_oss_20b"],
+      "preferred_models": [
+        "minimax-m2.7:cloud"
+      ],
+      "avoid_models": [
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b"
+      ],
       "strategy": "Think first, then delegate execution."
     },
     "architecture": {
-      "preferred_models": ["minimax-m2.7:cloud"],
-      "avoid_models": ["groq_qwen_32b", "groq_gpt_oss_20b", "gemma4:latest"],
+      "preferred_models": [
+        "minimax-m2.7:cloud"
+      ],
+      "avoid_models": [
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b",
+        "gemma4:latest"
+      ],
       "strategy": "Use a planner before code generation."
     },
     "heavy_refactor": {
-      "preferred_models": ["qwen3-coder:480b-cloud"],
-      "avoid_models": ["gemma4:latest", "groq_qwen_32b", "groq_gpt_oss_20b"],
+      "preferred_models": [
+        "qwen3-coder:480b-cloud"
+      ],
+      "avoid_models": [
+        "gemma4:latest",
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b"
+      ],
       "strategy": "Use deep coding, then validate."
     },
     "multi_file_fix": {
-      "preferred_models": ["qwen3-coder:480b-cloud"],
-      "avoid_models": ["gemma4:latest", "groq_qwen_32b", "groq_gpt_oss_20b"],
+      "preferred_models": [
+        "qwen3-coder:480b-cloud"
+      ],
+      "avoid_models": [
+        "gemma4:latest",
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b"
+      ],
       "strategy": "Favor full-code context over cheap models."
     },
     "fast_coding": {
-      "preferred_models": ["qwen3-coder-next:cloud"],
-      "avoid_models": ["groq_qwen_32b", "groq_gpt_oss_20b"],
+      "preferred_models": [
+        "qwen3-coder-next:cloud"
+      ],
+      "avoid_models": [
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b"
+      ],
       "strategy": "Use fast coding, add validation if risk rises."
     },
     "scaffolding": {
-      "preferred_models": ["qwen3-coder-next:cloud"],
-      "avoid_models": ["groq_qwen_32b", "groq_gpt_oss_20b"],
+      "preferred_models": [
+        "qwen3-coder-next:cloud"
+      ],
+      "avoid_models": [
+        "groq_qwen_32b",
+        "groq_gpt_oss_20b"
+      ],
       "strategy": "Prefer fast execution over deep planning."
     },
     "vision": {
-      "preferred_models": ["groq_vision_scout", "qwen3-vl:latest"],
+      "preferred_models": [
+        "groq_vision_scout",
+        "qwen3-vl:latest"
+      ],
       "avoid_models": [],
       "strategy": "Scout visually before acting on UI."
     },
     "screenshot": {
-      "preferred_models": ["groq_vision_scout", "qwen3-vl:latest"],
+      "preferred_models": [
+        "groq_vision_scout",
+        "qwen3-vl:latest"
+      ],
       "avoid_models": [],
       "strategy": "Use vision models, not code models."
     },
     "ui_analysis": {
-      "preferred_models": ["groq_vision_scout", "qwen3-vl:latest"],
+      "preferred_models": [
+        "groq_vision_scout",
+        "qwen3-vl:latest"
+      ],
       "avoid_models": [],
       "strategy": "Fast scout first, heavier vision only if needed."
     },
     "simple_classify": {
-      "preferred_models": ["gemma4:latest"],
-      "avoid_models": ["qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "gemma4:latest"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Keep simple tasks cheap."
     },
     "summary": {
-      "preferred_models": ["gemma4:latest"],
-      "avoid_models": ["qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "gemma4:latest"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use lightweight summarization."
     },
     "simple_exec": {
-      "preferred_models": ["gemma4:latest"],
-      "avoid_models": ["minimax-m2.7:cloud"],
+      "preferred_models": [
+        "gemma4:latest"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud"
+      ],
       "strategy": "Avoid planning overhead."
     },
     "log_analysis": {
-      "preferred_models": ["groq_qwen_32b"],
-      "avoid_models": ["minimax-m2.7:cloud"],
+      "preferred_models": [
+        "groq_qwen_32b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud"
+      ],
       "strategy": "Use fast parsing on logs."
     },
     "parsing": {
-      "preferred_models": ["groq_qwen_32b"],
-      "avoid_models": ["minimax-m2.7:cloud"],
+      "preferred_models": [
+        "groq_qwen_32b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud"
+      ],
       "strategy": "Use fast structure extraction."
     },
     "validation": {
-      "preferred_models": ["groq_qwen_32b"],
-      "avoid_models": ["minimax-m2.7:cloud"],
+      "preferred_models": [
+        "groq_qwen_32b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud"
+      ],
       "strategy": "Validate cheaply after heavier work."
     },
     "formatting": {
-      "preferred_models": ["groq_gpt_oss_20b"],
-      "avoid_models": ["minimax-m2.7:cloud", "qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "groq_gpt_oss_20b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud",
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use the cheapest transform worker."
     },
     "classification": {
-      "preferred_models": ["groq_gpt_oss_20b"],
-      "avoid_models": ["minimax-m2.7:cloud", "qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "groq_gpt_oss_20b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud",
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use a cheap worker for labels."
     },
     "json": {
-      "preferred_models": ["groq_gpt_oss_20b"],
-      "avoid_models": ["minimax-m2.7:cloud", "qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "groq_gpt_oss_20b"
+      ],
+      "avoid_models": [
+        "minimax-m2.7:cloud",
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Generate JSON with the transform worker."
     },
     "browser_automation": {
-      "preferred_models": ["worker-core:browser"],
-      "avoid_models": ["qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "worker-core:browser"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use browser automation directly instead of coding models."
     },
     "windows_automation": {
-      "preferred_models": ["worker-core:windows"],
-      "avoid_models": ["qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "worker-core:windows"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use desktop automation directly instead of coding models."
     },
     "worker_automation": {
-      "preferred_models": ["worker-core:orchestrator"],
-      "avoid_models": ["qwen3-coder:480b-cloud"],
+      "preferred_models": [
+        "worker-core:orchestrator"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
       "strategy": "Use the tool orchestrator for multi-step automation."
     },
+    "mouse_automation": {
+      "preferred_models": [
+        "shared:mouse_calibration"
+      ],
+      "avoid_models": [
+        "qwen3-coder:480b-cloud"
+      ],
+      "strategy": "Use calibrated mouse execution with verification and retry instead of raw static coordinates."
+    },
     "file_edit": {
-      "preferred_models": ["gemini:surgical_edit"],
-      "avoid_models": ["worker-core:browser"],
+      "preferred_models": [
+        "gemini:surgical_edit"
+      ],
+      "avoid_models": [
+        "worker-core:browser"
+      ],
       "strategy": "Use exact text replacement for surgical local edits."
     }
   },
   "meta_strategies": {
     "repair_project": {
-      "pipeline": ["qwen3-coder:480b-cloud", "groq_qwen_32b"],
+      "pipeline": [
+        "qwen3-coder:480b-cloud",
+        "groq_qwen_32b"
+      ],
       "notes": "Analyze deeply, then validate cheaply."
     },
     "browser_task": {
-      "pipeline": ["worker-core:browser"],
+      "pipeline": [
+        "worker-core:browser"
+      ],
       "notes": "Use browser automation, not coding models."
     },
     "desktop_task": {
-      "pipeline": ["worker-core:windows"],
+      "pipeline": [
+        "worker-core:windows"
+      ],
       "notes": "Use native desktop automation."
     },
     "multi_step_automation": {
-      "pipeline": ["worker-core:orchestrator"],
+      "pipeline": [
+        "worker-core:orchestrator"
+      ],
       "notes": "Use worker-core when browser plus file output are both required."
     }
   },
-  "observed_stats": {},
-  "recent_decisions": []
+  "observed_stats": {
+    "shared:mouse_calibration": {
+      "mouse_automation": {
+        "runs": 1,
+        "successes": 1,
+        "failures": 0,
+        "avg_time_ms": 0,
+        "last_agent": "shared_cli",
+        "last_used": "2026-04-17T06:07:51+00:00",
+        "last_error": null
+      }
+    }
+  },
+  "recent_decisions": [
+    {
+      "timestamp": "2026-04-17T06:07:51+00:00",
+      "agent": "shared_cli",
+      "task": "Mouse move at (0.5, 0.5) [normalized]",
+      "task_type": "mouse_automation",
+      "model": "shared:mouse_calibration",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "mouse"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "verification_mode": "cursor",
+          "coordinate_space": "normalized",
+          "attempt_count": 1
+        }
+      }
+    }
+  ]
 }

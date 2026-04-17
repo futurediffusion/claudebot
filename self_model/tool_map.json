@@ -2,52 +2,143 @@
   "version": 1,
   "tools": {
     "browser": {
-      "best_for": ["browser_automation", "navigation", "web_extraction", "form_filling"],
-      "avoid_for": ["architecture", "heavy_refactor"],
-      "drivers": ["worker-core:browser", "gemini_cli"],
+      "best_for": [
+        "browser_automation",
+        "navigation",
+        "web_extraction",
+        "form_filling"
+      ],
+      "avoid_for": [
+        "architecture",
+        "heavy_refactor"
+      ],
+      "drivers": [
+        "worker-core:browser",
+        "gemini_cli"
+      ],
       "observed_stats": {}
     },
     "windows": {
-      "best_for": ["windows_automation", "desktop_control", "ui_interaction"],
-      "avoid_for": ["architecture", "heavy_refactor"],
-      "drivers": ["worker-core:windows", "gemini_cli"],
+      "best_for": [
+        "windows_automation",
+        "desktop_control",
+        "ui_interaction"
+      ],
+      "avoid_for": [
+        "architecture",
+        "heavy_refactor"
+      ],
+      "drivers": [
+        "worker-core:windows",
+        "gemini_cli"
+      ],
       "observed_stats": {}
     },
     "worker": {
-      "best_for": ["worker_automation", "multi_step", "save_output"],
-      "avoid_for": ["architecture"],
-      "drivers": ["worker-core:orchestrator", "gemini_cli"],
+      "best_for": [
+        "worker_automation",
+        "multi_step",
+        "save_output"
+      ],
+      "avoid_for": [
+        "architecture"
+      ],
+      "drivers": [
+        "worker-core:orchestrator",
+        "gemini_cli"
+      ],
       "observed_stats": {}
     },
+    "mouse": {
+      "best_for": [
+        "mouse_automation",
+        "coordinate_calibration",
+        "ui_interaction"
+      ],
+      "avoid_for": [
+        "architecture",
+        "heavy_refactor"
+      ],
+      "drivers": [
+        "shared:mouse_calibration",
+        "gemini_cli",
+        "claude_code",
+        "codex_cli"
+      ],
+      "observed_stats": {
+        "shared_cli": {
+          "runs": 1,
+          "successes": 1,
+          "failures": 0,
+          "last_error": null
+        }
+      }
+    },
     "shell": {
-      "best_for": ["repo_execution", "tests", "diagnostics"],
-      "avoid_for": ["browser_automation"],
-      "drivers": ["claude_code", "codex_cli"],
+      "best_for": [
+        "repo_execution",
+        "tests",
+        "diagnostics"
+      ],
+      "avoid_for": [
+        "browser_automation"
+      ],
+      "drivers": [
+        "claude_code",
+        "codex_cli"
+      ],
       "observed_stats": {}
     },
     "file_ops": {
-      "best_for": ["file_read", "file_write", "context_loading"],
-      "avoid_for": ["desktop_control"],
-      "drivers": ["claude_code", "codex_cli"],
+      "best_for": [
+        "file_read",
+        "file_write",
+        "context_loading"
+      ],
+      "avoid_for": [
+        "desktop_control"
+      ],
+      "drivers": [
+        "claude_code",
+        "codex_cli"
+      ],
       "observed_stats": {}
     },
     "surgical_edit": {
-      "best_for": ["file_edit", "exact_replace"],
-      "avoid_for": ["multi_file_fix"],
-      "drivers": ["gemini_cli"],
+      "best_for": [
+        "file_edit",
+        "exact_replace"
+      ],
+      "avoid_for": [
+        "multi_file_fix"
+      ],
+      "drivers": [
+        "gemini_cli"
+      ],
       "observed_stats": {}
     }
   },
   "agent_tooling": {
     "claude_code": {
-      "available_tools": ["orchestrator", "shell", "file_ops", "run_browser.py", "run_windows.py", "run_worker.py"],
+      "available_tools": [
+        "orchestrator",
+        "shell",
+        "file_ops",
+        "run_browser.py",
+        "run_windows.py",
+        "run_worker.py",
+        "run_mouse.py"
+      ],
       "observed_stats": {}
     },
     "gemini_cli": {
       "available_tools": [
         "gemini_bridge.py",
         "gemini_skills/master_toolbox.py",
+        "gemini_skills/mouse.py",
+        "run_mouse.py",
         "browser",
+        "mouse",
         "windows",
         "worker",
         "surgical_edit"
@@ -60,12 +151,31 @@
       "observed_stats": {}
     },
     "codex_cli": {
-      "available_tools": ["orchestrator", "shell", "file_ops", "run_browser.py", "run_windows.py", "run_worker.py"],
+      "available_tools": [
+        "orchestrator",
+        "shell",
+        "file_ops",
+        "run_browser.py",
+        "run_windows.py",
+        "run_worker.py",
+        "run_mouse.py"
+      ],
       "observed_stats": {}
     },
     "shared_cli": {
-      "available_tools": ["run_browser.py", "run_windows.py", "run_worker.py"],
-      "observed_stats": {}
+      "available_tools": [
+        "run_browser.py",
+        "run_windows.py",
+        "run_worker.py",
+        "run_mouse.py"
+      ],
+      "observed_stats": {
+        "mouse": {
+          "runs": 1,
+          "successes": 1,
+          "failures": 0
+        }
+      }
     }
   }
 }
