@@ -2,9 +2,9 @@
 Central model registry with available models and task routing metadata.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
+from typing import Any, List, Optional
 
 
 class ModelType(Enum):
@@ -39,6 +39,13 @@ class TaskType(Enum):
     JSON_GEN = "json"
 
 
+class AgentProfile(Enum):
+    GEMINI_CLI = "gemini_cli"
+    CLAUDE_CODE = "claude_code"
+    CODEX_CLI = "codex_cli"
+    MINIMAX_CLI = "minimax_cli"
+
+
 @dataclass
 class ModelConfig:
     name: str
@@ -49,6 +56,15 @@ class ModelConfig:
     cost_level: str
     cloud: bool
     timeout_seconds: int = 120
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class AgentProfileConfig:
+    default_model: ModelType
+    supports_vision: bool
+    supports_tool_calls: bool
+    cost_tier: str
 
 
 MODELS: dict[ModelType, ModelConfig] = {
@@ -70,6 +86,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="high",
         cloud=True,
         timeout_seconds=180,
+        metadata={"route_status": "opt_in"},
     ),
     ModelType.HEAVY_CODING: ModelConfig(
         name="qwen3-coder:480b-cloud",
@@ -89,6 +106,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="high",
         cloud=True,
         timeout_seconds=300,
+        metadata={"route_status": "opt_in"},
     ),
     ModelType.FAST_CODING: ModelConfig(
         name="qwen3-coder-next:cloud",
@@ -108,6 +126,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="medium",
         cloud=True,
         timeout_seconds=120,
+        metadata={"route_status": "opt_in"},
     ),
     ModelType.VISION: ModelConfig(
         name="qwen3-vl:latest",
@@ -127,6 +146,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="low",
         cloud=False,
         timeout_seconds=60,
+        metadata={"route_status": "opt_in"},
     ),
     ModelType.LIGHTWEIGHT: ModelConfig(
         name="gemma4:latest",
@@ -145,6 +165,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="low",
         cloud=False,
         timeout_seconds=30,
+        metadata={"route_status": "opt_in"},
     ),
     ModelType.GROQ_FAST: ModelConfig(
         name="groq_qwen_32b",
@@ -164,6 +185,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="low",
         cloud=True,
         timeout_seconds=15,
+        metadata={"route_status": "experimental"},
     ),
     ModelType.GROQ_ULTRA_CHEAP: ModelConfig(
         name="groq_gpt_oss_20b",
@@ -183,6 +205,7 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="very_low",
         cloud=True,
         timeout_seconds=10,
+        metadata={"route_status": "experimental"},
     ),
     ModelType.GROQ_VISION_SCOUT: ModelConfig(
         name="llama-3.2-90b-vision-preview",
@@ -201,12 +224,61 @@ MODELS: dict[ModelType, ModelConfig] = {
         cost_level="zero",
         cloud=True,
         timeout_seconds=20,
+        metadata={"route_status": "experimental"},
     ),
 }
 
 
+AGENT_PROFILES: dict[str, AgentProfileConfig] = {
+    AgentProfile.GEMINI_CLI.value: AgentProfileConfig(
+        default_model=ModelType.FAST_CODING,
+        supports_vision=True,
+        supports_tool_calls=True,
+        cost_tier="medium",
+    ),
+    AgentProfile.CLAUDE_CODE.value: AgentProfileConfig(
+        default_model=ModelType.HEAVY_CODING,
+        supports_vision=True,
+        supports_tool_calls=True,
+        cost_tier="high",
+    ),
+    AgentProfile.CODEX_CLI.value: AgentProfileConfig(
+        default_model=ModelType.HEAVY_CODING,
+        supports_vision=False,
+        supports_tool_calls=True,
+        cost_tier="high",
+    ),
+    AgentProfile.MINIMAX_CLI.value: AgentProfileConfig(
+        default_model=ModelType.PLANNING,
+        supports_vision=False,
+        supports_tool_calls=False,
+        cost_tier="high",
+    ),
+}
+
+
+def get_model_by_agent(agent_name: str) -> Optional[ModelType]:
+    """Return the default model for a known agent profile."""
+    normalized_agent = (agent_name or "").strip().lower()
+    minimax_aliases = {
+        "minimax",
+        "minimax_code",
+        "minimax_agent",
+        "planner_cli",
+        "planning_cli",
+        "shared_cli",
+    }
+    if normalized_agent in minimax_aliases:
+        normalized_agent = AgentProfile.MINIMAX_CLI.value
+
+    profile = AGENT_PROFILES.get(normalized_agent)
+    if profile is None:
+        return None
+    return profile.default_model
+
+
 def get_model_by_task(task_type: TaskType) -> ModelType:
-    """Map a task type to the preferred model."""
+    """Compatibility routing: map task type to preferred model."""
     mapping = {
         TaskType.PLANNING: ModelType.PLANNING,
         TaskType.ARCHITECTURE: ModelType.PLANNING,

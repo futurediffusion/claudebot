@@ -12,6 +12,7 @@ from models.model_registry import (
     can_use_groq,
     classify_task,
     get_fallback_model,
+    get_model_by_agent,
     get_model_by_task,
     should_not_use_groq,
 )
@@ -41,7 +42,8 @@ class Router:
         self.agent_name = agent_name
         self.routing_mode = routing_mode
         self.classify = classify_task
-        self.get_model = get_model_by_task
+        self.get_model_by_task = get_model_by_task
+        self.get_model_by_agent = get_model_by_agent
         self.get_fallback = get_fallback_model
         self.self_model = SelfModelEngine(agent_name=agent_name)
         self._gemini_model = gemini_model
@@ -52,24 +54,18 @@ class Router:
 
     def resolve_locked_model(self, agent_name: str) -> ModelType:
         """Resolve a fixed model for a given agent identity."""
+        profiled_model = self.get_model_by_agent(agent_name)
+        if profiled_model is not None:
+            return profiled_model
+
         normalized_agent = (agent_name or "").strip().lower()
-        minimax_aliases = {
-            "minimax_cli",
-            "minimax",
-            "minimax_code",
-            "minimax_agent",
-            "planner_cli",
-            "planning_cli",
-            "shared_cli",
-        }
-        mapping = {
+        legacy_mapping = {
             "gemini_cli": self._gemini_model,
             "claude_code": self._claude_model,
             "codex_cli": self._codex_model,
+            "minimax_cli": self._minimax_model,
         }
-        if normalized_agent in minimax_aliases:
-            return self._minimax_model
-        return mapping.get(normalized_agent, self._claude_model)
+        return legacy_mapping.get(normalized_agent, self._claude_model)
 
     def route(self, task: str) -> Tuple[ModelType, TaskType, str]:
         """
@@ -79,7 +75,8 @@ class Router:
             Tuple of (model_type, task_type, reasoning)
         """
         task_type = self.classify(task)
-        default_model = self.get_model(task_type)
+        agent_default_model = self.get_model_by_agent(self.agent_name)
+        default_model = agent_default_model or self.get_model_by_task(task_type)
         locked_agent = self.routing_mode == "locked_agent"
         locked_model = self.resolve_locked_model(self.agent_name) if locked_agent else None
         model_type = locked_model or default_model
@@ -135,9 +132,10 @@ class Router:
                 f"over registry default '{default_model.value}'."
             )
         if locked_agent and locked_model is not None:
+            profile_note = "profiled" if agent_default_model is not None else "legacy-compat"
             reasoning += (
                 f" Locked to agent '{self.agent_name}' model '{locked_model.value}' "
-                f"(routing_mode=locked_agent)."
+                f"(routing_mode=locked_agent, {profile_note} by get_model_by_agent)."
             )
 
         critic_notes = decision_simulation.get("critic_notes", [])
