@@ -21,12 +21,26 @@ from core.router import Router
 from core.self_model_engine import SelfModelEngine
 
 
+def _filter_recent_decisions(payload: dict, active_agent_cli: str | None) -> dict:
+    if not active_agent_cli:
+        return payload
+    filtered = dict(payload)
+    recent = filtered.get("recent_decisions", [])
+    filtered["recent_decisions"] = [
+        {**entry, "active_agent_cli": entry.get("active_agent_cli") or "unknown"}
+        for entry in recent
+        if (entry.get("active_agent_cli") or "unknown") == active_agent_cli
+    ]
+    return filtered
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Shared self-model CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     summary_parser = subparsers.add_parser("summary", help="Show self-model summary")
     summary_parser.add_argument("--agent", default="shared_cli", help="Agent identity")
+    summary_parser.add_argument("--active-agent-cli", help="Filter recent decisions by active agent CLI")
 
     plan_parser = subparsers.add_parser("plan", help="Simulate a decision for a task")
     plan_parser.add_argument("task", nargs="+", help="Task description")
@@ -36,7 +50,14 @@ def main() -> None:
 
     if args.command == "summary":
         engine = SelfModelEngine(agent_name=args.agent)
-        print(json.dumps(engine.get_summary(), ensure_ascii=False, indent=2))
+        summary = engine.get_summary()
+        print(
+            json.dumps(
+                _filter_recent_decisions(summary, args.active_agent_cli),
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return
 
     task = " ".join(args.task)

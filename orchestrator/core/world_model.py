@@ -97,12 +97,16 @@ class WorldModelEngine:
             "tracked_tabs": len(state["browser"].get("tabs", [])),
             "tracked_files": len(state["filesystem"].get("recent_files", [])),
             "downloads_in_progress": state["filesystem"].get("downloads_in_progress", [])[:5],
-            "active_task": state["tasks"].get("active_task"),
+            "active_task": self._normalize_task_entry(state["tasks"].get("active_task")),
             "pending_objectives": [
-                item for item in state["tasks"].get("objectives", [])
+                self._normalize_task_entry(item)
+                for item in state["tasks"].get("objectives", [])
                 if item.get("status") not in {"completed"}
             ][:5],
-            "recent_tasks": state["tasks"].get("recent_tasks", [])[:5],
+            "recent_tasks": [
+                self._normalize_task_entry(item)
+                for item in state["tasks"].get("recent_tasks", [])[:5]
+            ],
         }
 
     def observe_desktop(self) -> dict[str, Any]:
@@ -163,6 +167,8 @@ class WorldModelEngine:
         """Mark a task as active in the shared world model."""
         metadata = metadata or {}
         active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
+        locked_model = str(metadata.get("locked_model") or "unknown")
+        routing_mode = str(metadata.get("routing_mode") or "unknown")
         state = self.get_state(refresh=refresh_desktop)
         route = route or detect_automation_route(task)
         task_key = self._task_key(task, task_type)
@@ -177,6 +183,8 @@ class WorldModelEngine:
             "model": model_name,
             "agent": self.agent_name,
             "active_agent_cli": active_agent_cli,
+            "locked_model": locked_model,
+            "routing_mode": routing_mode,
             "status": "running",
             "started_at": self._timestamp(),
         }
@@ -199,6 +207,8 @@ class WorldModelEngine:
                     "related_files": related_files[:6],
                     "agent": self.agent_name,
                     "active_agent_cli": active_agent_cli,
+                    "locked_model": locked_model,
+                    "routing_mode": routing_mode,
                     "last_seen": self._timestamp(),
                 },
             )
@@ -239,6 +249,8 @@ class WorldModelEngine:
         tools_used = tools_used or []
         metadata = metadata or {}
         active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
+        locked_model = str(metadata.get("locked_model") or "unknown")
+        routing_mode = str(metadata.get("routing_mode") or "unknown")
 
         playbook = self._load_playbook(playbook_path)
         file_records = self._extract_file_records(task, response, tool_results, playbook)
@@ -279,6 +291,8 @@ class WorldModelEngine:
             file_records=file_records,
             related_urls=related_urls,
             active_agent_cli=active_agent_cli,
+            locked_model=locked_model,
+            routing_mode=routing_mode,
         )
 
         if state["tasks"].get("active_task", {}).get("task_key") == task_key:
@@ -296,6 +310,8 @@ class WorldModelEngine:
                 "tools_used": tools_used,
                 "agent": self.agent_name,
                 "active_agent_cli": active_agent_cli,
+                "locked_model": locked_model,
+                "routing_mode": routing_mode,
                 "last_seen": self._timestamp(),
                 "error": self._trim(error, 180) if error else None,
             }
@@ -634,6 +650,8 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
         file_records: list[dict[str, Any]],
         related_urls: list[str],
         active_agent_cli: str,
+        locked_model: str,
+        routing_mode: str,
     ) -> None:
         objectives = state["tasks"].setdefault("objectives", [])
         related_files = [item["path"] for item in file_records][:6]
@@ -655,6 +673,8 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
                     "related_files": self._files_from_subtask(subtask) or related_files,
                     "agent": self.agent_name,
                     "active_agent_cli": active_agent_cli,
+                    "locked_model": locked_model,
+                    "routing_mode": routing_mode,
                     "last_seen": self._timestamp(),
                 }
                 self._upsert_objective(state, objective)
@@ -675,6 +695,8 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
                 "related_files": related_files,
                 "agent": self.agent_name,
                 "active_agent_cli": active_agent_cli,
+                "locked_model": locked_model,
+                "routing_mode": routing_mode,
                 "last_seen": self._timestamp(),
             }
             self._upsert_objective(state, objective)
@@ -691,6 +713,15 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
                 records[index] = {**record, **entry}
                 return
         records.append(entry)
+
+    def _normalize_task_entry(self, entry: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
+        if not isinstance(entry, dict):
+            return entry
+        normalized = dict(entry)
+        normalized["active_agent_cli"] = str(normalized.get("active_agent_cli") or "unknown")
+        normalized["locked_model"] = str(normalized.get("locked_model") or "unknown")
+        normalized["routing_mode"] = str(normalized.get("routing_mode") or "unknown")
+        return normalized
 
     def _extract_file_records(
         self,
