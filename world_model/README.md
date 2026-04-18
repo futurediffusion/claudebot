@@ -19,3 +19,5 @@ The world model is meant to track things like:
 
 Runtime state is written to `state.json`.
 That file is intentionally ignored by Git so the model can stay live without polluting commits.
+
+Operational escalation levels are documented in [orchestrator/docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md).

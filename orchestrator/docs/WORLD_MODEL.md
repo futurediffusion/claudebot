@@ -36,6 +36,12 @@ input
   -> update files, tabs, objectives, and task state
 ```
 
+## Execution Hierarchy Alignment
+
+El world model sirve como evidencia operacional para decidir si un salto de nivel fue necesario o prematuro según [EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md).
+
+Cuando se escale a browser automation, herramientas OS o mouse/visión, el estado del mundo (apps activas, foco, tabs, archivos, objetivos) debe respaldar esa decisión.
+
 ## Data Sources
 
 The current implementation combines:

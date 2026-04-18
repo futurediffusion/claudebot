@@ -34,6 +34,7 @@ The self-model lives at [D:/IA/CODE/claudebot/self_model](D:/IA/CODE/claudebot/s
 
 
 La política oficial de orden de decisión y criterios de escalado está en [ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md).
+La jerarquía operativa de ejecución y condiciones de salto está en [EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md).
 
 ## How It Works
 
