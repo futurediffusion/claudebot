@@ -15,7 +15,7 @@ from core.world_model import WorldModelEngine
 from models.gemma4_adapter import Gemma4Adapter
 from models.groq_adapter import GroqGPTAdapter, GroqQwenAdapter, GroqVisionScoutAdapter
 from models.minimax_adapter import MinimaxAdapter
-from models.model_registry import MODELS, ModelType, TaskType
+from models.model_registry import AGENT_PROFILES, MODELS, ModelType, TaskType, get_model_by_agent
 from models.qwen480b_adapter import Qwen480bAdapter
 from models.qwen_next_adapter import QwenNextAdapter
 from models.qwen_vl_adapter import QwenVLAdapter
@@ -44,6 +44,8 @@ class Orchestrator:
 
     def __init__(self, agent_name: str = "claude_code"):
         self.agent_name = agent_name
+        self.agent_default_model = get_model_by_agent(agent_name)
+        self.agent_profile = AGENT_PROFILES.get((agent_name or "").strip().lower())
         self.router = Router(agent_name=agent_name)
         self.self_model = self.router.self_model
         self.episodic_memory = EpisodicMemoryEngine(agent_name=agent_name)
@@ -318,6 +320,7 @@ class Orchestrator:
                 "self_model": self._compact_self_model_meta(decision_meta),
                 "episodic_memory": self._compact_episodic_memory(memory_brief),
                 "world_model": self._compact_world_model(world_brief),
+                "agent_profile_default_model": self.agent_default_model.value if self.agent_default_model else None,
             },
         )
 
@@ -334,6 +337,7 @@ class Orchestrator:
                 "used_fallback": used_fallback,
                 "follow_up_model": follow_up.get("model") if follow_up else None,
                 "follow_up_task_type": follow_up.get("task_type") if follow_up else None,
+                "agent_profile_default_model": self.agent_default_model.value if self.agent_default_model else None,
             },
             decision_simulation=decision_meta.get("decision_simulation") if decision_meta else None,
         )
@@ -375,6 +379,7 @@ class Orchestrator:
                 "used_fallback": used_fallback,
                 "follow_up": follow_up,
                 "world_context": self._compact_world_model(world_brief),
+                "agent_profile_default_model": self.agent_default_model.value if self.agent_default_model else None,
             },
         )
 
@@ -411,6 +416,13 @@ class Orchestrator:
             "world_model": self._compact_world_model(world_brief),
             "world_update": world_update,
             "episode_id": episode.get("id"),
+            "agent_profile": {
+                "agent": self.agent_name,
+                "default_model": self.agent_default_model.value if self.agent_default_model else None,
+                "supports_vision": self.agent_profile.supports_vision if self.agent_profile else None,
+                "supports_tool_calls": self.agent_profile.supports_tool_calls if self.agent_profile else None,
+                "cost_tier": self.agent_profile.cost_tier if self.agent_profile else None,
+            },
         }
 
     def _execute_automation_route(
