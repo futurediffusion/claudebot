@@ -16,6 +16,8 @@ The self-model is the current theory of:
 For concrete execution history, app/page context, and exact fixes, use [EPISODIC_MEMORY.md](D:/IA/CODE/claudebot/orchestrator/docs/EPISODIC_MEMORY.md).
 For live desktop/browser/filesystem state, use [WORLD_MODEL.md](D:/IA/CODE/claudebot/orchestrator/docs/WORLD_MODEL.md).
 
+La trazabilidad transversal por ejecución (intención, ruta elegida, motivo, herramientas, resultado y fallback) se normaliza en [../docs/TRACEABILITY_SPEC.md](D:/IA/CODE/claudebot/docs/TRACEABILITY_SPEC.md).
+
 ## Location
 
 The self-model lives at [D:/IA/CODE/claudebot/self_model](D:/IA/CODE/claudebot/self_model) so multiple agents can use the same source of truth:

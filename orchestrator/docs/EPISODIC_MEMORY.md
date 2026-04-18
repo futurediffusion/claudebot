@@ -10,6 +10,9 @@ It is not the self-model.
 - Episodic memory is a history of specific attempts in specific contexts.
 - The world model is the current state of windows, tabs, files, downloads, and objectives.
 
+
+Para formato de correlación con self-model/world-model y eventos obligatorios de fallback mouse/visión, ver [../docs/TRACEABILITY_SPEC.md](D:/IA/CODE/claudebot/docs/TRACEABILITY_SPEC.md).
+
 ## Location
 
 Episodes are stored under [D:/IA/CODE/claudebot/episodic_memory](D:/IA/CODE/claudebot/episodic_memory) so Claude, Gemini, Codex, and wrapper CLIs all use the same local memory.

@@ -11,6 +11,9 @@ It is not episodic memory.
 - Episodic memory is the record of past attempts and fixes.
 - The world model is the current state of windows, tabs, files, downloads, and objectives.
 
+
+La especificación transversal de trazabilidad y correlación por ejecución está en [../docs/TRACEABILITY_SPEC.md](D:/IA/CODE/claudebot/docs/TRACEABILITY_SPEC.md).
+
 ## Location
 
 The shared state lives in [D:/IA/CODE/claudebot/world_model](D:/IA/CODE/claudebot/world_model) so Claude, Gemini, Codex, and wrapper CLIs use the same live state.

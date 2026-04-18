@@ -8,6 +8,7 @@ Sistema orientado a **operación local** con enfoque **CLI-first** y **routing p
 - [docs/ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md): política oficial de orden de decisión, escalado y proveedores opt-in.
 - [docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md): jerarquía de ejecución por niveles con condiciones de salto y fallback extremo mouse/visión.
 - [../docs/DEPRECATION_POLICY.md](D:/IA/CODE/claudebot/docs/DEPRECATION_POLICY.md): política de estados (`active`, `discouraged`, `deprecated`, `archived`) y checklist de migración.
+- [../docs/TRACEABILITY_SPEC.md](D:/IA/CODE/claudebot/docs/TRACEABILITY_SPEC.md): campos mínimos de trazabilidad por ejecución, formato JSONL y eventos obligatorios de fallback mouse/visión.
 
 ## Qué NO es
 
@@ -194,6 +195,7 @@ The shared self-model is not exclusive to the orchestrator.
 
 - `gemini_bridge.py auto "<task>"` now chooses browser/windows/worker using the same self-model.
 - `run_browser.py`, `run_windows.py`, and `run_worker.py` now record outcomes back into the same shared state, episodic memory, and world model.
+- Todas esas rutas deben alinearse con [../docs/TRACEABILITY_SPEC.md](D:/IA/CODE/claudebot/docs/TRACEABILITY_SPEC.md) para intención, ruta, motivo, resultado y fallback.
 - External agents can pass `--agent claude_code`, `--agent gemini_cli`, or `--agent codex_cli` to the wrappers when they want attribution.
 
 ## Example Groq Routing
