@@ -1,6 +1,12 @@
-# Multi-Model Orchestrator
+# Sistema local CLI-first para automatización personal en PC
 
-Multi-model orchestration system for Claude Code using Ollama plus Groq as a fast processing layer.
+Sistema orientado a **operación local** con enfoque **CLI-first** y **routing pragmático** para automatización personal en PC.
+
+## Qué NO es
+
+- No es AGI.
+- No es mouse-first.
+- No es multimodelo por defecto.
 
 ## Quick Use
 

@@ -4,7 +4,9 @@ Workspace reorganized to keep the active system separate from older experiments.
 
 ## What To Use
 
-- [orchestrator/README.md](D:/IA/CODE/claudebot/orchestrator/README.md): active multimodel orchestrator.
+- **Nombre operativo**: **Sistema local CLI-first para automatización personal en PC**.
+- **Prioridades**: operación local primero, CLI-first, routing pragmático.
+- [orchestrator/README.md](D:/IA/CODE/claudebot/orchestrator/README.md): núcleo activo de operación local CLI-first con routing pragmático.
 - [tools/](D:/IA/CODE/claudebot/tools): external tooling and support repos.
 - [.claude/](D:/IA/CODE/claudebot/.claude): local editor and agent config.
 - [run_browser.py](D:/IA/CODE/claudebot/run_browser.py): direct browser automation wrapper.
@@ -16,6 +18,12 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [episodic_memory_cli.py](D:/IA/CODE/claudebot/episodic_memory_cli.py): inspect similar past episodes from the repo root.
 - [world_model/README.md](D:/IA/CODE/claudebot/world_model/README.md): shared desktop world model for live environment state.
 - [world_model_cli.py](D:/IA/CODE/claudebot/world_model_cli.py): inspect the current world-state slice from the repo root.
+
+## Qué NO es
+
+- No es AGI.
+- No es mouse-first.
+- No es multimodelo por defecto.
 
 ## Archived
 
