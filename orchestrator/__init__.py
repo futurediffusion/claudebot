@@ -1,5 +1,5 @@
 """
-Single-agent task orchestrator package.
+Single-agent CLI-first orchestrator package.
 
 This package uses lazy exports so lightweight helpers can be imported without
 pulling model dependencies such as `ollama` immediately.
@@ -22,6 +22,7 @@ _LAZY_EXPORTS = {
     "WorldModelEngine": ("orchestrator.core.world_model", "WorldModelEngine"),
     "TaskDecomposer": ("orchestrator.core.task_decomposer", "TaskDecomposer"),
     "SingleAgentOrchestrator": ("orchestrator.core.task_decomposer", "SingleAgentOrchestrator"),
+    # Legacy alias, kept behind explicit guards in runtime routing.
     "MultiModelOrchestrator": ("orchestrator.core.task_decomposer", "MultiModelOrchestrator"),
     "ModelType": ("orchestrator.models.model_registry", "ModelType"),
     "TaskType": ("orchestrator.models.model_registry", "TaskType"),

@@ -1,5 +1,5 @@
 """
-Multi-Model Orchestrator - ejecuta tareas complejas con múltiples modelos.
+Single-agent CLI-first orchestrator (legacy multi-model test harness).
 """
 
 from core.task_decomposer import TaskDecomposer, MultiModelOrchestrator as MMOrchestrator

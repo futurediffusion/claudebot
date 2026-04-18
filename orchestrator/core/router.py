@@ -2,6 +2,7 @@
 Router - classifies tasks and selects the optimal model.
 """
 
+import os
 from typing import Any, Dict, Tuple
 
 from core.self_model_engine import SelfModelEngine
@@ -16,6 +17,11 @@ from models.model_registry import (
     get_model_by_task,
     should_not_use_groq,
 )
+
+
+def _env_flag_enabled(name: str) -> bool:
+    """Return True when an env flag is set to a truthy value."""
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
 
 
 class Router:
@@ -34,11 +40,19 @@ class Router:
         self,
         agent_name: str = "claude_code",
         routing_mode: str = "locked_agent",
+        allow_legacy_routing: bool = False,
         gemini_model: ModelType = ModelType.FAST_CODING,
         claude_model: ModelType = ModelType.HEAVY_CODING,
         codex_model: ModelType = ModelType.HEAVY_CODING,
         minimax_model: ModelType = ModelType.PLANNING,
     ):
+        local_multimodel_enabled = _env_flag_enabled("ENABLE_LOCAL_MULTIMODEL_EXPERIMENTAL")
+        if routing_mode != "locked_agent" and not (allow_legacy_routing and local_multimodel_enabled):
+            raise ValueError(
+                "Legacy routing is disabled. Set ENABLE_LOCAL_MULTIMODEL_EXPERIMENTAL=1 "
+                "and pass allow_legacy_routing=True to enable it explicitly."
+            )
+
         self.agent_name = agent_name
         self.routing_mode = routing_mode
         self.classify = classify_task

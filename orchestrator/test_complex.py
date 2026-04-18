@@ -15,7 +15,12 @@ from models.model_registry import ModelType, TaskType
 
 
 def test_fallback_not_used_without_explicit_permission(monkeypatch):
-    router = Router(agent_name="claude_code", routing_mode="adaptive")
+    monkeypatch.setenv("ENABLE_LOCAL_MULTIMODEL_EXPERIMENTAL", "1")
+    router = Router(
+        agent_name="claude_code",
+        routing_mode="adaptive",
+        allow_legacy_routing=True,
+    )
     monkeypatch.setattr(router, "route", lambda _task: (ModelType.HEAVY_CODING, TaskType.FAST_CODING, "base"))
 
     model_type, _task_type, _reasoning, used_fallback = router.route_with_fallback("Task", max_fallbacks=0)
@@ -25,7 +30,12 @@ def test_fallback_not_used_without_explicit_permission(monkeypatch):
 
 
 def test_fallback_only_when_explicitly_enabled(monkeypatch):
-    router = Router(agent_name="claude_code", routing_mode="adaptive")
+    monkeypatch.setenv("ENABLE_LOCAL_MULTIMODEL_EXPERIMENTAL", "1")
+    router = Router(
+        agent_name="claude_code",
+        routing_mode="adaptive",
+        allow_legacy_routing=True,
+    )
     monkeypatch.setattr(router, "route", lambda _task: (ModelType.HEAVY_CODING, TaskType.FAST_CODING, "base"))
 
     model_type, _task_type, _reasoning, used_fallback = router.route_with_fallback("Task", max_fallbacks=1)
