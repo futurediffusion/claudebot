@@ -7,12 +7,13 @@ Sistema orientado a **operación local** con enfoque **CLI-first** y **routing p
 - [docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): capacidades reales (producción) vs capacidades experimentales (no gobernantes).
 - [docs/ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md): política oficial de orden de decisión, escalado y proveedores opt-in.
 - [docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md): jerarquía de ejecución por niveles con condiciones de salto y fallback extremo mouse/visión.
+- [../docs/DEPRECATION_POLICY.md](D:/IA/CODE/claudebot/docs/DEPRECATION_POLICY.md): política de estados (`active`, `discouraged`, `deprecated`, `archived`) y checklist de migración.
 
 ## Qué NO es
 
 - No es AGI.
-- No es mouse-first.
-- No es multimodelo por defecto.
+- No es mouse-first. **Status: deprecated**
+- No es multimodelo por defecto. **Status: discouraged**
 
 ## Quick Use
 
@@ -129,6 +130,8 @@ python ../world_model_cli.py focus "Abre Chrome y ve a https://example.com y gua
 ## Groq Setup
 
 Use `GROQ_API_KEY`.
+
+Status: **deprecated** como supuesto base del sistema (se mantiene como opción opt-in por caso).
 
 - Do not store API keys in code.
 - Do not print or log API keys.

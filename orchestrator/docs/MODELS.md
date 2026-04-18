@@ -2,6 +2,8 @@
 
 ## Ollama Models
 
+Status: **deprecated** como supuesto base obligatorio (usar como opción según disponibilidad).
+
 | Model | Role | Use |
 |-------|------|-----|
 | `minimax-m2.7:cloud` | Planner / Strategist | Planning, architecture, ambiguity |
@@ -11,6 +13,8 @@
 | `gemma4:latest` | Lightweight Helper | Simple checks and summaries |
 
 ## Groq Models
+
+Status: **deprecated** como supuesto base obligatorio (usar como capa opt-in por tarea).
 
 Groq is the fast processing layer.
 

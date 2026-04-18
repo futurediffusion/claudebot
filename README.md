@@ -21,16 +21,17 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [orchestrator/docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): matriz de capacidades reales vs experimentales del sistema.
 - [orchestrator/docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md): pirámide oficial de ejecución, escalado por niveles y fallback extremo mouse/visión.
 - [docs/SKILLS_CATALOG.md](D:/IA/CODE/claudebot/docs/SKILLS_CATALOG.md): catálogo de skills operativas (dominio, IO, costo, fallbacks y owner).
+- [docs/DEPRECATION_POLICY.md](D:/IA/CODE/claudebot/docs/DEPRECATION_POLICY.md): estados oficiales (`active`, `discouraged`, `deprecated`, `archived`) y checklist de migración.
 
 ## Qué NO es
 
 - No es AGI.
-- No es mouse-first.
-- No es multimodelo por defecto.
+- No es mouse-first. **Status: deprecated**
+- No es multimodelo por defecto. **Status: discouraged**
 
 ## Archived
 
-- [legacy/](D:/IA/CODE/claudebot/legacy): previous prototypes not used by the current flow.
+- [legacy/](D:/IA/CODE/claudebot/legacy): previous prototypes not used by the current flow. **Status: archived**
 
 ## Minimal Structure
 
@@ -84,6 +85,8 @@ python run_mouse.py --request-json "{\"x\":0.5,\"y\":0.8,\"coordinate_space\":\"
 ```
 
 `run_mouse.py` stores a learned calibration profile per app and resolution, retries around the predicted point, and records successes/failures into the shared self-model and episodic memory.
+
+Status: **deprecated** as default strategy; keep only as explicit fallback for cases where CLI/browser/OS routes are not viable.
 
 ## Shared Self-Model
 
