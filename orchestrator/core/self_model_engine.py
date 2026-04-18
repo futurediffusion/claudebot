@@ -98,7 +98,10 @@ class SelfModelEngine:
             "self_model_dir": str(self.base_dir),
             "known_models": sorted(bundle["capabilities"]["models"].keys()),
             "known_agents": sorted(bundle["capabilities"]["agents"].keys()),
-            "recent_decisions": bundle["routing_knowledge"].get("recent_decisions", [])[-5:],
+            "recent_decisions": [
+                self._normalize_recent_decision(entry)
+                for entry in bundle["routing_knowledge"].get("recent_decisions", [])[-5:]
+            ],
             "top_failure_patterns": sorted_patterns[:top_patterns],
         }
 
@@ -269,6 +272,8 @@ class SelfModelEngine:
     ) -> dict[str, Any]:
         metadata = metadata or {}
         active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
+        locked_model = str(metadata.get("locked_model") or "unknown")
+        routing_mode = str(metadata.get("routing_mode") or "unknown")
         bundle = self._load_bundle()
         routing = bundle["routing_knowledge"]
         weaknesses = bundle["weaknesses"]
@@ -333,6 +338,8 @@ class SelfModelEngine:
             "timestamp": self._timestamp(),
             "agent": self.agent_name,
             "active_agent_cli": active_agent_cli,
+            "locked_model": locked_model,
+            "routing_mode": routing_mode,
             "task": self._trim(task, 160),
             "task_type": task_type,
             "model": model_name,
@@ -357,6 +364,13 @@ class SelfModelEngine:
             "pattern_key": pattern_key,
             "stats": copy.deepcopy(model_stats),
         }
+
+    def _normalize_recent_decision(self, decision: dict[str, Any]) -> dict[str, Any]:
+        entry = dict(decision)
+        entry["active_agent_cli"] = str(entry.get("active_agent_cli") or "unknown")
+        entry["locked_model"] = str(entry.get("locked_model") or "unknown")
+        entry["routing_mode"] = str(entry.get("routing_mode") or "unknown")
+        return entry
 
     def _ensure_files(self) -> None:
         for key, filename in self.FILE_NAMES.items():

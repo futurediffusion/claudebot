@@ -112,6 +112,8 @@ class EpisodicMemoryEngine:
         """Append a new operational episode to shared memory."""
         metadata = metadata or {}
         active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
+        locked_model = str(metadata.get("locked_model") or "unknown")
+        routing_mode = str(metadata.get("routing_mode") or "unknown")
         tools_used = tools_used or []
         route = metadata.get("automation_route") or detect_automation_route(task)
         combined_text = self._combine_text(task, response, error, tool_results, metadata)
@@ -132,6 +134,8 @@ class EpisodicMemoryEngine:
             "timestamp": self._timestamp(),
             "agent": self.agent_name,
             "active_agent_cli": active_agent_cli,
+            "locked_model": locked_model,
+            "routing_mode": routing_mode,
             "episode_type": episode_type,
             "task": self._trim(task, 500),
             "task_type": task_type or "generic",
@@ -294,6 +298,9 @@ class EpisodicMemoryEngine:
             "id": episode.get("id"),
             "timestamp": episode.get("timestamp"),
             "agent": episode.get("agent"),
+            "active_agent_cli": episode.get("active_agent_cli") or "unknown",
+            "locked_model": episode.get("locked_model") or "unknown",
+            "routing_mode": episode.get("routing_mode") or "unknown",
             "task": self._trim(episode.get("task"), 180),
             "task_type": episode.get("task_type"),
             "model": episode.get("model"),
