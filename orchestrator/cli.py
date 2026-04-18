@@ -12,17 +12,38 @@ from core.task_decomposer import SingleAgentOrchestrator
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Single-agent orchestrator CLI")
+    parser = argparse.ArgumentParser(description="single-agent orchestrator CLI")
     parser.add_argument("task", nargs="*", help="Task description")
+    parser.add_argument(
+        "--routing-mode",
+        default="locked_agent",
+        help="Routing mode. Default is locked_agent; legacy values require --allow-legacy-routing.",
+    )
+    parser.add_argument(
+        "--allow-legacy-routing",
+        action="store_true",
+        help="Allow legacy routing modes different from locked_agent.",
+    )
     parser.add_argument(
         "--agent",
         default="claude_code",
-        help="Agent identity used for the shared self-model",
+        choices=["gemini_cli", "claude_code", "codex_cli", "minimax_cli"],
+        help="Operational single-agent identity (gemini_cli|claude_code|codex_cli|minimax_cli).",
     )
     args = parser.parse_args()
 
+    if args.routing_mode != "locked_agent" and not args.allow_legacy_routing:
+        parser.error(
+            "Legacy routing mode blocked. Use --routing-mode locked_agent "
+            "or pass --allow-legacy-routing to override."
+        )
+
     if not args.task:
-        print("Usage: python cli.py '<task description>' [--agent claude_code|gemini_cli|codex_cli]")
+        print(
+            "Usage: python cli.py '<task description>' "
+            "[--agent gemini_cli|claude_code|codex_cli|minimax_cli] "
+            "[--routing-mode locked_agent]"
+        )
         print("\nExamples:")
         print('  python cli.py "Create a Python function to calculate factorial"')
         print('  python cli.py "Design an auth API and create the files and write tests"')
@@ -33,7 +54,7 @@ def main() -> None:
         sys.exit(1)
 
     task = " ".join(args.task)
-    orchestrator = SingleAgentOrchestrator(agent_name=args.agent)
+    orchestrator = SingleAgentOrchestrator(agent_name=args.agent, routing_mode=args.routing_mode)
     result = orchestrator.execute_complex_task(task, verbose=True)
 
     print("\n" + "=" * 60)
@@ -43,6 +64,8 @@ def main() -> None:
     print("Subtasks: " + str(len(result["subtasks"])))
     print("Successful: " + str(result["successful"]) + "/" + str(len(result["results"])))
     print("Time: " + str(result["total_time_ms"]) + "ms")
+    print("Agent locked: " + str(result.get("agent_locked")))
+    print("Model locked: " + str(result.get("model_locked")))
 
     print("\nModels used:")
     for item in result["results"]:

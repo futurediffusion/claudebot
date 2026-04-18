@@ -42,11 +42,11 @@ class Orchestrator:
     6. Log execution
     """
 
-    def __init__(self, agent_name: str = "claude_code"):
+    def __init__(self, agent_name: str = "claude_code", routing_mode: str = "locked_agent"):
         self.agent_name = agent_name
         self.agent_default_model = get_model_by_agent(agent_name)
         self.agent_profile = AGENT_PROFILES.get((agent_name or "").strip().lower())
-        self.router = Router(agent_name=agent_name)
+        self.router = Router(agent_name=agent_name, routing_mode=routing_mode)
         self.self_model = self.router.self_model
         self.episodic_memory = EpisodicMemoryEngine(agent_name=agent_name)
         self.world_model = WorldModelEngine(agent_name=agent_name)
