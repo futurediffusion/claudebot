@@ -3,6 +3,7 @@ Orchestrator - coordinates routing, model execution, and tool usage.
 """
 
 import json
+import os
 import time
 from typing import Any, Dict, Optional
 
@@ -29,9 +30,14 @@ from tools.worker_core_bridge import (
 )
 
 
+def _env_flag_enabled(name: str) -> bool:
+    """Return True when an env flag is set to a truthy value."""
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 class Orchestrator:
     """
-    Main orchestrator for multi-model task execution.
+    Main single-agent CLI-first orchestrator.
 
     Flow:
     1. Receive task
@@ -43,10 +49,17 @@ class Orchestrator:
     """
 
     def __init__(self, agent_name: str = "claude_code", routing_mode: str = "locked_agent"):
+        self.enable_groq_experimental = _env_flag_enabled("ENABLE_GROQ_EXPERIMENTAL")
+        self.enable_local_multimodel_experimental = _env_flag_enabled("ENABLE_LOCAL_MULTIMODEL_EXPERIMENTAL")
+        allow_legacy_routing = routing_mode != "locked_agent"
         self.agent_name = agent_name
         self.agent_default_model = get_model_by_agent(agent_name)
         self.agent_profile = AGENT_PROFILES.get((agent_name or "").strip().lower())
-        self.router = Router(agent_name=agent_name, routing_mode=routing_mode)
+        self.router = Router(
+            agent_name=agent_name,
+            routing_mode=routing_mode,
+            allow_legacy_routing=allow_legacy_routing,
+        )
         self.self_model = self.router.self_model
         self.episodic_memory = EpisodicMemoryEngine(agent_name=agent_name)
         self.world_model = WorldModelEngine(agent_name=agent_name)
@@ -59,10 +72,15 @@ class Orchestrator:
             ModelType.FAST_CODING: QwenNextAdapter(),
             ModelType.VISION: QwenVLAdapter(),
             ModelType.LIGHTWEIGHT: Gemma4Adapter(),
-            ModelType.GROQ_FAST: GroqQwenAdapter(),
-            ModelType.GROQ_ULTRA_CHEAP: GroqGPTAdapter(),
-            ModelType.GROQ_VISION_SCOUT: GroqVisionScoutAdapter(),
         }
+        if self.enable_groq_experimental:
+            self.adapters.update(
+                {
+                    ModelType.GROQ_FAST: GroqQwenAdapter(),
+                    ModelType.GROQ_ULTRA_CHEAP: GroqGPTAdapter(),
+                    ModelType.GROQ_VISION_SCOUT: GroqVisionScoutAdapter(),
+                }
+            )
 
         self.shell = RunShellTool()
         self.file_ops = FileOpsTool()
@@ -271,6 +289,18 @@ class Orchestrator:
         world_brief: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Internal method to execute with a specific model."""
+        if model_type not in self.adapters:
+            return {
+                "success": False,
+                "error": (
+                    f"Adapter for model '{model_type.value}' is disabled. "
+                    "Enable the corresponding experimental feature flag to use it."
+                ),
+                "model": model_type.value,
+                "task_type": task_type.value,
+                "reasoning": reasoning,
+            }
+
         adapter = self.adapters[model_type]
         context = self.context.get_context()
         response = adapter.generate_response(task, context)
@@ -628,6 +658,8 @@ class Orchestrator:
 
         follow_up_model = self.router.get_model(follow_up_type)
         if follow_up_model not in {ModelType.GROQ_FAST, ModelType.GROQ_ULTRA_CHEAP}:
+            return None
+        if follow_up_model not in self.adapters:
             return None
 
         follow_up_task = self._build_follow_up_prompt(task, primary_response, follow_up_type)
