@@ -18,6 +18,7 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [episodic_memory_cli.py](D:/IA/CODE/claudebot/episodic_memory_cli.py): inspect similar past episodes from the repo root.
 - [world_model/README.md](D:/IA/CODE/claudebot/world_model/README.md): shared desktop world model for live environment state.
 - [world_model_cli.py](D:/IA/CODE/claudebot/world_model_cli.py): inspect the current world-state slice from the repo root.
+- [orchestrator/docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): matriz de capacidades reales vs experimentales del sistema.
 
 ## Qué NO es
 

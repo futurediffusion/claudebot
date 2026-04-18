@@ -2,6 +2,10 @@
 
 Sistema orientado a **operación local** con enfoque **CLI-first** y **routing pragmático** para automatización personal en PC.
 
+## Documentación clave
+
+- [docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): capacidades reales (producción) vs capacidades experimentales (no gobernantes).
+
 ## Qué NO es
 
 - No es AGI.
