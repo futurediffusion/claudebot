@@ -1,5 +1,5 @@
 """
-Multi-Model Orchestrator for Claude Code with Ollama.
+Single-agent task orchestrator package.
 
 This package uses lazy exports so lightweight helpers can be imported without
 pulling model dependencies such as `ollama` immediately.
@@ -21,6 +21,7 @@ _LAZY_EXPORTS = {
     "EpisodicMemoryEngine": ("orchestrator.core.episodic_memory", "EpisodicMemoryEngine"),
     "WorldModelEngine": ("orchestrator.core.world_model", "WorldModelEngine"),
     "TaskDecomposer": ("orchestrator.core.task_decomposer", "TaskDecomposer"),
+    "SingleAgentOrchestrator": ("orchestrator.core.task_decomposer", "SingleAgentOrchestrator"),
     "MultiModelOrchestrator": ("orchestrator.core.task_decomposer", "MultiModelOrchestrator"),
     "ModelType": ("orchestrator.models.model_registry", "ModelType"),
     "TaskType": ("orchestrator.models.model_registry", "TaskType"),
