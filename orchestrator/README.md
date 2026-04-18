@@ -38,6 +38,8 @@ run_orchestrator.bat "Design an API, create files, and validate the JSON schema"
 run_orchestrator.bat "Abre Chrome y ve a https://example.com"
 run_orchestrator.bat "Abre Notepad y escribe hola mundo"
 run_orchestrator.bat "Abre https://example.com y guarda un resumen en tasks/output/resumen.txt"
+python ../run_agent.py --agent claude_code --tool auto "Abre https://example.com y extrae el titulo"
+python ../run_agent.py --agent codex_cli --tool browser "Abre https://example.com y extrae el titulo"
 python ../run_browser.py "Open https://example.com and extract the title"
 python ../run_windows.py "Open Notepad and type hello world"
 python ../run_worker.py "Open a website and save a summary to tasks/output/summary.txt"
@@ -185,11 +187,13 @@ La jerarquía operativa de niveles y condiciones de salto se documenta en [docs/
 
 `browser-use` and `windows-use` are connected through `tools/worker-core` and exposed in two ways:
 
-1. Direct CLI wrappers at the repo root:
+1. High-level recommended wrapper at the repo root:
+   `python D:/IA/CODE/claudebot/run_agent.py --agent claude_code --tool auto "..."`
+2. Low-level direct wrappers at the repo root:
    `python D:/IA/CODE/claudebot/run_browser.py "..."`
    `python D:/IA/CODE/claudebot/run_windows.py "..."`
    `python D:/IA/CODE/claudebot/run_worker.py "..."`
-2. Tool bridge inside the orchestrator:
+3. Tool bridge inside the orchestrator:
    if a model emits `browser: ...`, `windows: ...`, or `worker: ...`, the orchestrator now delegates the task to worker-core.
 
 This makes the browser/desktop automation reachable from Claude-style agents and any other CLI agent that can execute Python commands.

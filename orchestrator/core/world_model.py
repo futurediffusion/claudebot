@@ -161,7 +161,8 @@ class WorldModelEngine:
         refresh_desktop: bool = True,
     ) -> dict[str, Any]:
         """Mark a task as active in the shared world model."""
-        del metadata
+        metadata = metadata or {}
+        active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
         state = self.get_state(refresh=refresh_desktop)
         route = route or detect_automation_route(task)
         task_key = self._task_key(task, task_type)
@@ -175,6 +176,7 @@ class WorldModelEngine:
             "route": route,
             "model": model_name,
             "agent": self.agent_name,
+            "active_agent_cli": active_agent_cli,
             "status": "running",
             "started_at": self._timestamp(),
         }
@@ -196,6 +198,7 @@ class WorldModelEngine:
                     "related_urls": related_urls[:4],
                     "related_files": related_files[:6],
                     "agent": self.agent_name,
+                    "active_agent_cli": active_agent_cli,
                     "last_seen": self._timestamp(),
                 },
             )
@@ -235,6 +238,7 @@ class WorldModelEngine:
         task_key = self._task_key(task, task_type)
         tools_used = tools_used or []
         metadata = metadata or {}
+        active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
 
         playbook = self._load_playbook(playbook_path)
         file_records = self._extract_file_records(task, response, tool_results, playbook)
@@ -274,6 +278,7 @@ class WorldModelEngine:
             playbook=playbook,
             file_records=file_records,
             related_urls=related_urls,
+            active_agent_cli=active_agent_cli,
         )
 
         if state["tasks"].get("active_task", {}).get("task_key") == task_key:
@@ -290,6 +295,7 @@ class WorldModelEngine:
                 "success": success,
                 "tools_used": tools_used,
                 "agent": self.agent_name,
+                "active_agent_cli": active_agent_cli,
                 "last_seen": self._timestamp(),
                 "error": self._trim(error, 180) if error else None,
             }
@@ -627,6 +633,7 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
         playbook: Optional[dict[str, Any]],
         file_records: list[dict[str, Any]],
         related_urls: list[str],
+        active_agent_cli: str,
     ) -> None:
         objectives = state["tasks"].setdefault("objectives", [])
         related_files = [item["path"] for item in file_records][:6]
@@ -647,6 +654,7 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
                     "related_urls": related_urls[:4],
                     "related_files": self._files_from_subtask(subtask) or related_files,
                     "agent": self.agent_name,
+                    "active_agent_cli": active_agent_cli,
                     "last_seen": self._timestamp(),
                 }
                 self._upsert_objective(state, objective)
@@ -666,6 +674,7 @@ Get-ChildItem -Path $downloads -File -ErrorAction SilentlyContinue |
                 "related_urls": related_urls[:4],
                 "related_files": related_files,
                 "agent": self.agent_name,
+                "active_agent_cli": active_agent_cli,
                 "last_seen": self._timestamp(),
             }
             self._upsert_objective(state, objective)
