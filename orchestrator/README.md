@@ -5,6 +5,7 @@ Sistema orientado a **operación local** con enfoque **CLI-first** y **routing p
 ## Documentación clave
 
 - [docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): capacidades reales (producción) vs capacidades experimentales (no gobernantes).
+- [docs/ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md): política oficial de orden de decisión, escalado y proveedores opt-in.
 
 ## Qué NO es
 
@@ -139,6 +140,8 @@ GROQ_API_KEY=YOUR_KEY_HERE
 ```
 
 ## Routing Summary
+
+La política de enrutamiento base y escalado explícito se documenta en [docs/ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md).
 
 - Planning and architecture -> MiniMax
 - Complex coding -> Qwen 480B
