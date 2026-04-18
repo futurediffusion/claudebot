@@ -33,7 +33,14 @@ except ImportError:
 
 
 class GeminiBridge:
-    def __init__(self):
+    def __init__(self, execution_policy: str = "gemini_primary"):
+        allowed_policies = {"gemini_primary", "legacy"}
+        if execution_policy not in allowed_policies:
+            raise ValueError(
+                f"Unsupported execution_policy '{execution_policy}'. "
+                f"Expected one of: {', '.join(sorted(allowed_policies))}."
+            )
+        self.execution_policy = execution_policy
         self.browser = BrowserAutomationTool()
         self.windows = WindowsAutomationTool()
         self.worker = WorkerOrchestratorTool()
@@ -43,6 +50,19 @@ class GeminiBridge:
         self.world_model = WorldModelEngine(agent_name="gemini_cli")
         self.log_dir = ROOT / "gemini_memory"
         self.log_dir.mkdir(exist_ok=True)
+
+    def _manual_switch_error(self, message: str, tool_plan: dict[str, object] | None = None):
+        """Return a structured error when the request needs manual provider switching."""
+        payload = {
+            "success": False,
+            "error": message,
+            "needs_manual_agent_switch": True,
+            "execution_policy": self.execution_policy,
+            "supported_tools": ["browser", "windows", "worker", "edit"],
+        }
+        if tool_plan is not None:
+            payload["self_model"] = tool_plan
+        return payload
 
     def log_action(self, tool_name, task, result):
         """Log actions for future session context."""
@@ -76,7 +96,10 @@ class GeminiBridge:
             execution_time_ms=0,
             error=result.get("error"),
             tools_used=[tool_name],
-            metadata={"source": "gemini_bridge"},
+            metadata={
+                "source": "gemini_bridge",
+                "decision_policy": "single_agent_cli",
+            },
         )
 
     def _record_episode(self, tool_name, task, result):
@@ -124,7 +147,10 @@ class GeminiBridge:
             response=result.get("content") or result.get("response") or result.get("path"),
             error=result.get("error"),
             tool_results={tool_name: result},
-            metadata={"source": "gemini_bridge"},
+            metadata={
+                "source": "gemini_bridge",
+                "decision_policy": "single_agent_cli",
+            },
         )
 
     def _record_world_model(self, tool_name, task, result):
@@ -148,7 +174,10 @@ class GeminiBridge:
             error=result.get("error"),
             tool_results={tool_name: result},
             playbook_path=result.get("playbook"),
-            metadata={"source": "gemini_bridge"},
+            metadata={
+                "source": "gemini_bridge",
+                "decision_policy": "single_agent_cli",
+            },
         )
 
     def run_browser(self, task: str):
@@ -215,24 +244,30 @@ class GeminiBridge:
 
     def run_auto(self, task: str):
         """Use the self-model to choose the best Gemini entrypoint."""
-        tool_plan = self.self_model.suggest_tool(
-            task,
-            available_tools=["browser", "windows", "worker", "surgical_edit"],
-        )
+        tool_plan = self.self_model.suggest_tool(task, available_tools=["browser", "windows", "worker", "surgical_edit"])
         selected_tool = tool_plan.get("selected_tool", "worker")
+        supported_auto_tools = {"browser", "windows", "worker"}
 
-        if selected_tool == "browser":
-            return self.run_browser(task)
-        if selected_tool == "windows":
-            return self.run_windows(task)
-        if selected_tool == "worker":
+        if selected_tool in supported_auto_tools:
+            if selected_tool == "browser":
+                return self.run_browser(task)
+            if selected_tool == "windows":
+                return self.run_windows(task)
             return self.run_worker(task)
 
-        return {
-            "success": False,
-            "error": "Self-model selected surgical_edit, but auto mode needs explicit file arguments.",
-            "self_model": tool_plan,
-        }
+        if selected_tool == "surgical_edit":
+            return self._manual_switch_error(
+                "Self-model selected edit flow, but auto mode requires explicit file arguments (--old/--new).",
+                tool_plan=tool_plan,
+            )
+
+        if self.execution_policy == "legacy":
+            return self.run_worker(task)
+
+        return self._manual_switch_error(
+            f"Unsupported tool route for Gemini policy: {selected_tool}",
+            tool_plan=tool_plan,
+        )
 
     def surgical_edit(self, file_path: str, old_text: str, new_text: str):
         """Gemini's signature tool: precise text replacement."""
@@ -282,11 +317,17 @@ if __name__ == "__main__":
     parser.add_argument("task", nargs="?", help="Task or file path")
     parser.add_argument("--old", help="Old text for edit")
     parser.add_argument("--new", help="New text for edit")
+    parser.add_argument(
+        "--policy",
+        choices=["gemini_primary", "legacy"],
+        default="gemini_primary",
+        help="Execution policy for routing behavior.",
+    )
 
     args = parser.parse_args()
     if args.tool != "summary" and not args.task:
         parser.error("task is required for this command")
-    bridge = GeminiBridge()
+    bridge = GeminiBridge(execution_policy=args.policy)
 
     if args.tool == "browser":
         print(json.dumps(bridge.run_browser(args.task), indent=2))
