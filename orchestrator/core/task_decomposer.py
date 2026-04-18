@@ -241,11 +241,12 @@ class TaskDecomposer:
 class SingleAgentOrchestrator:
     """Execute a task as a sequence of subtasks using one shared agent/model path."""
 
-    def __init__(self, agent_name: str = "claude_code"):
+    def __init__(self, agent_name: str = "claude_code", routing_mode: str = "locked_agent"):
         self.agent_name = agent_name
+        self.routing_mode = routing_mode
         self.decomposer = TaskDecomposer()
         from core.orchestrator import Orchestrator
-        self.base_orchestrator = Orchestrator(agent_name=self.agent_name)
+        self.base_orchestrator = Orchestrator(agent_name=self.agent_name, routing_mode=self.routing_mode)
 
     def execute_complex_task(self, task: str, verbose: bool = True) -> Dict[str, Any]:
         """
@@ -303,6 +304,9 @@ class SingleAgentOrchestrator:
         return {
             "original_task": task,
             "execution_mode": "single_agent",
+            "routing_mode": self.routing_mode,
+            "agent_locked": self.routing_mode == "locked_agent",
+            "model_locked": self.base_orchestrator.router.resolve_locked_model(self.agent_name).value,
             "subtasks": subtasks,
             "results": results,
             "successful": successful,
