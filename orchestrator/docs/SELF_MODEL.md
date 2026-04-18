@@ -32,6 +32,9 @@ The self-model lives at [D:/IA/CODE/claudebot/self_model](D:/IA/CODE/claudebot/s
 - [tool_map.json](D:/IA/CODE/claudebot/self_model/tool_map.json): tool suitability and per-agent tool availability.
 - [failure_patterns.json](D:/IA/CODE/claudebot/self_model/failure_patterns.json): compact learned failure signatures.
 
+
+La política oficial de orden de decisión y criterios de escalado está en [ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md).
+
 ## How It Works
 
 1. Classify the task.
