@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Entry point for the multi-model orchestrator."""
+"""Entry point for the single-agent orchestrator."""
 
 from __future__ import annotations
 
@@ -8,11 +8,11 @@ import sys
 
 sys.path.insert(0, "D:/IA/CODE/claudebot/orchestrator")
 
-from core.task_decomposer import MultiModelOrchestrator
+from core.task_decomposer import SingleAgentOrchestrator
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Multi-model orchestrator CLI")
+    parser = argparse.ArgumentParser(description="Single-agent orchestrator CLI")
     parser.add_argument("task", nargs="*", help="Task description")
     parser.add_argument(
         "--agent",
@@ -33,7 +33,7 @@ def main() -> None:
         sys.exit(1)
 
     task = " ".join(args.task)
-    orchestrator = MultiModelOrchestrator(agent_name=args.agent)
+    orchestrator = SingleAgentOrchestrator(agent_name=args.agent)
     result = orchestrator.execute_complex_task(task, verbose=True)
 
     print("\n" + "=" * 60)

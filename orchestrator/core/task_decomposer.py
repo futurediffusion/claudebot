@@ -5,7 +5,7 @@ Task decomposer - splits complex tasks into executable subtasks.
 from typing import Any, Dict, List, Optional
 
 from core.automation_detection import detect_automation_route
-from models.model_registry import ModelType, TaskType
+from models.model_registry import TaskType
 
 
 class TaskDecomposer:
@@ -77,13 +77,11 @@ class TaskDecomposer:
                 "Planning phase",
                 TaskType.PLANNING,
             )
-            planning_subtask["model"] = ModelType.PLANNING.value
             planning_subtask["outputs"] = ["architecture", "plan", "structure"]
             subtasks.append(planning_subtask)
 
         if self._needs_coding(task):
             coding_type = self._get_coding_type(task)
-            model = ModelType.HEAVY_CODING if coding_type == "heavy" else ModelType.FAST_CODING
             task_type = TaskType.HEAVY_REFACTOR if coding_type == "heavy" else TaskType.FAST_CODING
 
             coding_subtask = self._create_subtask(
@@ -91,7 +89,6 @@ class TaskDecomposer:
                 "Coding phase",
                 task_type,
             )
-            coding_subtask["model"] = model.value
             coding_subtask["depends_on"] = [subtasks[-1]["id"]] if subtasks else None
             coding_subtask["outputs"] = ["files_created", "code_written"]
             subtasks.append(coding_subtask)
@@ -102,29 +99,17 @@ class TaskDecomposer:
                 "Testing phase",
                 TaskType.FAST_CODING,
             )
-            test_subtask["model"] = ModelType.FAST_CODING.value
             test_subtask["depends_on"] = [subtasks[-1]["id"]]
             test_subtask["outputs"] = ["tests_written"]
             subtasks.append(test_subtask)
 
         if self._needs_validation(task) and subtasks:
             validation_task_type = self._get_validation_task_type(task)
-            validation_model = (
-                ModelType.GROQ_ULTRA_CHEAP
-                if validation_task_type in {
-                    TaskType.FORMATTING,
-                    TaskType.CLASSIFICATION,
-                    TaskType.JSON_GEN,
-                }
-                else ModelType.GROQ_FAST
-            )
-
             validation_subtask = self._create_subtask(
                 self._build_validation_description(task, validation_task_type),
                 "Validation phase",
                 validation_task_type,
             )
-            validation_subtask["model"] = validation_model.value
             validation_subtask["depends_on"] = [subtasks[-1]["id"]]
             validation_subtask["outputs"] = ["validation"]
             subtasks.append(validation_subtask)
@@ -136,7 +121,6 @@ class TaskDecomposer:
                 "Final verification phase",
                 TaskType.SIMPLE_CLASSIFY,
             )
-            final_subtask["model"] = ModelType.LIGHTWEIGHT.value
             final_subtask["depends_on"] = [subtasks[-1]["id"]]
             final_subtask["outputs"] = ["verification"]
             subtasks.append(final_subtask)
@@ -254,14 +238,14 @@ class TaskDecomposer:
         }
 
 
-class MultiModelOrchestrator:
-    """Execute a task as a sequence of routed subtasks."""
+class SingleAgentOrchestrator:
+    """Execute a task as a sequence of subtasks using one shared agent/model path."""
 
     def __init__(self, agent_name: str = "claude_code"):
         self.agent_name = agent_name
         self.decomposer = TaskDecomposer()
         from core.orchestrator import Orchestrator
-        self.base_orchestrator = Orchestrator
+        self.base_orchestrator = Orchestrator(agent_name=self.agent_name)
 
     def execute_complex_task(self, task: str, verbose: bool = True) -> Dict[str, Any]:
         """
@@ -289,22 +273,7 @@ class MultiModelOrchestrator:
                 print(f"\n--- Subtask {index}/{len(subtasks)} ---")
                 print(f"Phase: {subtask['phase']}")
 
-            orchestrator = self.base_orchestrator(agent_name=self.agent_name)
-            forced_model = subtask.get("model")
-
-            if forced_model:
-                forced_task_type = (
-                    TaskType(subtask["task_type"])
-                    if subtask["task_type"] != "generic"
-                    else None
-                )
-                result = orchestrator.execute_with_model(
-                    task=subtask["description"],
-                    model_name=forced_model,
-                    forced_task_type=forced_task_type,
-                )
-            else:
-                result = orchestrator.execute(subtask["description"])
+            result = self.base_orchestrator.execute(subtask["description"])
 
             subtask["result"] = result
             subtask["completed"] = result.get("success", False)
@@ -333,9 +302,18 @@ class MultiModelOrchestrator:
 
         return {
             "original_task": task,
+            "execution_mode": "single_agent",
             "subtasks": subtasks,
             "results": results,
             "successful": successful,
             "total_time_ms": total_time,
             "all_success": successful == len(results),
         }
+
+
+class MultiModelOrchestrator(SingleAgentOrchestrator):
+    """
+    Temporary compatibility alias.
+
+    Deprecated: use SingleAgentOrchestrator.
+    """
