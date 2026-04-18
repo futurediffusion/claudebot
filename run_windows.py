@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 SKILLS_CATALOG_PATH = "docs/SKILLS_CATALOG.md"
+TRACEABILITY_SPEC_PATH = "docs/TRACEABILITY_SPEC.md"
 
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
@@ -26,7 +27,10 @@ from orchestrator.tools.worker_core_bridge import WindowsAutomationTool
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run Windows automation via worker-core",
-        epilog=f"Skills catalog: {SKILLS_CATALOG_PATH}",
+        epilog=(
+            f"Skills catalog: {SKILLS_CATALOG_PATH}\n"
+            f"Traceability spec: {TRACEABILITY_SPEC_PATH}"
+        ),
     )
     parser.add_argument("task", nargs="+", help="Task description")
     parser.add_argument("--config", help="Optional path to tools/worker-core .env file")
