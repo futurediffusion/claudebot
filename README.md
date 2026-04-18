@@ -29,6 +29,18 @@ Workspace reorganized to keep the active system separate from older experiments.
 - No es mouse-first. **Status: deprecated**
 - No es multimodelo por defecto. **Status: discouraged**
 
+## Valor práctico hoy
+
+Este workspace aporta valor cuando te resuelve tareas diarias de forma directa y repetible:
+
+- **Limpieza**: ordenar carpetas de trabajo, mover archivos temporales y dejar resultados en rutas consistentes.
+- **Organización**: crear resúmenes, notas operativas y salidas en `tasks/output/` con estructura clara.
+- **Instalación**: ejecutar pasos de setup y validaciones básicas de herramientas desde flujos guiados por CLI.
+- **Reparación de entorno**: diagnosticar fallos típicos (dependencias, rutas, comandos) y aplicar correcciones verificables.
+- **Automatización web**: abrir sitios, extraer datos concretos y guardar resultados sin depender de interacción manual constante.
+
+> **Si esto te ahorra tiempo real, estás en el camino correcto.**
+
 ## Archived
 
 - [legacy/](D:/IA/CODE/claudebot/legacy): previous prototypes not used by the current flow. **Status: archived**
@@ -87,6 +99,16 @@ python run_mouse.py --request-json "{\"x\":0.5,\"y\":0.8,\"coordinate_space\":\"
 `run_mouse.py` stores a learned calibration profile per app and resolution, retries around the predicted point, and records successes/failures into the shared self-model and episodic memory.
 
 Status: **deprecated** as default strategy; keep only as explicit fallback for cases where CLI/browser/OS routes are not viable.
+
+## Capacidades avanzadas (secundario)
+
+Estos componentes son útiles, pero no son el núcleo del valor diario:
+
+- `self_model/` para conocimiento acumulado de routing.
+- `episodic_memory/` para reusar aprendizajes de ejecuciones previas.
+- `world_model/` para estado operativo compartido entre agentes.
+
+Si tu caso de uso principal es productividad cotidiana, empieza por el flujo CLI-first y añade estas capas cuando ya tengas una rutina estable.
 
 ## Shared Self-Model
 

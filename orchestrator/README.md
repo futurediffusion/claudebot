@@ -1,6 +1,7 @@
 # Sistema local CLI-first para automatización personal en PC
 
 Sistema orientado a **operación local** con enfoque **CLI-first** y **routing pragmático** para automatización personal en PC.
+Enfocado en utilidad diaria: menos narrativa, más tareas resueltas en tu entorno real.
 
 ## Documentación clave
 
@@ -16,6 +17,18 @@ Sistema orientado a **operación local** con enfoque **CLI-first** y **routing p
 - No es mouse-first. **Status: deprecated**
 - No es multimodelo por defecto. **Status: discouraged**
 
+## Valor práctico hoy
+
+Prioriza casos de uso que te quitan trabajo manual hoy mismo:
+
+- **Limpieza** de archivos y carpetas de trabajo.
+- **Organización** de salidas, notas y resúmenes en rutas predecibles.
+- **Instalación** y preparación de herramientas con pasos reproducibles.
+- **Reparación de entorno** ante errores comunes de dependencias, comandos o configuración.
+- **Automatización web** para navegar, extraer y guardar información concreta.
+
+> **Si esto te ahorra tiempo real, estás en el camino correcto.**
+
 ## Quick Use
 
 ```bash
@@ -28,6 +41,16 @@ python ../run_browser.py "Open https://example.com and extract the title"
 python ../run_windows.py "Open Notepad and type hello world"
 python ../run_worker.py "Open a website and save a summary to tasks/output/summary.txt"
 ```
+
+## Ejemplos avanzados (secundario)
+
+Úsalos cuando ya tengas cubierto el flujo operativo básico:
+
+- Diseñar arquitectura compleja multiarchivo.
+- Cadenas de validación entre modelos.
+- Escenarios de benchmarking o experimentación de proveedores.
+
+Estos ejemplos pueden ser impresionantes, pero la prioridad de este proyecto es resolver trabajo diario de forma confiable.
 
 ## Python Use
 
