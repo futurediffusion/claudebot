@@ -5,6 +5,7 @@ Enfocado en utilidad diaria: menos narrativa, más tareas resueltas en tu entorn
 
 ## Documentación clave
 
+- **Referencia primaria**: [../docs/PROJECT_CONSTITUTION.md](D:/IA/CODE/claudebot/docs/PROJECT_CONSTITUTION.md) (constitución oficial del proyecto).
 - [docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): capacidades reales (producción) vs capacidades experimentales (no gobernantes).
 - [docs/ROUTING_POLICY.md](D:/IA/CODE/claudebot/orchestrator/docs/ROUTING_POLICY.md): política oficial de orden de decisión, escalado y proveedores opt-in.
 - [docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md): jerarquía de ejecución por niveles con condiciones de salto y fallback extremo mouse/visión.
