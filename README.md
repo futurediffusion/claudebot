@@ -13,6 +13,7 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [run_browser.py](D:/IA/CODE/claudebot/run_browser.py): direct browser automation wrapper.
 - [run_windows.py](D:/IA/CODE/claudebot/run_windows.py): direct Windows automation wrapper.
 - [run_worker.py](D:/IA/CODE/claudebot/run_worker.py): full `worker-core` wrapper.
+- [run_agent.py](D:/IA/CODE/claudebot/run_agent.py): high-level recommended entrypoint with locked agent selection.
 - [self_model/README.md](D:/IA/CODE/claudebot/self_model/README.md): shared self-model used by Claude, Gemini, Codex, and wrappers.
 - [self_model_cli.py](D:/IA/CODE/claudebot/self_model_cli.py): inspect or simulate the shared self-model from the repo root.
 - [episodic_memory/README.md](D:/IA/CODE/claudebot/episodic_memory/README.md): shared episodic memory for concrete attempts, failures, and fixes.
@@ -81,7 +82,15 @@ Behind the scenes:
 
 The skills taxonomy used by these wrappers is documented in [docs/SKILLS_CATALOG.md](D:/IA/CODE/claudebot/docs/SKILLS_CATALOG.md).
 
-You can still call the wrappers directly if you want explicit control:
+Recommended high-level entrypoint:
+
+```bash
+python run_agent.py --agent claude_code --tool auto "Abre https://example.com y extrae el titulo"
+python run_agent.py --agent codex_cli --tool browser "Abre https://example.com y extrae el titulo"
+python run_agent.py --agent minimax_cli --tool worker "Abre https://example.com y guarda un resumen en tasks/output/resumen.txt"
+```
+
+You can still call the low-level wrappers directly if you want explicit control:
 
 ```bash
 python run_browser.py "Abre https://example.com y extrae el titulo"

@@ -267,6 +267,8 @@ class SelfModelEngine:
         metadata: Optional[dict[str, Any]] = None,
         decision_simulation: Optional[dict[str, Any]] = None,
     ) -> dict[str, Any]:
+        metadata = metadata or {}
+        active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
         bundle = self._load_bundle()
         routing = bundle["routing_knowledge"]
         weaknesses = bundle["weaknesses"]
@@ -330,6 +332,7 @@ class SelfModelEngine:
         recent_decisions.append({
             "timestamp": self._timestamp(),
             "agent": self.agent_name,
+            "active_agent_cli": active_agent_cli,
             "task": self._trim(task, 160),
             "task_type": task_type,
             "model": model_name,
@@ -340,7 +343,7 @@ class SelfModelEngine:
             "metadata": {
                 "error": self._trim(error, 160) if error else None,
                 "decision": self._compact_decision(decision_simulation),
-                "extra": metadata or {},
+                "extra": metadata,
             },
         })
 

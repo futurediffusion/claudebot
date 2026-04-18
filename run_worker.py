@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import warnings
 import sys
 from pathlib import Path
 
@@ -37,14 +38,18 @@ def main() -> None:
     parser.add_argument("--agent", default="shared_cli", help="Agent identity for self-model tracking")
     args = parser.parse_args()
 
+    warnings.warn("run_worker.py is a low-level wrapper; prefer run_agent.py as the high-level entrypoint.", DeprecationWarning, stacklevel=2)
+
     tool = WorkerOrchestratorTool()
     task = " ".join(args.task)
     world_model = WorldModelEngine(agent_name=args.agent)
+    shared_metadata = {"source": "run_worker.py", "active_agent_cli": args.agent}
     world_model.record_task_start(
         task=task,
         task_type="worker_automation",
         route="worker",
         model_name="worker-core:orchestrator",
+        metadata=shared_metadata,
     )
     result = tool.execute(task, config_path=args.config)
     SelfModelEngine(agent_name=args.agent).record_execution(
@@ -55,7 +60,7 @@ def main() -> None:
         execution_time_ms=0,
         error=result.get("error"),
         tools_used=["worker"],
-        metadata={"source": "run_worker.py"},
+        metadata=shared_metadata,
     )
     EpisodicMemoryEngine(agent_name=args.agent).record_episode(
         task=task,
@@ -75,7 +80,7 @@ def main() -> None:
         response=result.get("content") or result.get("response") or result.get("stdout"),
         error=result.get("error"),
         tool_results={"worker": result},
-        metadata={"source": "run_worker.py", "automation_route": "worker"},
+        metadata={**shared_metadata, "automation_route": "worker"},
     )
     world_model.record_execution(
         task=task,
@@ -88,7 +93,7 @@ def main() -> None:
         error=result.get("error"),
         tool_results={"worker": result},
         playbook_path=result.get("playbook"),
-        metadata={"source": "run_worker.py", "automation_route": "worker"},
+        metadata={**shared_metadata, "automation_route": "worker"},
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     sys.exit(0 if result.get("success") else 1)

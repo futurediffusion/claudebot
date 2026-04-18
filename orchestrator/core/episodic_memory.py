@@ -111,6 +111,7 @@ class EpisodicMemoryEngine:
     ) -> dict[str, Any]:
         """Append a new operational episode to shared memory."""
         metadata = metadata or {}
+        active_agent_cli = str(metadata.get("active_agent_cli") or self.agent_name)
         tools_used = tools_used or []
         route = metadata.get("automation_route") or detect_automation_route(task)
         combined_text = self._combine_text(task, response, error, tool_results, metadata)
@@ -130,6 +131,7 @@ class EpisodicMemoryEngine:
             "id": str(uuid4())[:8],
             "timestamp": self._timestamp(),
             "agent": self.agent_name,
+            "active_agent_cli": active_agent_cli,
             "episode_type": episode_type,
             "task": self._trim(task, 500),
             "task_type": task_type or "generic",
