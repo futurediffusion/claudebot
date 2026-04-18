@@ -29,13 +29,47 @@ class Router:
     - The self-model can override defaults when repeated evidence says so
     """
 
-    def __init__(self, agent_name: str = "claude_code"):
+    def __init__(
+        self,
+        agent_name: str = "claude_code",
+        routing_mode: str = "locked_agent",
+        gemini_model: ModelType = ModelType.FAST_CODING,
+        claude_model: ModelType = ModelType.HEAVY_CODING,
+        codex_model: ModelType = ModelType.HEAVY_CODING,
+        minimax_model: ModelType = ModelType.PLANNING,
+    ):
         self.agent_name = agent_name
+        self.routing_mode = routing_mode
         self.classify = classify_task
         self.get_model = get_model_by_task
         self.get_fallback = get_fallback_model
         self.self_model = SelfModelEngine(agent_name=agent_name)
+        self._gemini_model = gemini_model
+        self._claude_model = claude_model
+        self._codex_model = codex_model
+        self._minimax_model = minimax_model
         self._last_decision_meta: Dict[str, Any] = {}
+
+    def resolve_locked_model(self, agent_name: str) -> ModelType:
+        """Resolve a fixed model for a given agent identity."""
+        normalized_agent = (agent_name or "").strip().lower()
+        minimax_aliases = {
+            "minimax_cli",
+            "minimax",
+            "minimax_code",
+            "minimax_agent",
+            "planner_cli",
+            "planning_cli",
+            "shared_cli",
+        }
+        mapping = {
+            "gemini_cli": self._gemini_model,
+            "claude_code": self._claude_model,
+            "codex_cli": self._codex_model,
+        }
+        if normalized_agent in minimax_aliases:
+            return self._minimax_model
+        return mapping.get(normalized_agent, self._claude_model)
 
     def route(self, task: str) -> Tuple[ModelType, TaskType, str]:
         """
@@ -46,23 +80,39 @@ class Router:
         """
         task_type = self.classify(task)
         default_model = self.get_model(task_type)
-        model_type = default_model
+        locked_agent = self.routing_mode == "locked_agent"
+        locked_model = self.resolve_locked_model(self.agent_name) if locked_agent else None
+        model_type = locked_model or default_model
 
-        decision_simulation = self.self_model.simulate_routing(
-            task=task,
-            task_type=task_type.value,
-            default_model=default_model.value,
-            candidate_models=[candidate.value for candidate in self._candidate_models(task_type, default_model)],
-        )
+        if locked_agent:
+            decision_simulation = {
+                "selected_model": model_type.value,
+                "default_model": default_model.value,
+                "critic_notes": ["Locked-agent routing enforced fixed model selection."],
+                "ranked_options": [
+                    {
+                        "model": model_type.value,
+                        "score": 1.0,
+                        "reasons": ["routing_mode=locked_agent"],
+                    }
+                ],
+            }
+        else:
+            decision_simulation = self.self_model.simulate_routing(
+                task=task,
+                task_type=task_type.value,
+                default_model=default_model.value,
+                candidate_models=[candidate.value for candidate in self._candidate_models(task_type, default_model)],
+            )
 
-        selected_name = decision_simulation.get("selected_model")
-        if selected_name:
-            selected_model = self._find_model_type(selected_name)
-            if selected_model is not None:
-                model_type = selected_model
+            selected_name = decision_simulation.get("selected_model")
+            if selected_name:
+                selected_model = self._find_model_type(selected_name)
+                if selected_model is not None:
+                    model_type = selected_model
 
         is_valid, validation_reason = self.validate_task_model_match(task, model_type)
-        if not is_valid:
+        if not is_valid and not locked_agent:
             if task_type in {TaskType.PLANNING, TaskType.ARCHITECTURE}:
                 model_type = ModelType.PLANNING
             elif task_type in {TaskType.HEAVY_REFACTOR, TaskType.MULTI_FILE_FIX}:
@@ -84,13 +134,21 @@ class Router:
                 f" Self-model preferred '{decision_simulation.get('selected_model')}' "
                 f"over registry default '{default_model.value}'."
             )
+        if locked_agent and locked_model is not None:
+            reasoning += (
+                f" Locked to agent '{self.agent_name}' model '{locked_model.value}' "
+                f"(routing_mode=locked_agent)."
+            )
 
         critic_notes = decision_simulation.get("critic_notes", [])
         if critic_notes:
             reasoning += f" Critic: {critic_notes[0]}"
 
         if not is_valid:
-            reasoning += f" Rerouted because: {validation_reason}."
+            if locked_agent:
+                reasoning += f" Validation warning: {validation_reason}."
+            else:
+                reasoning += f" Rerouted because: {validation_reason}."
 
         self._last_decision_meta = {
             "task": task,
@@ -99,6 +157,8 @@ class Router:
             "selected_model": model_type.value,
             "decision_simulation": decision_simulation,
             "validation_reason": validation_reason,
+            "locked_agent": locked_agent,
+            "locked_model": locked_model.value if locked_model else None,
         }
 
         return model_type, task_type, reasoning
@@ -116,6 +176,8 @@ class Router:
         """
         model_type, task_type, reasoning = self.route(task)
         used_fallback = False
+        if self.routing_mode == "locked_agent":
+            return model_type, task_type, reasoning, used_fallback
 
         if max_fallbacks <= 0:
             return model_type, task_type, reasoning, used_fallback
