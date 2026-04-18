@@ -12,7 +12,7 @@ Definir una política de enrutamiento estable para tareas de orquestación local
    - Segunda línea para tareas donde Gemini no sea ideal (por tipo de instrucción, estabilidad, o calidad de salida esperada).
 3. **Codex / Claude premium (heavy/critical)**
    - Escalado para tareas pesadas o críticas que exijan mayor precisión, razonamiento profundo o cambios amplios.
-4. **Ollama (opcional si disponible)**
+4. **Ollama (opcional si disponible) — Status: deprecated como base**
    - Ruta alternativa local cuando haya modelos adecuados instalados y el caso lo permita.
 
 ## Criterios de escalado explícitos
@@ -36,7 +36,7 @@ Regla práctica:
 
 ## Proveedores opt-in por caso
 
-- **Groq y otros proveedores** se consideran **opt-in por caso**.
+- **Groq y otros proveedores** se consideran **opt-in por caso**. **Status: deprecated como base**
 - No forman parte de la **base del sistema** por defecto.
 - Deben activarse explícitamente cuando el caso de uso lo justifique (p. ej., validación específica, parsing rápido, costo puntual).
 

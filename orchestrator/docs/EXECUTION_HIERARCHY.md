@@ -138,6 +138,7 @@ Subir a **Mouse/visión** solo si todas las alternativas previas fallaron o no s
 ## Nivel 7 — Mouse/visión (fallback extremo)
 
 **Definición:** capa de interacción por coordenadas/píxeles y percepción visual, usada únicamente como último recurso.
+**Status:** `deprecated` como estrategia por defecto; permitido solo como fallback explícito.
 
 **Política:**
 

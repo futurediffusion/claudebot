@@ -16,6 +16,6 @@ Esta matriz separa claramente lo que el sistema puede hacer de forma **confiable
 
 | Capacidad | Estado | Nivel de confianza | Costo | Latencia | Condición de uso |
 |---|---|---|---|---|---|
-| Mouse/vision | Experimental | Bajo-Medio | Medio-Alto | Media-Alta | Usar solo como fallback cuando no exista ruta CLI/browser robusta. |
+| Mouse/vision | Experimental (`deprecated` como estrategia por defecto) | Bajo-Medio | Medio-Alto | Media-Alta | Usar solo como fallback cuando no exista ruta CLI/browser robusta. |
 | Auto-mejora | Experimental | Bajo | Variable | Alta | Usar en iteraciones controladas, nunca como mecanismo autónomo gobernante. |
-| Routing multimodel local | Experimental | Bajo-Medio | Medio | Media | Usar para pruebas de orquestación local; no reemplaza el routing pragmático principal. |
+| Routing multimodel local | Experimental (`discouraged` como ruta por defecto) | Bajo-Medio | Medio | Media | Usar para pruebas de orquestación local; no reemplaza el routing pragmático principal. |
