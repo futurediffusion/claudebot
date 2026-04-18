@@ -4,6 +4,7 @@ Workspace reorganized to keep the active system separate from older experiments.
 
 ## What To Use
 
+- **Referencia primaria de gobernanza**: [docs/PROJECT_CONSTITUTION.md](D:/IA/CODE/claudebot/docs/PROJECT_CONSTITUTION.md).
 - **Nombre operativo**: **Sistema local CLI-first para automatización personal en PC**.
 - **Prioridades**: operación local primero, CLI-first, routing pragmático.
 - [orchestrator/README.md](D:/IA/CODE/claudebot/orchestrator/README.md): núcleo activo de operación local CLI-first con routing pragmático.
