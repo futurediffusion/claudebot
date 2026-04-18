@@ -8,6 +8,8 @@ import json
 import sys
 from pathlib import Path
 
+SKILLS_CATALOG_PATH = "docs/SKILLS_CATALOG.md"
+
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -22,7 +24,10 @@ from orchestrator.tools.worker_core_bridge import WorkerOrchestratorTool
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run worker-core orchestration")
+    parser = argparse.ArgumentParser(
+        description="Run worker-core orchestration",
+        epilog=f"Skills catalog: {SKILLS_CATALOG_PATH}",
+    )
     parser.add_argument("task", nargs="+", help="Task description")
     parser.add_argument("--config", help="Optional path to tools/worker-core .env file")
     parser.add_argument("--agent", default="shared_cli", help="Agent identity for self-model tracking")

@@ -20,6 +20,7 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [world_model_cli.py](D:/IA/CODE/claudebot/world_model_cli.py): inspect the current world-state slice from the repo root.
 - [orchestrator/docs/CAPABILITIES_MATRIX.md](D:/IA/CODE/claudebot/orchestrator/docs/CAPABILITIES_MATRIX.md): matriz de capacidades reales vs experimentales del sistema.
 - [orchestrator/docs/EXECUTION_HIERARCHY.md](D:/IA/CODE/claudebot/orchestrator/docs/EXECUTION_HIERARCHY.md): pirámide oficial de ejecución, escalado por niveles y fallback extremo mouse/visión.
+- [docs/SKILLS_CATALOG.md](D:/IA/CODE/claudebot/docs/SKILLS_CATALOG.md): catálogo de skills operativas (dominio, IO, costo, fallbacks y owner).
 
 ## Qué NO es
 
@@ -63,6 +64,8 @@ Behind the scenes:
 - browser tasks go to `worker-core:browser`
 - Windows desktop tasks go to `worker-core:windows`
 - multi-step automation flows go to `worker-core:orchestrator`
+
+The skills taxonomy used by these wrappers is documented in [docs/SKILLS_CATALOG.md](D:/IA/CODE/claudebot/docs/SKILLS_CATALOG.md).
 
 You can still call the wrappers directly if you want explicit control:
 
