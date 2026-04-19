@@ -60,5 +60,17 @@ world_model/mouse_calibration.json
 
 # Local screenshots / temporary files
 screenshot.png
+*.png
+*.jpg
+*.jpeg
 tmp/
 temp/
+
+# Vision God - Heavy Assets & Environment
+tools/vision-god/OmniParser/weights/
+tools/vision-god/OmniParser/runs/
+tools/vision-god/temp_server_image.png
+venv_vision/
+**/venv_vision/
+yolo11n.pt
+

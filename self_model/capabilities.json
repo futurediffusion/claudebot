@@ -163,6 +163,11 @@
         "file_edit"
       ],
       "execution_style": "precise_edit"
+    },
+    "minimax_cli:entrypoint": {
+      "strengths": [],
+      "preferred_tasks": [],
+      "execution_style": "learned"
     }
   },
   "agents": {

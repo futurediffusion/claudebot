@@ -2,180 +2,38 @@
   "version": 1,
   "tools": {
     "browser": {
-      "best_for": [
-        "browser_automation",
-        "navigation",
-        "web_extraction",
-        "form_filling"
-      ],
-      "avoid_for": [
-        "architecture",
-        "heavy_refactor"
-      ],
-      "drivers": [
-        "worker-core:browser",
-        "gemini_cli"
-      ],
-      "observed_stats": {}
+      "best_for": ["browser_automation", "navigation", "web_extraction", "form_filling"],
+      "avoid_for": ["architecture", "heavy_refactor"],
+      "drivers": ["worker-core:browser", "gemini_cli"]
     },
     "windows": {
-      "best_for": [
-        "windows_automation",
-        "desktop_control",
-        "ui_interaction"
-      ],
-      "avoid_for": [
-        "architecture",
-        "heavy_refactor"
-      ],
-      "drivers": [
-        "worker-core:windows",
-        "gemini_cli"
-      ],
-      "observed_stats": {}
+      "best_for": ["windows_automation", "desktop_control", "ui_interaction"],
+      "avoid_for": ["architecture", "heavy_refactor"],
+      "drivers": ["worker-core:windows", "gemini_cli"]
     },
-    "worker": {
-      "best_for": [
-        "worker_automation",
-        "multi_step",
-        "save_output"
-      ],
-      "avoid_for": [
-        "architecture"
-      ],
-      "drivers": [
-        "worker-core:orchestrator",
-        "gemini_cli"
-      ],
-      "observed_stats": {}
+    "image_generation": {
+      "status": "MASTERED",
+      "best_for": ["high_fidelity_inference", "illustrious_xl_v2", "stable_diffusion_forge"],
+      "drivers": ["gemini_cli", "forge_api"],
+      "protocol_docs": "docs/ILLUSTRIOUS_FORGE_PROTOCOL.md",
+      "config_preset": "Euler a + Karras, 28 steps, CFG 4",
+      "note": "Dominio de Illustrious-XL. Consultar docs/ILLUSTRIOUS_FORGE_PROTOCOL.md para bypass de API y prompts de Willy."
     },
     "mouse": {
-      "best_for": [
-        "mouse_automation",
-        "coordinate_calibration",
-        "ui_interaction"
-      ],
-      "avoid_for": [
-        "architecture",
-        "heavy_refactor"
-      ],
-      "drivers": [
-        "shared:mouse_calibration",
-        "gemini_cli",
-        "claude_code",
-        "codex_cli"
-      ],
-      "observed_stats": {
-        "shared_cli": {
-          "runs": 42,
-          "successes": 31,
-          "failures": 11,
-          "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
-        }
-      }
+      "best_for": ["mouse_automation", "coordinate_calibration", "ui_interaction"],
+      "drivers": ["shared:mouse_calibration", "gemini_cli"]
+    },
+    "vision_automation": {
+      "status": "MASTERED",
+      "engine": "OmniParser V2.0 + Vision Server",
+      "path": "tools/vision-god/",
+      "specialized_workflow": "Freepik Image Generation",
+      "protocol_docs": "docs/FREEPIK_VISION_PROTOCOL.md",
+      "note": "I can now see and control the PC at human level. Managed from tools/vision-god/."
     },
     "shell": {
-      "best_for": [
-        "repo_execution",
-        "tests",
-        "diagnostics"
-      ],
-      "avoid_for": [
-        "browser_automation"
-      ],
-      "drivers": [
-        "claude_code",
-        "codex_cli"
-      ],
-      "observed_stats": {}
-    },
-    "file_ops": {
-      "best_for": [
-        "file_read",
-        "file_write",
-        "context_loading"
-      ],
-      "avoid_for": [
-        "desktop_control"
-      ],
-      "drivers": [
-        "claude_code",
-        "codex_cli"
-      ],
-      "observed_stats": {}
-    },
-    "surgical_edit": {
-      "best_for": [
-        "file_edit",
-        "exact_replace"
-      ],
-      "avoid_for": [
-        "multi_file_fix"
-      ],
-      "drivers": [
-        "gemini_cli"
-      ],
-      "observed_stats": {}
-    }
-  },
-  "agent_tooling": {
-    "claude_code": {
-      "available_tools": [
-        "orchestrator",
-        "shell",
-        "file_ops",
-        "run_browser.py",
-        "run_windows.py",
-        "run_worker.py",
-        "run_mouse.py"
-      ],
-      "observed_stats": {}
-    },
-    "gemini_cli": {
-      "available_tools": [
-        "gemini_bridge.py",
-        "gemini_skills/master_toolbox.py",
-        "gemini_skills/mouse.py",
-        "run_mouse.py",
-        "browser",
-        "mouse",
-        "windows",
-        "worker",
-        "surgical_edit"
-      ],
-      "skills": {
-        "vision": "Native screenshot + analysis",
-        "chat": "ChatGPT Pro interaction via Edge CDP",
-        "image": "Stealth image download via DDG"
-      },
-      "observed_stats": {}
-    },
-    "codex_cli": {
-      "available_tools": [
-        "orchestrator",
-        "shell",
-        "file_ops",
-        "run_browser.py",
-        "run_windows.py",
-        "run_worker.py",
-        "run_mouse.py"
-      ],
-      "observed_stats": {}
-    },
-    "shared_cli": {
-      "available_tools": [
-        "run_browser.py",
-        "run_windows.py",
-        "run_worker.py",
-        "run_mouse.py"
-      ],
-      "observed_stats": {
-        "mouse": {
-          "runs": 42,
-          "successes": 31,
-          "failures": 11
-        }
-      }
+      "best_for": ["repo_execution", "tests", "diagnostics"],
+      "drivers": ["claude_code", "codex_cli"]
     }
   }
 }

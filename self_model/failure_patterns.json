@@ -54,6 +54,14 @@
       "count": 11,
       "last_seen": "2026-04-17T06:29:28+00:00",
       "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
+    },
+    "worker-core:windows::windows_automation::unknown_failure": {
+      "model": "worker-core:windows",
+      "task_type": "windows_automation",
+      "signature": "unknown_failure",
+      "count": 1,
+      "last_seen": "2026-04-18T16:47:51+00:00",
+      "last_error": "Agent failed after exhausting retries: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.googl..."
     }
   }
 }

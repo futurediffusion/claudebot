@@ -133,6 +133,10 @@
         "architecture",
         "multi_file_fix"
       ]
+    },
+    "minimax_cli:entrypoint": {
+      "weaknesses": [],
+      "avoid_for": []
     }
   },
   "agents": {

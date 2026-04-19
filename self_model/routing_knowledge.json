@@ -256,53 +256,31 @@
         "last_used": "2026-04-17T06:29:28+00:00",
         "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
       }
+    },
+    "worker-core:windows": {
+      "windows_automation": {
+        "runs": 1,
+        "successes": 0,
+        "failures": 1,
+        "avg_time_ms": 0,
+        "last_agent": "shared_cli",
+        "last_used": "2026-04-18T16:47:51+00:00",
+        "last_error": "Agent failed after exhausting retries: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information ..."
+      }
+    },
+    "minimax_cli:entrypoint": {
+      "windows_automation": {
+        "runs": 1,
+        "successes": 1,
+        "failures": 0,
+        "avg_time_ms": 0,
+        "last_agent": "minimax_cli",
+        "last_used": "2026-04-18T16:47:58+00:00",
+        "last_error": null
+      }
     }
   },
   "recent_decisions": [
-    {
-      "timestamp": "2026-04-17T06:20:56+00:00",
-      "agent": "shared_cli",
-      "task": "Mouse click at (750.0, 1055.0) for Barra de Tareas: Reenfocar Explorador",
-      "task_type": "mouse_automation",
-      "model": "shared:mouse_calibration",
-      "success": true,
-      "execution_time_ms": 0,
-      "tools_used": [
-        "mouse"
-      ],
-      "pattern_key": null,
-      "metadata": {
-        "error": null,
-        "decision": null,
-        "extra": {
-          "verification_mode": "screen_change",
-          "coordinate_space": "absolute",
-          "attempt_count": 2
-        }
-      }
-    },
-    {
-      "timestamp": "2026-04-17T06:21:00+00:00",
-      "agent": "shared_cli",
-      "task": "Mouse click at (40.0, 145.0) for Explorer: Re-clic Nuevo (Cerrar)",
-      "task_type": "mouse_automation",
-      "model": "shared:mouse_calibration",
-      "success": true,
-      "execution_time_ms": 0,
-      "tools_used": [
-        "mouse"
-      ],
-      "pattern_key": null,
-      "metadata": {
-        "error": null,
-        "decision": null,
-        "extra": {
-          "verification_mode": "screen_change",
-          "coordinate_space": "absolute",
-          "attempt_count": 1
-        }
-      }
-    },
     {
       "timestamp": "2026-04-17T06:21:05+00:00",
       "agent": "shared_cli",
@@ -806,6 +784,56 @@
           "verification_mode": "window",
           "coordinate_space": "absolute",
           "attempt_count": 5
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-18T16:47:51+00:00",
+      "agent": "shared_cli",
+      "active_agent_cli": "shared_cli",
+      "locked_model": "unknown",
+      "routing_mode": "unknown",
+      "task": "Abre Bloc de notas y escribe hola mundo",
+      "task_type": "windows_automation",
+      "model": "worker-core:windows",
+      "success": false,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "windows"
+      ],
+      "pattern_key": "worker-core:windows::windows_automation::unknown_failure",
+      "metadata": {
+        "error": "Agent failed after exhausting retries: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan an...",
+        "decision": null,
+        "extra": {
+          "source": "run_windows.py",
+          "active_agent_cli": "shared_cli"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-04-18T16:47:58+00:00",
+      "agent": "minimax_cli",
+      "active_agent_cli": "minimax_cli",
+      "locked_model": "unknown",
+      "routing_mode": "unknown",
+      "task": "Abre Bloc de notas y escribe hola mundo",
+      "task_type": "windows_automation",
+      "model": "minimax_cli:entrypoint",
+      "success": true,
+      "execution_time_ms": 0,
+      "tools_used": [
+        "windows"
+      ],
+      "pattern_key": null,
+      "metadata": {
+        "error": null,
+        "decision": null,
+        "extra": {
+          "source": "run_agent.py",
+          "active_agent_cli": "minimax_cli",
+          "selected_tool": "windows",
+          "decision_policy": "locked_agent"
         }
       }
     }
