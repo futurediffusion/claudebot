@@ -1,15 +1,14 @@
 import os
-import json
-import sys
-import glob
 import fnmatch
+from mcp.server.fastmcp import FastMCP
 
-def search_files(root_dir, pattern, recursive=True):
-    """Busqueda rapida de archivos por patron de nombre"""
+mcp = FastMCP("file-oracle")
+
+
+def _search_files(root_dir, pattern, recursive=True):
     matches = []
     if recursive:
         for root, dirnames, filenames in os.walk(root_dir):
-            # Ignorar carpetas pesadas/basura
             if any(x in root for x in ['.git', '__pycache__', 'node_modules', 'venv']):
                 continue
             for filename in fnmatch.filter(filenames, pattern):
@@ -17,10 +16,10 @@ def search_files(root_dir, pattern, recursive=True):
     else:
         for filename in fnmatch.filter(os.listdir(root_dir), pattern):
             matches.append(os.path.join(root_dir, filename))
-    return matches[:50] # Limite de seguridad
+    return matches[:50]
 
-def grep_content(root_dir, query_text, extension="*.py"):
-    """Busca fragmentos de texto dentro de los archivos"""
+
+def _grep_content(root_dir, query_text, extension="*.py"):
     results = []
     for root, dirnames, filenames in os.walk(root_dir):
         if any(x in root for x in ['.git', '__pycache__', 'node_modules', 'venv']):
@@ -31,17 +30,15 @@ def grep_content(root_dir, query_text, extension="*.py"):
                 with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                     for line_no, line in enumerate(f, 1):
                         if query_text.lower() in line.lower():
-                            results.append({
-                                "file": file_path,
-                                "line": line_no,
-                                "content": line.strip()
-                            })
-            except: pass
-        if len(results) > 30: break # Limite de seguridad
+                            results.append({"file": file_path, "line": line_no, "content": line.strip()})
+            except:
+                pass
+        if len(results) > 30:
+            break
     return results
 
-def get_tree(root_dir, max_depth=2):
-    """Genera un mapa estructural de la carpeta"""
+
+def _get_tree(root_dir, max_depth=2):
     tree = {}
     start_level = root_dir.count(os.sep)
     for root, dirs, files in os.walk(root_dir):
@@ -51,37 +48,24 @@ def get_tree(root_dir, max_depth=2):
         tree[root] = {"dirs": dirs, "files": files[:20]}
     return tree
 
-def run_mcp_loop():
-    print("--- FILE ORACLE MCP SERVER ONLINE ---")
-    
-    while True:
-        try:
-            line = sys.stdin.readline()
-            if not line: break
-            request = json.loads(line)
-            method = request.get("method")
-            params = request.get("params", {})
-            
-            root = params.get("root", os.getcwd())
-            
-            if method == "search":
-                result = search_files(root, params.get("pattern", "*"))
-            elif method == "grep":
-                result = grep_content(root, params.get("query"), params.get("ext", "*.py"))
-            elif method == "tree":
-                result = get_tree(root, params.get("depth", 2))
-            else:
-                result = {"error": "Metodo no soportado"}
-            
-            print(json.dumps({"result": result}))
-            sys.stdout.flush()
-        except Exception as e:
-            print(json.dumps({"error": str(e)}))
-            sys.stdout.flush()
+
+@mcp.tool()
+def search_files(root_dir: str, pattern: str, recursive: bool = True) -> list:
+    """Busca archivos por patrón de nombre (ej: '*.py'). Máx 50 resultados."""
+    return _search_files(root_dir, pattern, recursive)
+
+
+@mcp.tool()
+def grep_content(root_dir: str, query: str, extension: str = "*.py") -> list:
+    """Busca texto dentro de archivos. Devuelve archivo, línea y contenido."""
+    return _grep_content(root_dir, query, extension)
+
+
+@mcp.tool()
+def get_tree(root_dir: str, max_depth: int = 2) -> dict:
+    """Genera mapa estructural de una carpeta hasta max_depth niveles."""
+    return _get_tree(root_dir, max_depth)
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--test":
-        print("Test: Buscando archivos '.py' en el root...")
-        print(json.dumps(search_files(os.getcwd(), "*.py"), indent=2))
-    else:
-        run_mcp_loop()
+    mcp.run()

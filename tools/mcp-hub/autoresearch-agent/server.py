@@ -1,70 +1,62 @@
-import json
-import sys
-import os
+import re
 import requests
 from urllib.parse import quote
+from mcp.server.fastmcp import FastMCP
 
-class AutoResearchAgent:
-    def __init__(self):
-        print("--- AUTORESEARCH MCP AGENT ONLINE ---")
+mcp = FastMCP("autoresearch")
 
-    def search_github(self, query):
-        """Busca repositorios en GitHub por relevancia"""
-        url = f"https://api.github.com/search/repositories?q={quote(query)}&sort=stars&order=desc"
-        try:
-            r = requests.get(url, timeout=10)
-            items = r.json().get('items', [])
-            results = []
-            for item in items[:5]:
-                results.append({
-                    "full_name": item['full_name'],
-                    "description": item['description'],
-                    "stars": item['stargazers_count'],
-                    "url": item['html_url']
-                })
-            return {"status": "success", "results": results}
-        except Exception as e:
-            return {"status": "error", "message": str(e)}
+HEADERS = {"User-Agent": "claudebot/2.0"}
 
-    def analyze_tech(self, topic):
-        """Busca informacion tecnica general sobre un tema"""
-        # Mock de busqueda profunda (en una implementacion real usaria un motor de busqueda)
-        print(f"🕵️‍♂️ Investigando: {topic}...")
-        return {
-            "status": "success",
-            "topic": topic,
-            "summary": f"Resumen tecnico generado sobre {topic}...",
-            "links": [f"https://github.com/search?q={quote(topic)}"]
-        }
 
-def run_mcp_loop():
-    agent = AutoResearchAgent()
-    
-    while True:
-        try:
-            line = sys.stdin.readline()
-            if not line: break
-            request = json.loads(line)
-            method = request.get("method")
-            params = request.get("params", {})
-            
-            if method == "search_github":
-                result = agent.search_github(params.get("query", ""))
-            elif method == "research":
-                result = agent.analyze_tech(params.get("topic", ""))
-            else:
-                result = {"error": "Metodo no soportado"}
-            
-            print(json.dumps({"result": result}))
-            sys.stdout.flush()
-        except Exception as e:
-            print(json.dumps({"error": str(e)}))
-            sys.stdout.flush()
+def _search_github(query):
+    url = f"https://api.github.com/search/repositories?q={quote(query)}&sort=stars&order=desc"
+    try:
+        r = requests.get(url, timeout=10, headers=HEADERS)
+        items = r.json().get('items', [])
+        return {"status": "success", "results": [
+            {"full_name": i['full_name'], "description": i['description'],
+             "stars": i['stargazers_count'], "url": i['html_url']} for i in items[:5]
+        ]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@mcp.tool()
+def search_github(query: str) -> dict:
+    """Busca repositorios en GitHub por relevancia y estrellas. Devuelve top 5."""
+    return _search_github(query)
+
+
+@mcp.tool()
+def web_search(query: str, max_results: int = 5) -> dict:
+    """Búsqueda web real via DuckDuckGo Instant Answer API. Devuelve títulos y URLs."""
+    url = f"https://api.duckduckgo.com/?q={quote(query)}&format=json&no_redirect=1&no_html=1"
+    try:
+        r = requests.get(url, timeout=10, headers=HEADERS)
+        data = r.json()
+        results = []
+        for topic in data.get("RelatedTopics", [])[:max_results]:
+            if "Text" in topic and "FirstURL" in topic:
+                results.append({"title": topic["Text"][:120], "url": topic["FirstURL"]})
+        abstract = data.get("AbstractText", "")
+        if abstract:
+            results.insert(0, {"title": abstract[:200], "url": data.get("AbstractURL", "")})
+        return {"status": "success", "query": query, "results": results}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@mcp.tool()
+def fetch_page(url: str) -> dict:
+    """Descarga contenido de una URL pública (GitHub READMEs, HuggingFace cards, docs). Retorna texto limpio."""
+    try:
+        r = requests.get(url, timeout=15, headers=HEADERS)
+        text = re.sub(r'<[^>]+>', ' ', r.text)
+        text = re.sub(r'\s+', ' ', text).strip()[:4000]
+        return {"status": "success", "url": url, "content": text}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--test":
-        agent = AutoResearchAgent()
-        print("Test: Buscando repositorios de Persistent AI Memory...")
-        print(json.dumps(agent.search_github("persistent AI memory"), indent=2))
-    else:
-        run_mcp_loop()
+    mcp.run()

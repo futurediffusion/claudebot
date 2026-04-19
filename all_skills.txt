@@ -1,0 +1,1118 @@
+TOTAL SKILLS FOUND: 279
+
+NAME: Agent Intelligence Hub
+PATH: _AGENT_INTELLIGENCE_HUB
+DESC: "9 advanced agent and AI meta-skills for Claude Code: adversarial code review, agent design, workflow orchestration, context management, prompt engineering, self-evaluation, self-improvement, security auditing, and skill testing."
+----------------------------------------
+NAME: Adversarial Code Reviewer
+PATH: _AGENT_INTELLIGENCE_HUB\adversarial-reviewer
+DESC: "Adversarial code review that breaks the self-review monoculture. Use when you want a genuinely critical review of recent changes, before merging a PR, or when you suspect Claude is being too agreeable about code quality. Forces perspective shifts through hostile reviewer personas that catch blind spots the author's mental model shares with the reviewer."
+----------------------------------------
+NAME: Agent Designer - Multi-Agent System Architecture
+PATH: _AGENT_INTELLIGENCE_HUB\agent-designer
+DESC: "Use when the user asks to design multi-agent systems, create agent architectures, define agent communication patterns, or build autonomous agent workflows."
+----------------------------------------
+NAME: Agent Workflow Designer
+PATH: _AGENT_INTELLIGENCE_HUB\agent-workflow-designer
+DESC: "Agent Workflow Designer"
+----------------------------------------
+NAME: Company Context Engine
+PATH: _AGENT_INTELLIGENCE_HUB\context-engine
+DESC: "Loads and manages company context for all C-suite advisor skills. Reads ~/.claude/company-context.md, detects stale context (>90 days), enriches context during conversations, and enforces privacy/anonymization rules before external API calls."
+----------------------------------------
+NAME: Prompt Engineer Toolkit
+PATH: _AGENT_INTELLIGENCE_HUB\prompt-engineer-toolkit
+DESC: "Analyzes and rewrites prompts for better AI output, creates reusable prompt templates for marketing use cases (ad copy, email campaigns, social media), and structures end-to-end AI content workflows. Use when the user wants to improve prompts for AI-assisted marketing, build prompt templates, or optimize AI content workflows. Also use when the user mentions 'prompt engineering,' 'improve my prompts,' 'AI writing quality,' 'prompt templates,' or 'AI content workflow.'"
+----------------------------------------
+NAME: Self-Eval: Honest Work Evaluation
+PATH: _AGENT_INTELLIGENCE_HUB\self-eval
+DESC: "Honestly evaluate AI work quality using a two-axis scoring system. Use after completing a task, code review, or work session to get an unbiased assessment. Detects score inflation, forces devil's advocate reasoning, and persists scores across sessions."
+----------------------------------------
+NAME: Self-Improving Agent
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent
+DESC: "Curate Claude Code's auto-memory into durable project knowledge. Analyze MEMORY.md for patterns, promote proven learnings to CLAUDE.md and .claude/rules/, extract recurring solutions into reusable skills. Use when: (1) reviewing what Claude has learned about your project, (2) graduating a pattern from notes to enforced rules, (3) turning a debugging solution into a skill, (4) checking memory health and capacity."
+----------------------------------------
+NAME: /si:extract — Create Skills from Patterns
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent\skills\extract
+DESC: "Turn a proven pattern or debugging solution into a standalone reusable skill with SKILL.md, reference docs, and examples."
+----------------------------------------
+NAME: /si:promote — Graduate Learnings to Rules
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent\skills\promote
+DESC: "Graduate a proven pattern from auto-memory (MEMORY.md) to CLAUDE.md or .claude/rules/ for permanent enforcement."
+----------------------------------------
+NAME: /si:remember — Save Knowledge Explicitly
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent\skills\remember
+DESC: "Explicitly save important knowledge to auto-memory with timestamp and context. Use when a discovery is too important to rely on auto-capture."
+----------------------------------------
+NAME: /si:review — Analyze Auto-Memory
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent\skills\review
+DESC: "Analyze auto-memory for promotion candidates, stale entries, consolidation opportunities, and health metrics."
+----------------------------------------
+NAME: /si:status — Memory Health Dashboard
+PATH: _AGENT_INTELLIGENCE_HUB\self-improving-agent\skills\status
+DESC: "Memory health dashboard showing line counts, topic files, capacity, stale entries, and recommendations."
+----------------------------------------
+NAME: Skill Security Auditor
+PATH: _AGENT_INTELLIGENCE_HUB\skill-security-auditor
+DESC: >
+----------------------------------------
+NAME: Skill Tester
+PATH: _AGENT_INTELLIGENCE_HUB\skill-tester
+DESC: "Skill Tester"
+----------------------------------------
+NAME: Sample Text Processor
+PATH: _AGENT_INTELLIGENCE_HUB\skill-tester\assets\sample-skill
+DESC: The Sample Text Processor is a simple skill designed to demonstrate the basic structure and functionality expected in the claude-skills ecosystem. This skill provides fundamental text processing capabilities including word counting, character analysis, and basic text transformations.
+----------------------------------------
+NAME: Data Hub
+PATH: _DATA_HUB
+DESC: "5 document and data format skills for Claude Code: read, write, and manipulate DOCX, PDF, PPTX, XLSX files, and perform financial analysis."
+----------------------------------------
+NAME: DOCX creation, editing, and analysis
+PATH: _DATA_HUB\docx
+DESC: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation."
+----------------------------------------
+NAME: Finance Skills
+PATH: _DATA_HUB\finance
+DESC: "Financial analyst agent skill and plugin for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. Ratio analysis, DCF valuation, budget variance, rolling forecasts. 4 Python tools (stdlib-only)."
+----------------------------------------
+NAME: Business Investment Advisor
+PATH: _DATA_HUB\finance\business-investment-advisor
+DESC: "Business investment analysis and capital allocation advisor. Use when evaluating whether to invest in equipment, real estate, a new business, hiring, technology, or any capital expenditure. Also use for ROI calculations, IRR, NPV, payback period, build vs buy decisions, lease vs buy analysis, vendor evaluation, or deciding where to allocate limited budget for maximum return."
+----------------------------------------
+NAME: Financial Analyst Skill
+PATH: _DATA_HUB\finance\financial-analyst
+DESC: Performs financial ratio analysis, DCF valuation, budget variance analysis, and rolling forecast construction for strategic decision-making. Use when analyzing financial statements, building valuation models, assessing budget variances, or constructing financial projections and forecasts. Also applicable when users mention financial modeling, cash flow analysis, company valuation, financial projections, or spreadsheet analysis.
+----------------------------------------
+NAME: SaaS Metrics Coach
+PATH: _DATA_HUB\finance\saas-metrics-coach
+DESC: SaaS financial health advisor. Use when a user shares revenue or customer numbers, or mentions ARR, MRR, churn, LTV, CAC, NRR, or asks how their SaaS business is doing.
+----------------------------------------
+NAME: PDF Processing Guide
+PATH: _DATA_HUB\pdf
+DESC: Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.
+----------------------------------------
+NAME: PPTX Skill
+PATH: _DATA_HUB\pptx
+DESC: "Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \"deck,\" \"slides,\" \"presentation,\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill."
+----------------------------------------
+NAME: Requirements for Outputs
+PATH: _DATA_HUB\xlsx
+DESC: "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \"the xlsx in my downloads\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved."
+----------------------------------------
+NAME: Engineering Advanced Skills (POWERFUL Tier)
+PATH: _ENGINEERING_HUB
+DESC: "25 advanced engineering agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. Agent design, RAG, MCP servers, CI/CD, database design, observability, security auditing, release management, platform ops."
+----------------------------------------
+NAME: Accessibility Audit
+PATH: _ENGINEERING_HUB\a11y-audit
+DESC: "Accessibility audit skill for scanning, fixing, and verifying WCAG 2.2 Level A and AA compliance across React, Next.js, Vue, Angular, Svelte, and plain HTML codebases. Use when auditing accessibility, fixing a11y violations, checking color contrast, generating compliance reports, or integrating accessibility checks into CI/CD pipelines."
+----------------------------------------
+NAME: AgentHub — Multi-Agent Collaboration
+PATH: _ENGINEERING_HUB\agenthub
+DESC: "Multi-agent collaboration plugin that spawns N parallel subagents competing on the same task via git worktree isolation. Agents work independently, results are evaluated by metric or LLM judge, and the best branch is merged. Use when: user wants multiple approaches tried in parallel — code optimization, content variation, research exploration, or any task that benefits from parallel competition. Requires: a git repo."
+----------------------------------------
+NAME: /hub:board — Message Board
+PATH: _ENGINEERING_HUB\agenthub\skills\board
+DESC: "Read, write, and browse the AgentHub message board for agent coordination."
+----------------------------------------
+NAME: /hub:eval — Evaluate Agent Results
+PATH: _ENGINEERING_HUB\agenthub\skills\eval
+DESC: "Evaluate and rank agent results by metric or LLM judge for an AgentHub session."
+----------------------------------------
+NAME: /hub:init — Create New Session
+PATH: _ENGINEERING_HUB\agenthub\skills\init
+DESC: "Create a new AgentHub collaboration session with task, agent count, and evaluation criteria."
+----------------------------------------
+NAME: /hub:merge — Merge Winner
+PATH: _ENGINEERING_HUB\agenthub\skills\merge
+DESC: "Merge the winning agent's branch into base, archive losers, and clean up worktrees."
+----------------------------------------
+NAME: /hub:run — One-Shot Lifecycle
+PATH: _ENGINEERING_HUB\agenthub\skills\run
+DESC: "One-shot lifecycle command that chains init → baseline → spawn → eval → merge in a single invocation."
+----------------------------------------
+NAME: /hub:spawn — Launch Parallel Agents
+PATH: _ENGINEERING_HUB\agenthub\skills\spawn
+DESC: "Launch N parallel subagents in isolated git worktrees to compete on the session task."
+----------------------------------------
+NAME: /hub:status — Session Status
+PATH: _ENGINEERING_HUB\agenthub\skills\status
+DESC: "Show DAG state, agent progress, and branch status for an AgentHub session."
+----------------------------------------
+NAME: AI Security
+PATH: _ENGINEERING_HUB\ai-security
+DESC: "Use when assessing AI/ML systems for prompt injection, jailbreak vulnerabilities, model inversion risk, data poisoning exposure, or agent tool abuse. Covers MITRE ATLAS technique mapping, injection signature detection, and adversarial robustness scoring."
+----------------------------------------
+NAME: API Design Reviewer
+PATH: _ENGINEERING_HUB\api-design-reviewer
+DESC: "API Design Reviewer"
+----------------------------------------
+NAME: API Test Suite Builder
+PATH: _ENGINEERING_HUB\api-test-suite-builder
+DESC: "Use when the user asks to generate API tests, create integration test suites, test REST endpoints, or build contract tests."
+----------------------------------------
+NAME: Autoresearch Agent
+PATH: _ENGINEERING_HUB\autoresearch-agent
+DESC: "Autonomous experiment loop that optimizes any file by a measurable metric. Inspired by Karpathy's autoresearch. The agent edits a target file, runs a fixed evaluation, keeps improvements (git commit), discards failures (git reset), and loops indefinitely. Use when: user wants to optimize code speed, reduce bundle/image size, improve test pass rate, optimize prompts, improve content quality (headlines, copy, CTR), or run any measurable improvement loop. Requires: a target file, an evaluation command that outputs a metric, and a git repo."
+----------------------------------------
+NAME: /ar:loop — Autonomous Experiment Loop
+PATH: _ENGINEERING_HUB\autoresearch-agent\skills\loop
+DESC: "Start an autonomous experiment loop with user-selected interval (10min, 1h, daily, weekly, monthly). Uses CronCreate for scheduling."
+----------------------------------------
+NAME: /ar:resume — Resume Experiment
+PATH: _ENGINEERING_HUB\autoresearch-agent\skills\resume
+DESC: "Resume a paused experiment. Checkout the experiment branch, read results history, continue iterating."
+----------------------------------------
+NAME: /ar:run — Single Experiment Iteration
+PATH: _ENGINEERING_HUB\autoresearch-agent\skills\run
+DESC: "Run a single experiment iteration. Edit the target file, evaluate, keep or discard."
+----------------------------------------
+NAME: /ar:setup — Create New Experiment
+PATH: _ENGINEERING_HUB\autoresearch-agent\skills\setup
+DESC: "Set up a new autoresearch experiment interactively. Collects domain, target file, eval command, metric, direction, and evaluator."
+----------------------------------------
+NAME: /ar:status — Experiment Dashboard
+PATH: _ENGINEERING_HUB\autoresearch-agent\skills\status
+DESC: "Show experiment dashboard with results, active loops, and progress."
+----------------------------------------
+NAME: AWS Solution Architect
+PATH: _ENGINEERING_HUB\aws-solution-architect
+DESC: Design AWS architectures for startups using serverless patterns and IaC templates. Use when asked to design serverless architecture, create CloudFormation templates, optimize AWS costs, set up CI/CD pipelines, or migrate to AWS. Covers Lambda, API Gateway, DynamoDB, ECS, Aurora, and cost optimization.
+----------------------------------------
+NAME: Azure Cloud Architect
+PATH: _ENGINEERING_HUB\azure-cloud-architect
+DESC: "Design Azure architectures for startups and enterprises. Use when asked to design Azure infrastructure, create Bicep/ARM templates, optimize Azure costs, set up Azure DevOps pipelines, or migrate to Azure. Covers AKS, App Service, Azure Functions, Cosmos DB, and cost optimization."
+----------------------------------------
+NAME: BeHuman — Self-Mirror Consciousness Loop
+PATH: _ENGINEERING_HUB\behuman
+DESC: "Use when the user wants more human-like AI responses — less robotic, less listy, more authentic. Triggers: 'behuman', 'be real', 'like a human', 'more human', 'less AI', 'talk like a person', 'mirror mode', 'stop being so AI', or when conversations are emotionally charged (grief, job loss, relationship advice, fear). NOT for technical questions, code generation, or factual lookups."
+----------------------------------------
+NAME: Browser Automation - POWERFUL
+PATH: _ENGINEERING_HUB\browser-automation
+DESC: "Use when the user asks to automate browser tasks, scrape websites, fill forms, capture screenshots, extract structured data from web pages, or build web automation workflows. NOT for testing — use playwright-pro for that."
+----------------------------------------
+NAME: C-Level Advisory Ecosystem
+PATH: _ENGINEERING_HUB\c-level-advisor
+DESC: "10 C-level advisory agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. CEO, CTO, COO, CPO, CMO, CFO, CRO, CISO, CHRO, Executive Mentor. Multi-role board meetings, strategy routing, structured recommendations. For founders needing executive-level decision support."
+----------------------------------------
+NAME: Inter-Agent Protocol
+PATH: _ENGINEERING_HUB\c-level-advisor\agent-protocol
+DESC: "Inter-agent communication protocol for C-suite agent teams. Defines invocation syntax, loop prevention, isolation rules, and response formats. Use when C-suite agents need to query each other, coordinate cross-functional analysis, or run board meetings with multiple agent roles."
+----------------------------------------
+NAME: Board Deck Builder
+PATH: _ENGINEERING_HUB\c-level-advisor\board-deck-builder
+DESC: "Assembles comprehensive board and investor update decks by pulling perspectives from all C-suite roles. Use when preparing board meetings, investor updates, quarterly business reviews, or fundraising narratives. Covers structure, narrative framework, bad news delivery, and common mistakes."
+----------------------------------------
+NAME: Board Meeting Protocol
+PATH: _ENGINEERING_HUB\c-level-advisor\board-meeting
+DESC: "Multi-agent board meeting protocol for strategic decisions. Runs a structured 6-phase deliberation: context loading, independent C-suite contributions (isolated, no cross-pollination), critic analysis, synthesis, founder review, and decision extraction. Use when the user invokes /cs:board, calls a board meeting, or wants structured multi-perspective executive deliberation on a strategic question."
+----------------------------------------
+NAME: CEO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\ceo-advisor
+DESC: "Executive leadership guidance for strategic decision-making, organizational development, and stakeholder management. Use when planning strategy, preparing board presentations, managing investors, developing organizational culture, making executive decisions, fundraising, or when user mentions CEO, strategic planning, board meetings, investor updates, organizational leadership, or executive strategy."
+----------------------------------------
+NAME: CFO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\cfo-advisor
+DESC: "Financial leadership for startups and scaling companies. Financial modeling, unit economics, fundraising strategy, cash management, and board financial packages. Use when building financial models, analyzing unit economics, planning fundraising, managing cash runway, preparing board materials, or when user mentions CFO, burn rate, runway, fundraising, unit economics, LTV, CAC, term sheets, or financial strategy."
+----------------------------------------
+NAME: Change Management Playbook
+PATH: _ENGINEERING_HUB\c-level-advisor\change-management
+DESC: "Framework for rolling out organizational changes without chaos. Covers the ADKAR model adapted for startups, communication templates, resistance patterns, and change fatigue management. Handles process changes, org restructures, strategy pivots, and culture changes. Use when announcing a reorg, switching tools, pivoting strategy, killing a product, changing leadership, or when user mentions change management, change rollout, managing resistance, org change, reorg, or pivot communication."
+----------------------------------------
+NAME: Chief of Staff
+PATH: _ENGINEERING_HUB\c-level-advisor\chief-of-staff
+DESC: "C-suite orchestration layer. Routes founder questions to the right advisor role(s), triggers multi-role board meetings for complex decisions, synthesizes outputs, and tracks decisions. Every C-suite interaction starts here. Loads company context automatically."
+----------------------------------------
+NAME: CHRO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\chro-advisor
+DESC: "People leadership for scaling companies. Hiring strategy, compensation design, org structure, culture, and retention. Use when building hiring plans, designing comp frameworks, restructuring teams, managing performance, building culture, or when user mentions CHRO, HR, people strategy, talent, headcount, compensation, org design, retention, or performance management."
+----------------------------------------
+NAME: CISO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\ciso-advisor
+DESC: "Security leadership for growth-stage companies. Risk quantification in dollars, compliance roadmap (SOC 2/ISO 27001/HIPAA/GDPR), security architecture strategy, incident response leadership, and board-level security reporting. Use when building security programs, justifying security budget, selecting compliance frameworks, managing incidents, assessing vendor risk, or when user mentions CISO, security strategy, compliance roadmap, zero trust, or board security reporting."
+----------------------------------------
+NAME: CMO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\cmo-advisor
+DESC: "Marketing leadership for scaling companies. Brand positioning, growth model design, marketing budget allocation, and marketing org design. Use when designing brand strategy, selecting growth models (PLG vs sales-led vs community-led), allocating marketing budgets, building marketing teams, or when user mentions CMO, brand strategy, growth model, CAC, LTV, channel mix, or marketing ROI."
+----------------------------------------
+NAME: Company Operating System
+PATH: _ENGINEERING_HUB\c-level-advisor\company-os
+DESC: "The meta-framework for how a company runs — the connective tissue between all C-suite roles. Covers operating system selection (EOS, Scaling Up, OKR-native, hybrid), accountability charts, scorecards, meeting pulse, issue resolution, and 90-day rocks. Use when setting up company operations, selecting a management framework, designing meeting rhythms, building accountability systems, implementing OKRs, or when user mentions EOS, Scaling Up, operating system, L10 meetings, rocks, scorecard, accountability chart, or quarterly planning."
+----------------------------------------
+NAME: Competitive Intelligence
+PATH: _ENGINEERING_HUB\c-level-advisor\competitive-intel
+DESC: "Systematic competitor tracking that feeds CMO positioning, CRO battlecards, and CPO roadmap decisions. Use when analyzing competitors, building sales battlecards, tracking market moves, positioning against alternatives, or when user mentions competitive intelligence, competitive analysis, competitor research, battlecards, win/loss, or market positioning."
+----------------------------------------
+NAME: COO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\coo-advisor
+DESC: "Operations leadership for scaling companies. Process design, OKR execution, operational cadence, and scaling playbooks. Use when designing operations, setting up OKRs, building processes, scaling teams, analyzing bottlenecks, planning operational cadence, or when user mentions COO, operations, process improvement, OKRs, scaling, operational efficiency, or execution."
+----------------------------------------
+NAME: CPO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\cpo-advisor
+DESC: "Product leadership for scaling companies. Product vision, portfolio strategy, product-market fit, and product org design. Use when setting product vision, managing a product portfolio, measuring PMF, designing product teams, prioritizing at the portfolio level, reporting to the board on product, or when user mentions CPO, product strategy, product-market fit, product organization, portfolio prioritization, or roadmap strategy."
+----------------------------------------
+NAME: CRO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\cro-advisor
+DESC: "Revenue leadership for B2B SaaS companies. Revenue forecasting, sales model design, pricing strategy, net revenue retention, and sales team scaling. Use when designing the revenue engine, setting quotas, modeling NRR, evaluating pricing, building board forecasts, or when user mentions CRO, chief revenue officer, revenue strategy, sales model, ARR growth, NRR, expansion revenue, churn, pricing strategy, or sales capacity."
+----------------------------------------
+NAME: C-Suite Onboarding
+PATH: _ENGINEERING_HUB\c-level-advisor\cs-onboard
+DESC: "Founder onboarding interview that captures company context across 7 dimensions. Invoke with /cs:setup for initial interview or /cs:update for quarterly refresh. Generates ~/.claude/company-context.md used by all C-suite advisor skills."
+----------------------------------------
+NAME: CTO Advisor
+PATH: _ENGINEERING_HUB\c-level-advisor\cto-advisor
+DESC: "Technical leadership guidance for engineering teams, architecture decisions, and technology strategy. Use when assessing technical debt, scaling engineering teams, evaluating technologies, making architecture decisions, establishing engineering metrics, or when user mentions CTO, tech debt, technical debt, team scaling, architecture decisions, technology evaluation, engineering metrics, DORA metrics, or technology strategy."
+----------------------------------------
+NAME: Culture Architect
+PATH: _ENGINEERING_HUB\c-level-advisor\culture-architect
+DESC: "Build, measure, and evolve company culture as operational behavior — not wall posters. Covers mission/vision/values workshops, values-to-behaviors translation, culture code creation, culture health assessment, and cultural rituals by stage. Use when building company values, assessing culture health, designing cultural rituals, creating culture codes, handling culture clashes, or when user mentions culture, values, culture debt, founder culture, or culture code."
+----------------------------------------
+NAME: Decision Logger
+PATH: _ENGINEERING_HUB\c-level-advisor\decision-logger
+DESC: "Two-layer memory architecture for board meeting decisions. Manages raw transcripts (Layer 1) and approved decisions (Layer 2). Use when logging decisions after a board meeting, reviewing past decisions with /cs:decisions, or checking overdue action items with /cs:review. Invoked automatically by the board-meeting skill after Phase 5 founder approval."
+----------------------------------------
+NAME: Executive Mentor
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor
+DESC: "Adversarial thinking partner for founders and executives. Stress-tests plans, prepares for brutal board meetings, dissects decisions with no good options, and forces honest post-mortems. Use when you need someone to find the holes before the board does, make a decision you've been avoiding, or understand what actually went wrong."
+----------------------------------------
+NAME: /em:board-prep — Board Meeting Preparation
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor\skills\board-prep
+DESC: "/em -board-prep — Board Meeting Preparation"
+----------------------------------------
+NAME: /em:challenge — Pre-Mortem Plan Analysis
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor\skills\challenge
+DESC: "/em -challenge — Pre-Mortem Plan Analysis"
+----------------------------------------
+NAME: /em:hard-call — Framework for Decisions With No Good Options
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor\skills\hard-call
+DESC: "/em -hard-call — Framework for Decisions With No Good Options"
+----------------------------------------
+NAME: /em:postmortem — Honest Analysis of What Went Wrong
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor\skills\postmortem
+DESC: "/em -postmortem — Honest Analysis of What Went Wrong"
+----------------------------------------
+NAME: /em:stress-test — Business Assumption Stress Testing
+PATH: _ENGINEERING_HUB\c-level-advisor\executive-mentor\skills\stress-test
+DESC: "/em -stress-test — Business Assumption Stress Testing"
+----------------------------------------
+NAME: Founder Development Coach
+PATH: _ENGINEERING_HUB\c-level-advisor\founder-coach
+DESC: "Personal leadership development for founders and first-time CEOs. Covers founder archetype identification, delegation frameworks, energy management, CEO calendar audits, leadership style evolution, blind spot identification, imposter syndrome, founder mental health, and succession planning. Use when a founder feels like the bottleneck, struggles to delegate, is burning out, transitioning from IC to executive, managing a board, or when user mentions founder mode, CEO growth, leadership development, delegation, burnout, or imposter syndrome."
+----------------------------------------
+NAME: Internal Narrative Builder
+PATH: _ENGINEERING_HUB\c-level-advisor\internal-narrative
+DESC: "Build and maintain one coherent company story across all audiences — employees, investors, customers, candidates, and partners. Detects narrative contradictions and ensures the same truth is framed for each audience's needs. Use when preparing investor updates, all-hands presentations, board communications, recruiting narratives, crisis communications, or when user mentions company narrative, messaging consistency, storytelling, all-hands, investor update, or crisis communication."
+----------------------------------------
+NAME: International Expansion
+PATH: _ENGINEERING_HUB\c-level-advisor\intl-expansion
+DESC: "International market expansion strategy. Market selection, entry modes, localization, regulatory compliance, and go-to-market by region. Use when expanding to new countries, evaluating international markets, planning localization, or building regional teams."
+----------------------------------------
+NAME: M&A Playbook
+PATH: _ENGINEERING_HUB\c-level-advisor\ma-playbook
+DESC: "M&A strategy for acquiring companies or being acquired. Due diligence, valuation, integration, and deal structure. Use when evaluating acquisitions, preparing for acquisition, M&A due diligence, integration planning, or deal negotiation."
+----------------------------------------
+NAME: Org Health Diagnostic
+PATH: _ENGINEERING_HUB\c-level-advisor\org-health-diagnostic
+DESC: "Cross-functional organizational health check combining signals from all C-suite roles. Scores 8 dimensions on a traffic-light scale with drill-down recommendations. Use when assessing overall company health, preparing for board reviews, identifying at-risk functions, or when user mentions org health, health check, or health dashboard."
+----------------------------------------
+NAME: Scenario War Room
+PATH: _ENGINEERING_HUB\c-level-advisor\scenario-war-room
+DESC: "Cross-functional what-if modeling for cascading multi-variable scenarios. Unlike single-assumption stress testing, this models compound adversity across all business functions simultaneously. Use when facing complex risk scenarios, strategic decisions with major downside, or when the user asks 'what if X AND Y both happen?'"
+----------------------------------------
+NAME: Strategic Alignment Engine
+PATH: _ENGINEERING_HUB\c-level-advisor\strategic-alignment
+DESC: "Cascades strategy from boardroom to individual contributor. Detects and fixes misalignment between company goals and team execution. Covers strategy articulation, cascade mapping, orphan goal detection, silo identification, communication gap analysis, and realignment protocols. Use when teams are pulling in different directions, OKRs don't connect, departments optimize locally at company expense, or when user mentions alignment, strategy cascade, silo, conflicting OKRs, or strategy communication."
+----------------------------------------
+NAME: Changelog Generator
+PATH: _ENGINEERING_HUB\changelog-generator
+DESC: "Changelog Generator"
+----------------------------------------
+NAME: CI/CD Pipeline Builder
+PATH: _ENGINEERING_HUB\ci-cd-pipeline-builder
+DESC: "CI/CD Pipeline Builder"
+----------------------------------------
+NAME: Building LLM-Powered Applications with Claude
+PATH: _ENGINEERING_HUB\claude-api
+DESC: "Build, debug, and optimize Claude API / Anthropic SDK apps. Apps built with this skill should include prompt caching. Also handles migrating existing Claude API code between Claude model versions (4.5 → 4.6, 4.6 → 4.7, retired-model replacements). TRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`; user asks for the Claude API, Anthropic SDK, or Managed Agents; user adds/modifies/tunes a Claude feature (caching, thinking, compaction, tool use, batch, files, citations, memory) or model (Opus/Sonnet/Haiku) in a file; questions about prompt caching / cache hit rate in an Anthropic SDK project. SKIP: file imports `openai`/other-provider SDK, filename like `*-openai.py`/`*-generic.py`, provider-neutral code, general programming/ML."
+----------------------------------------
+NAME: Cloud Security
+PATH: _ENGINEERING_HUB\cloud-security
+DESC: "Use when assessing cloud infrastructure for security misconfigurations, IAM privilege escalation paths, S3 public exposure, open security group rules, or IaC security gaps. Covers AWS, Azure, and GCP posture assessment with MITRE ATT&CK mapping."
+----------------------------------------
+NAME: Code Reviewer
+PATH: _ENGINEERING_HUB\code-reviewer
+DESC: Code review automation for TypeScript, JavaScript, Python, Go, Swift, Kotlin. Analyzes PRs for complexity and risk, checks code quality for SOLID violations and code smells, generates review reports. Use when reviewing pull requests, analyzing code quality, identifying issues, generating review checklists.
+----------------------------------------
+NAME: Code Tour
+PATH: _ENGINEERING_HUB\code-tour
+DESC: "Use when the user asks to create a CodeTour .tour file — persona-targeted, step-by-step walkthroughs that link to real files and line numbers. Trigger for: create a tour, onboarding tour, architecture tour, PR review tour, explain how X works, vibe check, RCA tour, contributor guide, or any structured code walkthrough request."
+----------------------------------------
+NAME: Codebase Onboarding
+PATH: _ENGINEERING_HUB\codebase-onboarding
+DESC: "Codebase Onboarding"
+----------------------------------------
+NAME: Profile from CSV
+PATH: _ENGINEERING_HUB\data-quality-auditor
+DESC: Audit datasets for completeness, consistency, accuracy, and validity. Profile data distributions, detect anomalies and outliers, surface structural issues, and produce an actionable remediation plan.
+----------------------------------------
+NAME: Database Designer - POWERFUL Tier Skill
+PATH: _ENGINEERING_HUB\database-designer
+DESC: "Use when the user asks to design database schemas, plan data migrations, optimize queries, choose between SQL and NoSQL, or model data relationships."
+----------------------------------------
+NAME: Database Schema Designer
+PATH: _ENGINEERING_HUB\database-schema-designer
+DESC: "Use when the user asks to create ERD diagrams, normalize database schemas, design table relationships, or plan schema migrations."
+----------------------------------------
+NAME: Demo Video
+PATH: _ENGINEERING_HUB\demo-video
+DESC: "Use when the user asks to create a demo video, product walkthrough, feature showcase, animated presentation, marketing video, or GIF from screenshots or scene descriptions. Orchestrates playwright, ffmpeg, and edge-tts MCPs to produce polished video content."
+----------------------------------------
+NAME: Dependency Auditor
+PATH: _ENGINEERING_HUB\dependency-auditor
+DESC: "Dependency Auditor"
+----------------------------------------
+NAME: Doc Co-Authoring Workflow
+PATH: _ENGINEERING_HUB\doc-coauthoring
+DESC: Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks.
+----------------------------------------
+NAME: Docker Development
+PATH: _ENGINEERING_HUB\docker-development
+DESC: "Docker and container development agent skill and plugin for Dockerfile optimization, docker-compose orchestration, multi-stage builds, and container security hardening. Use when: user wants to optimize a Dockerfile, create or improve docker-compose configurations, implement multi-stage builds, audit container security, reduce image size, or follow container best practices. Covers build performance, layer caching, secret management, and production-ready container patterns."
+----------------------------------------
+NAME: Email Template Builder
+PATH: _ENGINEERING_HUB\email-template-builder
+DESC: "Email Template Builder"
+----------------------------------------
+NAME: Env & Secrets Manager
+PATH: _ENGINEERING_HUB\env-secrets-manager
+DESC: "Env & Secrets Manager"
+----------------------------------------
+NAME: Epic Design Skill
+PATH: _ENGINEERING_HUB\epic-design
+DESC: >
+----------------------------------------
+NAME: Focused Fix — Deep-Dive Feature Repair
+PATH: _ENGINEERING_HUB\focused-fix
+DESC: "Use when the user asks to fix, debug, or make a specific feature/module/area work end-to-end. Triggers: 'make X work', 'fix the Y feature', 'the Z module is broken', 'focus on [area]'. Not for quick single-bug fixes — this is for systematic deep-dive repair across all files and dependencies."
+----------------------------------------
+NAME: GCP Cloud Architect
+PATH: _ENGINEERING_HUB\gcp-cloud-architect
+DESC: "Design GCP architectures for startups and enterprises. Use when asked to design Google Cloud infrastructure, deploy to GKE or Cloud Run, configure BigQuery pipelines, optimize GCP costs, or migrate to GCP. Covers Cloud Run, GKE, Cloud Functions, Cloud SQL, BigQuery, and cost optimization."
+----------------------------------------
+NAME: Git Worktree Manager
+PATH: _ENGINEERING_HUB\git-worktree-manager
+DESC: "Git Worktree Manager"
+----------------------------------------
+NAME: Godot 4.4 Expert Skill
+PATH: _ENGINEERING_HUB\godot-skill
+DESC: >
+----------------------------------------
+NAME: Google Workspace CLI
+PATH: _ENGINEERING_HUB\google-workspace-cli
+DESC: "Google Workspace administration via the gws CLI. Install, authenticate, and automate Gmail, Drive, Sheets, Calendar, Docs, Chat, and Tasks. Run security audits, execute 43 built-in recipes, and use 10 persona bundles. Use for Google Workspace admin, gws CLI setup, Gmail automation, Drive management, or Calendar scheduling."
+----------------------------------------
+NAME: Helm Chart Builder
+PATH: _ENGINEERING_HUB\helm-chart-builder
+DESC: "Helm chart development agent skill and plugin for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw — chart scaffolding, values design, template patterns, dependency management, security hardening, and chart testing. Use when: user wants to create or improve Helm charts, design values.yaml files, implement template helpers, audit chart security (RBAC, network policies, pod security), manage subcharts, or run helm lint/test."
+----------------------------------------
+NAME: Incident Commander Skill
+PATH: _ENGINEERING_HUB\incident-commander
+DESC: "Incident Commander Skill"
+----------------------------------------
+NAME: Incident Response
+PATH: _ENGINEERING_HUB\incident-response
+DESC: "Use when a security incident has been detected or declared and needs classification, triage, escalation path determination, and forensic evidence collection. Covers SEV1-SEV4 classification, false positive filtering, incident taxonomy, and NIST SP 800-61 lifecycle."
+----------------------------------------
+NAME: internal-comms
+PATH: _ENGINEERING_HUB\internal-comms
+DESC: A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).
+----------------------------------------
+NAME: Interview System Designer
+PATH: _ENGINEERING_HUB\interview-system-designer
+DESC: This skill should be used when the user asks to "design interview processes", "create hiring pipelines", "calibrate interview loops", "generate interview questions", "design competency matrices", "analyze interviewer bias", "create scoring rubrics", "build question banks", or "optimize hiring systems". Use for designing role-specific interview loops, competency assessments, and hiring calibration systems.
+----------------------------------------
+NAME: Karpathy Coder — Active Coding Discipline
+PATH: _ENGINEERING_HUB\karpathy-coder
+DESC: Use when writing, reviewing, or committing code to enforce Karpathy's 4 coding principles — surface assumptions before coding, keep it simple, make surgical changes, define verifiable goals. Triggers on "review my diff", "check complexity", "am I overcomplicating this", "karpathy check", "before I commit", or any code quality concern where the LLM might be overcoding.
+----------------------------------------
+NAME: LLM Cost Optimizer
+PATH: _ENGINEERING_HUB\llm-cost-optimizer
+DESC: "Use when you need to reduce LLM API spend, control token usage, route between models by cost/quality, implement prompt caching, or build cost observability for AI features. Triggers: 'my AI costs are too high', 'optimize token usage', 'which model should I use', 'LLM spend is out of control', 'implement prompt caching'. NOT for RAG pipeline design (use rag-architect). NOT for prompt writing quality (use senior-prompt-engineer)."
+----------------------------------------
+NAME: LLM Wiki — Second Brain for Claude Code + Obsidian
+PATH: _ENGINEERING_HUB\llm-wiki
+DESC: Use when building or maintaining a persistent personal knowledge base (second brain) in Obsidian where an LLM incrementally ingests sources, updates entity/concept pages, maintains cross-references, and keeps a synthesis current. Triggers include "second brain", "Obsidian wiki", "personal knowledge management", "ingest this paper/article/book", "build a research wiki", "compound knowledge", "Memex", or whenever the user wants knowledge to accumulate across sessions instead of being re-derived by RAG on every query.
+----------------------------------------
+NAME: MCP Server Builder
+PATH: _ENGINEERING_HUB\mcp-server-builder
+DESC: "MCP Server Builder"
+----------------------------------------
+NAME: Migration Architect
+PATH: _ENGINEERING_HUB\migration-architect
+DESC: "Migration Architect"
+----------------------------------------
+NAME: Monorepo Navigator
+PATH: _ENGINEERING_HUB\monorepo-navigator
+DESC: "Monorepo Navigator"
+----------------------------------------
+NAME: Microsoft 365 Tenant Manager
+PATH: _ENGINEERING_HUB\ms365-tenant-manager
+DESC: Microsoft 365 tenant administration for Global Administrators. Automate M365 tenant setup, Office 365 admin tasks, Azure AD user management, Exchange Online configuration, Teams administration, and security policies. Generate PowerShell scripts for bulk operations, Conditional Access policies, license management, and compliance reporting. Use for M365 tenant manager, Office 365 admin, Azure AD users, Global Administrator, tenant configuration, or Microsoft 365 automation.
+----------------------------------------
+NAME: Observability Designer (POWERFUL)
+PATH: _ENGINEERING_HUB\observability-designer
+DESC: "Observability Designer (POWERFUL)"
+----------------------------------------
+NAME: Performance Profiler
+PATH: _ENGINEERING_HUB\performance-profiler
+DESC: "Performance Profiler"
+----------------------------------------
+NAME: Playwright Pro
+PATH: _ENGINEERING_HUB\playwright-pro
+DESC: "Production-grade Playwright testing toolkit. Use when the user mentions Playwright tests, end-to-end testing, browser automation, fixing flaky tests, test migration, CI/CD testing, or test suites. Generate tests, fix flaky failures, migrate from Cypress/Selenium, sync with TestRail, run on BrowserStack. 55 templates, 3 agents, smart reporting."
+----------------------------------------
+NAME: BrowserStack Integration
+PATH: _ENGINEERING_HUB\playwright-pro\skills\browserstack
+DESC: >-
+----------------------------------------
+NAME: Analyze Test Coverage Gaps
+PATH: _ENGINEERING_HUB\playwright-pro\skills\coverage
+DESC: >-
+----------------------------------------
+NAME: Fix Failing or Flaky Tests
+PATH: _ENGINEERING_HUB\playwright-pro\skills\fix
+DESC: >-
+----------------------------------------
+NAME: Generate Playwright Tests
+PATH: _ENGINEERING_HUB\playwright-pro\skills\generate
+DESC: >-
+----------------------------------------
+NAME: Initialize Playwright Project
+PATH: _ENGINEERING_HUB\playwright-pro\skills\init
+DESC: >-
+----------------------------------------
+NAME: Migrate to Playwright
+PATH: _ENGINEERING_HUB\playwright-pro\skills\migrate
+DESC: >-
+----------------------------------------
+NAME: Smart Test Reporting
+PATH: _ENGINEERING_HUB\playwright-pro\skills\report
+DESC: >-
+----------------------------------------
+NAME: Review Playwright Tests
+PATH: _ENGINEERING_HUB\playwright-pro\skills\review
+DESC: >-
+----------------------------------------
+NAME: TestRail Integration
+PATH: _ENGINEERING_HUB\playwright-pro\skills\testrail
+DESC: >-
+----------------------------------------
+NAME: PR Review Expert
+PATH: _ENGINEERING_HUB\pr-review-expert
+DESC: "Use when the user asks to review pull requests, analyze code changes, check for security issues in PRs, or assess code quality of diffs."
+----------------------------------------
+NAME: Prompt Governance
+PATH: _ENGINEERING_HUB\prompt-governance
+DESC: "Use when managing prompts in production at scale: versioning prompts, running A/B tests on prompts, building prompt registries, preventing prompt regressions, or creating eval pipelines for production AI features. Triggers: 'manage prompts in production', 'prompt versioning', 'prompt regression', 'prompt A/B test', 'prompt registry', 'eval pipeline'. NOT for writing or improving individual prompts (use senior-prompt-engineer). NOT for RAG pipeline design (use rag-architect). NOT for LLM cost reduction (use llm-cost-optimizer)."
+----------------------------------------
+NAME: RAG Architect - POWERFUL
+PATH: _ENGINEERING_HUB\rag-architect
+DESC: "Use when the user asks to design RAG pipelines, optimize retrieval strategies, choose embedding models, implement vector search, or build knowledge retrieval systems."
+----------------------------------------
+NAME: Red Team
+PATH: _ENGINEERING_HUB\red-team
+DESC: "Use when planning or executing authorized red team engagements, attack path analysis, or offensive security simulations. Covers MITRE ATT&CK kill-chain planning, technique scoring, choke point identification, OPSEC risk assessment, and crown jewel targeting."
+----------------------------------------
+NAME: Release Manager
+PATH: _ENGINEERING_HUB\release-manager
+DESC: "Use when the user asks to plan releases, manage changelogs, coordinate deployments, create release branches, or automate versioning."
+----------------------------------------
+NAME: Runbook Generator
+PATH: _ENGINEERING_HUB\runbook-generator
+DESC: "Runbook Generator"
+----------------------------------------
+NAME: Secrets Vault Manager
+PATH: _ENGINEERING_HUB\secrets-vault-manager
+DESC: "Use when the user asks to set up secret management infrastructure, integrate HashiCorp Vault, configure cloud secret stores (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager), implement secret rotation, or audit secret access patterns."
+----------------------------------------
+NAME: Security Penetration Testing
+PATH: _ENGINEERING_HUB\security-pen-testing
+DESC: "Use when the user asks to perform security audits, penetration testing, vulnerability scanning, OWASP Top 10 checks, or offensive security assessments. Covers static analysis, dependency scanning, secret detection, API security testing, and pen test report generation."
+----------------------------------------
+NAME: Self-Improving Agent
+PATH: _ENGINEERING_HUB\self-improving-agent
+DESC: "Curate Claude Code's auto-memory into durable project knowledge. Analyze MEMORY.md for patterns, promote proven learnings to CLAUDE.md and .claude/rules/, extract recurring solutions into reusable skills. Use when: (1) reviewing what Claude has learned about your project, (2) graduating a pattern from notes to enforced rules, (3) turning a debugging solution into a skill, (4) checking memory health and capacity."
+----------------------------------------
+NAME: /si:extract — Create Skills from Patterns
+PATH: _ENGINEERING_HUB\self-improving-agent\skills\extract
+DESC: "Turn a proven pattern or debugging solution into a standalone reusable skill with SKILL.md, reference docs, and examples."
+----------------------------------------
+NAME: /si:promote — Graduate Learnings to Rules
+PATH: _ENGINEERING_HUB\self-improving-agent\skills\promote
+DESC: "Graduate a proven pattern from auto-memory (MEMORY.md) to CLAUDE.md or .claude/rules/ for permanent enforcement."
+----------------------------------------
+NAME: /si:remember — Save Knowledge Explicitly
+PATH: _ENGINEERING_HUB\self-improving-agent\skills\remember
+DESC: "Explicitly save important knowledge to auto-memory with timestamp and context. Use when a discovery is too important to rely on auto-capture."
+----------------------------------------
+NAME: /si:review — Analyze Auto-Memory
+PATH: _ENGINEERING_HUB\self-improving-agent\skills\review
+DESC: "Analyze auto-memory for promotion candidates, stale entries, consolidation opportunities, and health metrics."
+----------------------------------------
+NAME: /si:status — Memory Health Dashboard
+PATH: _ENGINEERING_HUB\self-improving-agent\skills\status
+DESC: "Memory health dashboard showing line counts, topic files, capacity, stale entries, and recommendations."
+----------------------------------------
+NAME: Senior Architect
+PATH: _ENGINEERING_HUB\senior-architect
+DESC: This skill should be used when the user asks to "design system architecture", "evaluate microservices vs monolith", "create architecture diagrams", "analyze dependencies", "choose a database", "plan for scalability", "make technical decisions", or "review system design". Use for architecture decision records (ADRs), tech stack evaluation, system design reviews, dependency analysis, and generating architecture diagrams in Mermaid, PlantUML, or ASCII format.
+----------------------------------------
+NAME: Senior Backend Engineer
+PATH: _ENGINEERING_HUB\senior-backend
+DESC: Designs and implements backend systems including REST APIs, microservices, database architectures, authentication flows, and security hardening. Use when the user asks to "design REST APIs", "optimize database queries", "implement authentication", "build microservices", "review backend code", "set up GraphQL", "handle database migrations", or "load test APIs". Covers Node.js/Express/Fastify development, PostgreSQL optimization, API security, and backend architecture patterns.
+----------------------------------------
+NAME: Senior Computer Vision Engineer
+PATH: _ENGINEERING_HUB\senior-computer-vision
+DESC: Computer vision engineering skill for object detection, image segmentation, and visual AI systems. Covers CNN and Vision Transformer architectures, YOLO/Faster R-CNN/DETR detection, Mask R-CNN/SAM segmentation, and production deployment with ONNX/TensorRT. Includes PyTorch, torchvision, Ultralytics, Detectron2, and MMDetection frameworks. Use when building detection pipelines, training custom models, optimizing inference, or deploying vision systems.
+----------------------------------------
+NAME: Senior Data Engineer
+PATH: _ENGINEERING_HUB\senior-data-engineer
+DESC: Data engineering skill for building scalable data pipelines, ETL/ELT systems, and data infrastructure. Expertise in Python, SQL, Spark, Airflow, dbt, Kafka, and modern data stack. Includes data modeling, pipeline orchestration, data quality, and DataOps. Use when designing data architectures, building data pipelines, optimizing data workflows, implementing data governance, or troubleshooting data issues.
+----------------------------------------
+NAME: Senior Data Scientist
+PATH: _ENGINEERING_HUB\senior-data-scientist
+DESC: World-class senior data scientist skill specialising in statistical modeling, experiment design, causal inference, and predictive analytics. Covers A/B testing (sample sizing, two-proportion z-tests, Bonferroni correction), difference-in-differences, feature engineering pipelines (Scikit-learn, XGBoost), cross-validated model evaluation (AUC-ROC, AUC-PR, SHAP), and MLflow experiment tracking — using Python (NumPy, Pandas, Scikit-learn), R, and SQL. Use when designing or analysing controlled experiments, building and evaluating classification or regression models, performing causal analysis on observational data, engineering features for structured tabular datasets, or translating statistical findings into data-driven business decisions.
+----------------------------------------
+NAME: Senior Devops
+PATH: _ENGINEERING_HUB\senior-devops
+DESC: Comprehensive DevOps skill for CI/CD, infrastructure automation, containerization, and cloud platforms (AWS, GCP, Azure). Includes pipeline setup, infrastructure as code, deployment automation, and monitoring. Use when setting up pipelines, deploying applications, managing infrastructure, implementing monitoring, or optimizing deployment processes.
+----------------------------------------
+NAME: Senior Frontend
+PATH: _ENGINEERING_HUB\senior-frontend
+DESC: Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications. Use when building React components, optimizing Next.js performance, analyzing bundle sizes, scaffolding frontend projects, implementing accessibility, or reviewing frontend code quality.
+----------------------------------------
+NAME: Senior Fullstack
+PATH: _ENGINEERING_HUB\senior-fullstack
+DESC: Fullstack development toolkit with project scaffolding for Next.js, FastAPI, MERN, and Django stacks, code quality analysis with security and complexity scoring, and stack selection guidance. Use when the user asks to "scaffold a new project", "create a Next.js app", "set up FastAPI with React", "analyze code quality", "audit my codebase", "what stack should I use", "generate project boilerplate", or mentions fullstack development, project setup, or tech stack comparison.
+----------------------------------------
+NAME: Senior ML Engineer
+PATH: _ENGINEERING_HUB\senior-ml-engineer
+DESC: ML engineering skill for productionizing models, building MLOps pipelines, and integrating LLMs. Covers model deployment, feature stores, drift monitoring, RAG systems, and cost optimization. Use when the user asks about deploying ML models to production, setting up MLOps infrastructure (MLflow, Kubeflow, Kubernetes, Docker), monitoring model performance or drift, building RAG pipelines, or integrating LLM APIs with retry logic and cost controls. Focused on production and operational concerns rather than model research or initial training.
+----------------------------------------
+NAME: Senior Prompt Engineer
+PATH: _ENGINEERING_HUB\senior-prompt-engineer
+DESC: This skill should be used when the user asks to "optimize prompts", "design prompt templates", "evaluate LLM outputs", "build agentic systems", "implement RAG", "create few-shot examples", "analyze token usage", or "design AI workflows". Use for prompt engineering patterns, LLM evaluation frameworks, agent architectures, and structured output design.
+----------------------------------------
+NAME: Senior QA Engineer
+PATH: _ENGINEERING_HUB\senior-qa
+DESC: Generates unit tests, integration tests, and E2E tests for React/Next.js applications. Scans components to create Jest + React Testing Library test stubs, analyzes Istanbul/LCOV coverage reports to surface gaps, scaffolds Playwright test files from Next.js routes, mocks API calls with MSW, creates test fixtures, and configures test runners. Use when the user asks to "generate tests", "write unit tests", "analyze test coverage", "scaffold E2E tests", "set up Playwright", "configure Jest", "implement testing patterns", or "improve test quality".
+----------------------------------------
+NAME: Senior SecOps Engineer
+PATH: _ENGINEERING_HUB\senior-secops
+DESC: Senior SecOps engineer skill for application security, vulnerability management, compliance verification, and secure development practices. Runs SAST/DAST scans, generates CVE remediation plans, checks dependency vulnerabilities, creates security policies, enforces secure coding patterns, and automates compliance checks against SOC2, PCI-DSS, HIPAA, and GDPR. Use when conducting a security review or audit, responding to a CVE or security incident, hardening infrastructure, implementing authentication or secrets management, running penetration test prep, checking OWASP Top 10 exposure, or enforcing security controls in CI/CD pipelines.
+----------------------------------------
+NAME: Senior Security Engineer
+PATH: _ENGINEERING_HUB\senior-security
+DESC: Security engineering toolkit for threat modeling, vulnerability analysis, secure architecture, and penetration testing. Includes STRIDE analysis, OWASP guidance, cryptography patterns, and security scanning tools. Use when the user asks about security reviews, threat analysis, vulnerability assessments, secure coding practices, security audits, attack surface analysis, CVE remediation, or security best practices.
+----------------------------------------
+NAME: Skill Creator
+PATH: _ENGINEERING_HUB\skill-creator
+DESC: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+----------------------------------------
+NAME: Slack GIF Creator
+PATH: _ENGINEERING_HUB\slack-gif-creator
+DESC: Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like "make me a GIF of X doing Y for Slack."
+----------------------------------------
+NAME: Snowflake Development
+PATH: _ENGINEERING_HUB\snowflake-development
+DESC: "Use when writing Snowflake SQL, building data pipelines with Dynamic Tables or Streams/Tasks, using Cortex AI functions, creating Cortex Agents, writing Snowpark Python, configuring dbt for Snowflake, or troubleshooting Snowflake errors."
+----------------------------------------
+NAME: Spec-Driven Workflow — POWERFUL
+PATH: _ENGINEERING_HUB\spec-driven-workflow
+DESC: "Use when the user asks to write specs before code, define acceptance criteria, plan features before implementation, generate tests from specifications, or follow spec-first development practices."
+----------------------------------------
+NAME: SQL Database Assistant - POWERFUL Tier Skill
+PATH: _ENGINEERING_HUB\sql-database-assistant
+DESC: "Use when the user asks to write SQL queries, optimize database performance, generate migrations, explore database schemas, or work with ORMs like Prisma, Drizzle, TypeORM, or SQLAlchemy."
+----------------------------------------
+NAME: Z-test for two proportions (A/B conversion rates)
+PATH: _ENGINEERING_HUB\statistical-analyst
+DESC: Run hypothesis tests, analyze A/B experiment results, calculate sample sizes, and interpret statistical significance with effect sizes. Use when you need to validate whether observed differences are real, size an experiment correctly before launch, or interpret test results with confidence.
+----------------------------------------
+NAME: Stripe Integration Expert
+PATH: _ENGINEERING_HUB\stripe-integration-expert
+DESC: "Stripe Integration Expert"
+----------------------------------------
+NAME: TC Tracker
+PATH: _ENGINEERING_HUB\tc-tracker
+DESC: "Use when the user asks to track technical changes, create change records, manage TC lifecycles, or hand off work between AI sessions. Covers init/create/update/status/resume/close/export workflows for structured code change documentation."
+----------------------------------------
+NAME: TDD Guide
+PATH: _ENGINEERING_HUB\tdd-guide
+DESC: "Test-driven development skill for writing unit tests, generating test fixtures and mocks, analyzing coverage gaps, and guiding red-green-refactor workflows across Jest, Pytest, JUnit, Vitest, and Mocha. Use when the user asks to write tests, improve test coverage, practice TDD, generate mocks or stubs, or mentions testing frameworks like Jest, pytest, or JUnit."
+----------------------------------------
+NAME: Tech Debt Tracker
+PATH: _ENGINEERING_HUB\tech-debt-tracker
+DESC: Scan codebases for technical debt, score severity, track trends, and generate prioritized remediation plans. Use when users mention tech debt, code quality, refactoring priority, debt scoring, cleanup sprints, or code health assessment. Also use for legacy code modernization planning and maintenance cost estimation.
+----------------------------------------
+NAME: Technology Stack Evaluator
+PATH: _ENGINEERING_HUB\tech-stack-evaluator
+DESC: Technology stack evaluation and comparison with TCO analysis, security assessment, and ecosystem health scoring. Use when comparing frameworks, evaluating technology stacks, calculating total cost of ownership, assessing migration paths, or analyzing ecosystem viability.
+----------------------------------------
+NAME: Terraform Patterns
+PATH: _ENGINEERING_HUB\terraform-patterns
+DESC: "Terraform infrastructure-as-code agent skill and plugin for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. Covers module design patterns, state management strategies, provider configuration, security hardening, policy-as-code with Sentinel/OPA, and CI/CD plan/apply workflows. Use when: user wants to design Terraform modules, manage state backends, review Terraform security, implement multi-region deployments, or follow IaC best practices."
+----------------------------------------
+NAME: Threat Detection
+PATH: _ENGINEERING_HUB\threat-detection
+DESC: "Use when hunting for threats in an environment, analyzing IOCs, or detecting behavioral anomalies in telemetry. Covers hypothesis-driven threat hunting, IOC sweep generation, z-score anomaly detection, and MITRE ATT&CK-mapped signal prioritization."
+----------------------------------------
+NAME: Image Creation Hub
+PATH: _IMAGE_CREATION_HUB
+DESC: "3 visual and image creation skills for Claude Code: cinematic AI image direction, brand identity guidelines, and advanced prompt mastery for image generation models."
+----------------------------------------
+NAME: Banana Pro Director Protocol (v2.0 - Skin Study Edition)
+PATH: _IMAGE_CREATION_HUB\banana-pro-director
+DESC: "Sistema de direccion cinematografica de ultra-proximidad basado en 'SKIN STUDY'. Orquesta escenas hiperrealistas mediante el control absoluto de texturas cutaneas, fisica de luz avanzada y precision macro."
+----------------------------------------
+NAME: Anthropic Brand Styling
+PATH: _IMAGE_CREATION_HUB\brand-guidelines
+DESC: Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.
+----------------------------------------
+NAME: Willy's Prompt Master Protocol (v3.0 - Danbooru & NL)
+PATH: _IMAGE_CREATION_HUB\willy-prompt-master
+DESC: "Ingeniero de prompts total (Tags & Natural Language). Especialista en Danbooru (SDXL) y Conversacional (Flux). Domina el realismo femenino, micro-texturas y sesion fotogrfica por fases."
+----------------------------------------
+NAME: Product Team Skills
+PATH: _MANAGEMENT_HUB
+DESC: "10 product agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. PM toolkit (RICE), agile PO, product strategist (OKR), UX researcher, UI design system, competitive teardown, landing page generator, SaaS scaffolder, research summarizer. Python tools (stdlib-only)."
+----------------------------------------
+NAME: Agile Product Owner
+PATH: _MANAGEMENT_HUB\agile-product-owner
+DESC: Agile product ownership for backlog management and sprint execution. Covers user story writing, acceptance criteria, sprint planning, and velocity tracking. Use for writing user stories, creating acceptance criteria, planning sprints, estimating story points, breaking down epics, or prioritizing backlog.
+----------------------------------------
+NAME: Apple HIG Expert
+PATH: _MANAGEMENT_HUB\apple-hig-expert
+DESC: "Expert guidance on Apple Human Interface Guidelines (HIG). Covers iOS, macOS, and visionOS with 2026 Liquid Glass aesthetics and accessibility-first design."
+----------------------------------------
+NAME: Code → PRD: Reverse-Engineer Any Codebase into Product Requirements
+PATH: _MANAGEMENT_HUB\code-to-prd
+DESC: |
+----------------------------------------
+NAME: Competitive Teardown
+PATH: _MANAGEMENT_HUB\competitive-teardown
+DESC: "Analyzes competitor products and companies by synthesizing data from pricing pages, app store reviews, job postings, SEO signals, and social media into structured competitive intelligence. Produces feature comparison matrices scored across 12 dimensions, SWOT analyses, positioning maps, UX audits, pricing model breakdowns, action item roadmaps, and stakeholder presentation templates. Use when conducting competitor analysis, comparing products against competitors, researching the competitive landscape, building battle cards for sales, preparing for a product strategy or roadmap session, responding to a competitor's new feature or pricing change, or performing a quarterly competitive review."
+----------------------------------------
+NAME: Experiment Designer
+PATH: _MANAGEMENT_HUB\experiment-designer
+DESC: Use when planning product experiments, writing testable hypotheses, estimating sample size, prioritizing tests, or interpreting A/B outcomes with practical statistical rigor.
+----------------------------------------
+NAME: Landing Page Generator
+PATH: _MANAGEMENT_HUB\landing-page-generator
+DESC: "Generates high-converting landing pages as complete Next.js/React (TSX) components with Tailwind CSS. Creates hero sections, feature grids, pricing tables, FAQ accordions, testimonial blocks, and CTA sections using proven copy frameworks (PAS, AIDA, BAB). Outputs SEO meta tags, structured data, and performance-optimised code targeting Core Web Vitals (LCP < 1s, CLS < 0.1). Use when the user asks to create a landing page, marketing page, homepage, single-page site, lead capture page, campaign page, promo page, or conversion-optimised web page — or when they want to A/B test landing page variants or replace a static page with one designed to convert."
+----------------------------------------
+NAME: Product Analytics
+PATH: _MANAGEMENT_HUB\product-analytics
+DESC: Use when defining product KPIs, building metric dashboards, running cohort or retention analysis, or interpreting feature adoption trends across product stages.
+----------------------------------------
+NAME: Product Discovery
+PATH: _MANAGEMENT_HUB\product-discovery
+DESC: Use when validating product opportunities, mapping assumptions, planning discovery sprints, or testing problem-solution fit before committing delivery resources.
+----------------------------------------
+NAME: Product Manager Toolkit
+PATH: _MANAGEMENT_HUB\product-manager-toolkit
+DESC: Comprehensive toolkit for product managers including RICE prioritization, customer interview analysis, PRD templates, discovery frameworks, and go-to-market strategies. Use for feature prioritization, user research synthesis, requirement documentation, and product strategy development.
+----------------------------------------
+NAME: Product Strategist
+PATH: _MANAGEMENT_HUB\product-strategist
+DESC: Strategic product leadership toolkit for Head of Product covering OKR cascade generation, quarterly planning, competitive landscape analysis, product vision documents, and team scaling proposals. Use when creating quarterly OKR documents, defining product goals or KPIs, building product roadmaps, running competitive analysis, drafting team structure or hiring plans, aligning product strategy across engineering and design, or generating cascaded goal hierarchies from company to team level.
+----------------------------------------
+NAME: Project Management Skills
+PATH: _MANAGEMENT_HUB\project-management
+DESC: "6 project management agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. Senior PM, scrum master, Jira expert (JQL), Confluence expert, Atlassian admin, template creator. MCP integration for live Jira/Confluence automation."
+----------------------------------------
+NAME: Atlassian Administrator Expert
+PATH: _MANAGEMENT_HUB\project-management\atlassian-admin
+DESC: Atlassian Administrator for managing and organizing Atlassian products (Jira, Confluence, Bitbucket, Trello), users, permissions, security, integrations, system configuration, and org-wide governance. Use when asked to add users to Jira, change Confluence permissions, configure access control, update admin settings, manage Atlassian groups, set up SSO, install marketplace apps, review security policies, or handle any org-wide Atlassian administration task.
+----------------------------------------
+NAME: Atlassian Template & Files Creator Expert
+PATH: _MANAGEMENT_HUB\project-management\atlassian-templates
+DESC: Atlassian Template and Files Creator/Modifier expert for creating, modifying, and managing Jira and Confluence templates, blueprints, custom layouts, reusable components, and standardized content structures. Use when building org-wide templates, custom blueprints, page layouts, and automated content generation.
+----------------------------------------
+NAME: Atlassian Confluence Expert
+PATH: _MANAGEMENT_HUB\project-management\confluence-expert
+DESC: Atlassian Confluence expert for creating and managing spaces, knowledge bases, and documentation. Configures space permissions and hierarchies, creates page templates with macros, sets up documentation taxonomies, designs page layouts, and manages content governance. Use when users need to build or restructure a Confluence space, design page hierarchies with permission structures, author or standardise documentation templates, embed Jira reports in pages, run knowledge base audits, or establish documentation standards and collaborative workflows.
+----------------------------------------
+NAME: Atlassian Jira Expert
+PATH: _MANAGEMENT_HUB\project-management\jira-expert
+DESC: Atlassian Jira expert for creating and managing projects, planning, product discovery, JQL queries, workflows, custom fields, automation, reporting, and all Jira features. Use for Jira project setup, configuration, advanced search, dashboard creation, workflow design, and technical Jira operations.
+----------------------------------------
+NAME: Meeting Insights Analyzer
+PATH: _MANAGEMENT_HUB\project-management\meeting-analyzer
+DESC: Analyzes meeting transcripts and recordings to surface behavioral patterns, communication anti-patterns, and actionable coaching feedback. Use this skill whenever the user uploads or points to meeting transcripts (.txt, .md, .vtt, .srt, .docx), asks about their communication habits, wants feedback on how they run meetings, requests speaking ratio analysis, mentions filler words or conflict avoidance, or wants to compare their communication across time periods. Also trigger when users mention tools like Granola, Otter, Fireflies, or Zoom transcripts. Even if the user just says "look at my meetings" or "how do I come across in meetings" — use this skill.
+----------------------------------------
+NAME: Scrum Master Expert
+PATH: _MANAGEMENT_HUB\project-management\scrum-master
+DESC: "Advanced Scrum Master skill for data-driven agile team analysis and coaching. Use when the user asks about sprint planning, velocity tracking, retrospectives, standup facilitation, backlog grooming, story points, burndown charts, blocker resolution, or agile team health. Runs Python scripts to analyse sprint JSON exports from Jira or similar tools: velocity_analyzer.py for Monte Carlo sprint forecasting, sprint_health_scorer.py for multi-dimension health scoring, and retrospective_analyzer.py for action-item and theme tracking. Produces confidence-interval forecasts, health grade reports, and improvement-velocity trends for high-performing Scrum teams."
+----------------------------------------
+NAME: Senior Project Management Expert
+PATH: _MANAGEMENT_HUB\project-management\senior-pm
+DESC: Senior Project Manager for enterprise software, SaaS, and digital transformation projects. Specializes in portfolio management, quantitative risk analysis, resource optimization, stakeholder alignment, and executive reporting. Uses advanced methodologies including EMV analysis, Monte Carlo simulation, WSJF prioritization, and multi-dimensional health scoring. Use when a user needs help with project plans, project status reports, risk assessments, resource allocation, project roadmaps, milestone tracking, team capacity planning, portfolio health reviews, program management, or executive-level project reporting — especially for enterprise-scale initiatives with multiple workstreams, complex dependencies, or multi-million dollar budgets.
+----------------------------------------
+NAME: Internal Comms
+PATH: _MANAGEMENT_HUB\project-management\team-communications
+DESC: Write internal company communications — 3P updates (Progress/Plans/Problems), company-wide newsletters, FAQ roundups, incident reports, leadership updates, status reports, project updates, and general internal comms. Use this skill any time the user asks to draft, edit, or format something meant for internal audiences. Trigger on keywords like "3P", "weekly update", "newsletter", "FAQ", "internal comms", "status report", "company update", "team update", "incident report", or any request to summarize work for leadership, teammates, or the broader company. Even casual requests like "write my update" or "summarize what my team did this week" should trigger this skill.
+----------------------------------------
+NAME: Regulatory Affairs & Quality Management Skills
+PATH: _MANAGEMENT_HUB\ra-qm-team
+DESC: "12 regulatory & QM agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. ISO 13485 QMS, MDR 2017/745, FDA 510(k)/PMA, ISO 27001 ISMS, GDPR/DSGVO, risk management (ISO 14971), CAPA, document control, auditing. Python tools (stdlib-only)."
+----------------------------------------
+NAME: CAPA Officer
+PATH: _MANAGEMENT_HUB\ra-qm-team\capa-officer
+DESC: CAPA system management for medical device QMS. Covers root cause analysis, corrective action planning, effectiveness verification, and CAPA metrics. Use for CAPA investigations, 5-Why analysis, fishbone diagrams, root cause determination, corrective action tracking, effectiveness verification, or CAPA program optimization.
+----------------------------------------
+NAME: FDA Consultant Specialist
+PATH: _MANAGEMENT_HUB\ra-qm-team\fda-consultant-specialist
+DESC: FDA regulatory consultant for medical device companies. Provides 510(k)/PMA/De Novo pathway guidance, QSR (21 CFR 820) compliance, HIPAA assessments, and device cybersecurity. Use when user mentions FDA submission, 510(k), PMA, De Novo, QSR, premarket, predicate device, substantial equivalence, HIPAA medical device, or FDA cybersecurity.
+----------------------------------------
+NAME: GDPR/DSGVO Expert
+PATH: _MANAGEMENT_HUB\ra-qm-team\gdpr-dsgvo-expert
+DESC: GDPR and German DSGVO compliance automation. Scans codebases for privacy risks, generates DPIA documentation, tracks data subject rights requests. Use for GDPR compliance assessments, privacy audits, data protection planning, DPIA generation, and data subject rights management.
+----------------------------------------
+NAME: Information Security Manager - ISO 27001
+PATH: _MANAGEMENT_HUB\ra-qm-team\information-security-manager-iso27001
+DESC: ISO 27001 ISMS implementation and cybersecurity governance for HealthTech and MedTech companies. Use for ISMS design, security risk assessment, control implementation, ISO 27001 certification, security audits, incident response, and compliance verification. Covers ISO 27001, ISO 27002, healthcare security, and medical device cybersecurity.
+----------------------------------------
+NAME: ISMS Audit Expert
+PATH: _MANAGEMENT_HUB\ra-qm-team\isms-audit-expert
+DESC: Information Security Management System (ISMS) audit expert for ISO 27001 compliance verification, security control assessment, and certification support. Use when the user mentions ISO 27001, ISMS audit, Annex A controls, Statement of Applicability (SOA), gap analysis, nonconformity management, internal audit, surveillance audit, or security certification preparation. Helps review control implementation evidence, document audit findings, classify nonconformities, generate risk-based audit plans, map controls to Annex A requirements, prepare Stage 1 and Stage 2 audit documentation, and support corrective action workflows.
+----------------------------------------
+NAME: MDR 2017/745 Specialist
+PATH: _MANAGEMENT_HUB\ra-qm-team\mdr-745-specialist
+DESC: EU MDR 2017/745 compliance specialist for medical device classification, technical documentation, clinical evidence, and post-market surveillance. Covers Annex VIII classification rules, Annex II/III technical files, Annex XIV clinical evaluation, and EUDAMED integration.
+----------------------------------------
+NAME: QMS Audit Expert
+PATH: _MANAGEMENT_HUB\ra-qm-team\qms-audit-expert
+DESC: ISO 13485 internal audit expertise for medical device QMS. Covers audit planning, execution, nonconformity classification, and CAPA verification. Use for internal audit planning, audit execution, finding classification, external audit preparation, or audit program management.
+----------------------------------------
+NAME: Quality Documentation Manager
+PATH: _MANAGEMENT_HUB\ra-qm-team\quality-documentation-manager
+DESC: Document control system management for medical device QMS. Covers document numbering, version control, change management, and 21 CFR Part 11 compliance. Use for document control procedures, change control workflow, document numbering, version management, electronic signature compliance, or regulatory documentation review.
+----------------------------------------
+NAME: Senior Quality Manager Responsible Person (QMR)
+PATH: _MANAGEMENT_HUB\ra-qm-team\quality-manager-qmr
+DESC: Senior Quality Manager Responsible Person (QMR) for HealthTech and MedTech companies. Provides quality system governance, management review leadership, regulatory compliance oversight, and quality performance monitoring per ISO 13485 Clause 5.5.2.
+----------------------------------------
+NAME: Quality Manager - QMS ISO 13485 Specialist
+PATH: _MANAGEMENT_HUB\ra-qm-team\quality-manager-qms-iso13485
+DESC: ISO 13485 Quality Management System implementation and maintenance for medical device organizations. Provides QMS design, documentation control, internal auditing, CAPA management, and certification support. Use when working with medical device quality systems, preparing for ISO 13485 audits, managing regulatory compliance documentation, setting up corrective actions, or building audit preparation programs. Useful for quality management, audit preparation, regulatory compliance, medical device documentation, and corrective action workflows.
+----------------------------------------
+NAME: Head of Regulatory Affairs
+PATH: _MANAGEMENT_HUB\ra-qm-team\regulatory-affairs-head
+DESC: Senior Regulatory Affairs Manager for HealthTech and MedTech companies. Prepares FDA 510(k), De Novo, and PMA submission packages; analyzes regulatory pathways for new medical devices; drafts responses to FDA deficiency letters and Notified Body queries; develops CE marking technical documentation under EU MDR 2017/745; coordinates multi-market approval strategies across FDA, EU, Health Canada, PMDA, and NMPA; and maintains regulatory intelligence on evolving standards. Use when users need to plan or execute FDA submissions, navigate 510(k) or PMA approval processes, achieve CE marking, prepare pre-submission meeting materials, write regulatory strategy documents, respond to agency queries, or manage compliance documentation for medical device market access.
+----------------------------------------
+NAME: Risk Management Specialist
+PATH: _MANAGEMENT_HUB\ra-qm-team\risk-management-specialist
+DESC: Medical device risk management specialist implementing ISO 14971 throughout product lifecycle. Provides risk analysis, risk evaluation, risk control, and post-production information analysis. Use when user mentions risk management, ISO 14971, risk analysis, FMEA, fault tree analysis, hazard identification, risk control, risk matrix, benefit-risk analysis, residual risk, risk acceptability, or post-market risk.
+----------------------------------------
+NAME: SOC 2 Compliance
+PATH: _MANAGEMENT_HUB\ra-qm-team\soc2-compliance
+DESC: "Use when the user asks to prepare for SOC 2 audits, map Trust Service Criteria, build control matrices, collect audit evidence, perform gap analysis, or assess SOC 2 Type I vs Type II readiness."
+----------------------------------------
+NAME: Research Summarizer
+PATH: _MANAGEMENT_HUB\research-summarizer
+DESC: "Structured research summarization agent skill for non-dev users. Handles academic papers, web articles, reports, and documentation. Extracts key findings, generates comparative analyses, and produces properly formatted citations. Use when: user wants to summarize a research paper, compare multiple sources, extract citations from documents, or create structured research briefs. Plugin for Claude Code, Codex, Gemini CLI, and OpenClaw."
+----------------------------------------
+NAME: Roadmap Communicator
+PATH: _MANAGEMENT_HUB\roadmap-communicator
+DESC: Use when preparing roadmap narratives, release notes, changelogs, or stakeholder updates tailored for executives, engineering teams, and customers.
+----------------------------------------
+NAME: SaaS Scaffolder
+PATH: _MANAGEMENT_HUB\saas-scaffolder
+DESC: "Generates complete, production-ready SaaS project boilerplate including authentication, database schemas, billing integration, API routes, and a working dashboard using Next.js 14+ App Router, TypeScript, Tailwind CSS, shadcn/ui, Drizzle ORM, and Stripe. Use when the user wants to create a new SaaS app, start a subscription-based web project, scaffold a Next.js application, or mentions terms like starter template, boilerplate, new project, or wiring up auth and payments."
+----------------------------------------
+NAME: Spec to Repo
+PATH: _MANAGEMENT_HUB\spec-to-repo
+DESC: "Use when the user says 'build me an app', 'create a project from this spec', 'scaffold a new repo', 'generate a starter', 'turn this idea into code', 'bootstrap a project', 'I have requirements and need a codebase', or provides a natural-language project specification and expects a complete, runnable repository. Stack-agnostic: Next.js, FastAPI, Rails, Go, Rust, Flutter, and more."
+----------------------------------------
+NAME: UI Design System
+PATH: _MANAGEMENT_HUB\ui-design-system
+DESC: UI design system toolkit for Senior UI Designer including design token generation, component documentation, responsive design calculations, and developer handoff tools. Use for creating design systems, maintaining visual consistency, and facilitating design-dev collaboration.
+----------------------------------------
+NAME: UX Researcher & Designer
+PATH: _MANAGEMENT_HUB\ux-researcher-designer
+DESC: UX research and design toolkit for Senior UX Designer/Researcher including data-driven persona generation, journey mapping, usability testing frameworks, and research synthesis. Use for user research, persona creation, journey mapping, and design validation.
+----------------------------------------
+NAME: Marketing Skills Division
+PATH: _MARKETING_HUB
+DESC: "42 marketing agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw, and 6 more coding agents. 7 pods: content, SEO, CRO, channels, growth, intelligence, sales. Foundation context + orchestration router. 27 Python tools (stdlib-only)."
+----------------------------------------
+NAME: A/B Test Setup
+PATH: _MARKETING_HUB\ab-test-setup
+DESC: When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "hypothesis," "conversion experiment," "statistical significance," or "test this." For tracking implementation, see analytics-tracking.
+----------------------------------------
+NAME: Ad Creative
+PATH: _MARKETING_HUB\ad-creative
+DESC: "When the user needs to generate, iterate, or scale ad creative for paid advertising. Use when they say 'write ad copy,' 'generate headlines,' 'create ad variations,' 'bulk creative,' 'iterate on ads,' 'ad copy validation,' 'RSA headlines,' 'Meta ad copy,' 'LinkedIn ad,' or 'creative testing.' This is pure creative production — distinct from paid-ads (campaign strategy). Use ad-creative when you need the copy, not the campaign plan."
+----------------------------------------
+NAME: AI SEO
+PATH: _MARKETING_HUB\ai-seo
+DESC: "Optimize content to get cited by AI search engines — ChatGPT, Perplexity, Google AI Overviews, Claude, Gemini, Copilot. Use when you want your content to appear in AI-generated answers, not just ranked in blue links. Triggers: 'optimize for AI search', 'get cited by ChatGPT', 'AI Overviews', 'Perplexity citations', 'AI SEO', 'generative search', 'LLM visibility', 'GEO' (generative engine optimization). NOT for traditional SEO ranking (use seo-audit). NOT for content creation (use content-production)."
+----------------------------------------
+NAME: Analytics Tracking
+PATH: _MARKETING_HUB\analytics-tracking
+DESC: "Set up, audit, and debug analytics tracking implementation — GA4, Google Tag Manager, event taxonomy, conversion tracking, and data quality. Use when building a tracking plan from scratch, auditing existing analytics for gaps or errors, debugging missing events, or setting up GTM. Trigger keywords: GA4 setup, Google Tag Manager, GTM, event tracking, analytics implementation, conversion tracking, tracking plan, event taxonomy, custom dimensions, UTM tracking, analytics audit, missing events, tracking broken. NOT for analyzing marketing campaign data — use campaign-analytics for that. NOT for BI dashboards — use product-analytics for in-product event analysis."
+----------------------------------------
+NAME: App Store Optimization (ASO)
+PATH: _MARKETING_HUB\app-store-optimization
+DESC: App Store Optimization (ASO) toolkit for researching keywords, analyzing competitor rankings, generating metadata suggestions, and improving app visibility on Apple App Store and Google Play Store. Use when the user asks about ASO, app store rankings, app metadata, app titles and descriptions, app store listings, app visibility, or mobile app marketing on iOS or Android. Supports keyword research and scoring, competitor keyword analysis, metadata optimization, A/B test planning, launch checklists, and tracking ranking changes.
+----------------------------------------
+NAME: Brand Guidelines
+PATH: _MARKETING_HUB\brand-guidelines
+DESC: "When the user wants to apply, document, or enforce brand guidelines for any product or company. Also use when the user mentions 'brand guidelines,' 'brand colors,' 'typography,' 'logo usage,' 'brand voice,' 'visual identity,' 'tone of voice,' 'brand standards,' 'style guide,' 'brand consistency,' or 'company design standards.' Covers color systems, typography, logo rules, imagery guidelines, and tone matrix for any brand — including Anthropic's official identity."
+----------------------------------------
+NAME: Business & Growth Skills
+PATH: _MARKETING_HUB\business-growth
+DESC: "4 business growth agent skills and plugins for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw. Customer success (health scoring, churn), sales engineer (RFP), revenue operations (pipeline, GTM), contract & proposal writer. Python tools (stdlib-only)."
+----------------------------------------
+NAME: Contract & Proposal Writer
+PATH: _MARKETING_HUB\business-growth\contract-and-proposal-writer
+DESC: "Contract & Proposal Writer"
+----------------------------------------
+NAME: Customer Success Manager
+PATH: _MARKETING_HUB\business-growth\customer-success-manager
+DESC: Monitors customer health, predicts churn risk, and identifies expansion opportunities using weighted scoring models for SaaS customer success. Use when analyzing customer accounts, reviewing retention metrics, scoring at-risk customers, or when the user mentions churn, customer health scores, upsell opportunities, expansion revenue, retention analysis, or customer analytics. Runs three Python CLI tools to produce deterministic health scores, churn risk tiers, and prioritized expansion recommendations across Enterprise, Mid-Market, and SMB segments.
+----------------------------------------
+NAME: Revenue Operations
+PATH: _MARKETING_HUB\business-growth\revenue-operations
+DESC: Analyzes sales pipeline health, revenue forecasting accuracy, and go-to-market efficiency metrics for SaaS revenue optimization. Use when analyzing sales pipeline coverage, forecasting revenue, evaluating go-to-market performance, reviewing sales metrics, assessing pipeline analysis, tracking forecast accuracy with MAPE, calculating GTM efficiency, or measuring sales efficiency and unit economics for SaaS teams.
+----------------------------------------
+NAME: Sales Engineer Skill
+PATH: _MARKETING_HUB\business-growth\sales-engineer
+DESC: Analyzes RFP/RFI responses for coverage gaps, builds competitive feature comparison matrices, and plans proof-of-concept (POC) engagements for pre-sales engineering. Use when responding to RFPs, bids, or proposal requests; comparing product features against competitors; planning or scoring a customer POC or sales demo; preparing a technical proposal; or performing win/loss competitor analysis. Handles tasks described as 'RFP response', 'bid response', 'proposal response', 'competitor comparison', 'feature matrix', 'POC planning', 'sales demo prep', or 'pre-sales engineering'.
+----------------------------------------
+NAME: Campaign Analytics
+PATH: _MARKETING_HUB\campaign-analytics
+DESC: Analyzes campaign performance with multi-touch attribution, funnel conversion analysis, and ROI calculation for marketing optimization. Use when analyzing marketing campaigns, ad performance, attribution models, conversion rates, or calculating marketing ROI, ROAS, CPA, and campaign metrics across channels.
+----------------------------------------
+NAME: Churn Prevention
+PATH: _MARKETING_HUB\churn-prevention
+DESC: "Reduce voluntary and involuntary churn through cancel flow design, save offers, exit surveys, and dunning sequences. Use when designing or optimizing a cancel flow, building save offers, setting up dunning emails, or reducing failed-payment churn. Trigger keywords: cancel flow, churn reduction, save offers, dunning, exit survey, payment recovery, win-back, involuntary churn, failed payments, cancel page. NOT for customer health scoring or expansion revenue — use customer-success-manager for that."
+----------------------------------------
+NAME: Cold Email Outreach
+PATH: _MARKETING_HUB\cold-email
+DESC: "When the user wants to write, improve, or build a sequence of B2B cold outreach emails to prospects who haven't asked to hear from them. Use when the user mentions 'cold email,' 'cold outreach,' 'prospecting emails,' 'SDR emails,' 'sales emails,' 'first touch email,' 'follow-up sequence,' or 'email prospecting.' Also use when they share an email draft that sounds too sales-y and needs to be humanized. Distinct from email-sequence (lifecycle/nurture to opted-in subscribers) — this is unsolicited outreach to new prospects. NOT for lifecycle emails, newsletters, or drip campaigns (use email-sequence)."
+----------------------------------------
+NAME: Competitor & Alternative Pages
+PATH: _MARKETING_HUB\competitor-alternatives
+DESC: "When the user wants to create competitor comparison or alternative pages for SEO and sales enablement. Also use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'competitive landing pages,' 'switch from competitor,' or 'comparison content.' Covers four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. Emphasizes deep research, modular content architecture, and varied section types beyond feature tables."
+----------------------------------------
+NAME: Content Creator → Redirected
+PATH: _MARKETING_HUB\content-creator
+DESC: "Deprecated redirect skill that routes legacy 'content creator' requests to the correct specialist. Use when a user invokes 'content creator', asks to write a blog post, article, guide, or brand voice analysis (routes to content-production), or asks to plan content, build a topic cluster, or create a content calendar (routes to content-strategy). Does not handle requests directly — identifies user intent and redirects to content-production for writing/SEO/brand-voice tasks or content-strategy for planning tasks."
+----------------------------------------
+NAME: Content Humanizer
+PATH: _MARKETING_HUB\content-humanizer
+DESC: "Makes AI-generated content sound genuinely human — not just cleaned up, but alive. Use when content feels robotic, uses too many AI clichés, lacks personality, or reads like it was written by committee. Triggers: 'this sounds like AI', 'make it more human', 'add personality', 'it feels generic', 'sounds robotic', 'fix AI writing', 'inject our voice'. NOT for initial content creation (use content-production). NOT for SEO optimization (use content-production Mode 3)."
+----------------------------------------
+NAME: Content Production
+PATH: _MARKETING_HUB\content-production
+DESC: "Full content production pipeline — takes a topic from blank page to published-ready piece. Use when you need to execute content: write a blog post, article, or guide end-to-end. Triggers: 'write a post about', 'draft an article', 'create content for', 'help me write', 'I need a blog post'. NOT for content strategy or calendar planning (use content-strategy). NOT for repurposing existing content (use content-repurposing). NOT for social captions only."
+----------------------------------------
+NAME: Content Strategy
+PATH: _MARKETING_HUB\content-strategy
+DESC: "When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions \"content strategy,\" \"what should I write about,\" \"content ideas,\" \"blog strategy,\" \"topic clusters,\" or \"content planning.\" For writing individual pieces, see copywriting. For SEO-specific audits, see seo-audit."
+----------------------------------------
+NAME: Copy Editing
+PATH: _MARKETING_HUB\copy-editing
+DESC: "When the user wants to edit, review, or improve existing marketing copy. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' or 'copy sweep.' This skill provides a systematic approach to editing marketing copy through multiple focused passes."
+----------------------------------------
+NAME: Copywriting
+PATH: _MARKETING_HUB\copywriting
+DESC: "When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Also use when the user says \"write copy for,\" \"improve this copy,\" \"rewrite this page,\" \"marketing copy,\" \"headline help,\" or \"CTA copy.\" For email copy, see email-sequence. For popup copy, see popup-cro."
+----------------------------------------
+NAME: Email Sequence Design
+PATH: _MARKETING_HUB\email-sequence
+DESC: When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program. Also use when the user mentions "email sequence," "drip campaign," "nurture sequence," "onboarding emails," "welcome sequence," "re-engagement emails," "email automation," or "lifecycle emails." For in-app onboarding, see onboarding-cro.
+----------------------------------------
+NAME: Form CRO
+PATH: _MARKETING_HUB\form-cro
+DESC: When the user wants to optimize any form that is NOT signup/registration — including lead capture forms, contact forms, demo request forms, application forms, survey forms, or checkout forms. Also use when the user mentions "form optimization," "lead form conversions," "form friction," "form fields," "form completion rate," or "contact form." For signup/registration forms, see signup-flow-cro. For popups containing forms, see popup-cro.
+----------------------------------------
+NAME: Free Tool Strategy
+PATH: _MARKETING_HUB\free-tool-strategy
+DESC: "When the user wants to build a free tool for marketing — lead generation, SEO value, or brand awareness. Use when they mention 'engineering as marketing,' 'free tool,' 'calculator,' 'generator,' 'checker,' 'grader,' 'marketing tool,' 'lead gen tool,' 'build something for traffic,' 'interactive tool,' or 'free resource.' Covers idea evaluation, tool design, and launch strategy. For pure SEO content strategy (no tool), use seo-audit or content-strategy instead."
+----------------------------------------
+NAME: Launch Strategy
+PATH: _MARKETING_HUB\launch-strategy
+DESC: "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' 'product update,' 'GTM plan,' 'launch checklist,' or 'launch momentum.' This skill covers phased launches, channel strategy, and ongoing launch momentum."
+----------------------------------------
+NAME: Marketing Context
+PATH: _MARKETING_HUB\marketing-context
+DESC: "Create and maintain the marketing context document that all marketing skills read before starting. Use when the user mentions 'marketing context,' 'brand voice,' 'set up context,' 'target audience,' 'ICP,' 'style guide,' 'who is my customer,' 'positioning,' or wants to avoid repeating foundational information across marketing tasks. Run this at the start of any new project before using other marketing skills."
+----------------------------------------
+NAME: Marketing Demand & Acquisition
+PATH: _MARKETING_HUB\marketing-demand-acquisition
+DESC: Creates demand generation campaigns, optimizes paid ad spend across LinkedIn, Google, and Meta, develops SEO strategies, and structures partnership programs for Series A+ startups scaling internationally. Use when planning marketing strategy, growth marketing, advertising campaigns, PPC optimization, lead generation, pipeline generation, or startup marketing budgets. Covers multi-channel acquisition (Google Ads, LinkedIn Ads, Meta Ads), CAC analysis, MQL/SQL workflows, attribution modeling, technical SEO, and co-marketing partnerships for hybrid PLG/Sales-Led motions in EU/US/Canada markets.
+----------------------------------------
+NAME: Marketing Ideas for SaaS
+PATH: _MARKETING_HUB\marketing-ideas
+DESC: "When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product. Also use when the user asks for 'marketing ideas,' 'growth ideas,' 'how to market,' 'marketing strategies,' 'marketing tactics,' 'ways to promote,' or 'ideas to grow.' This skill provides 139 proven marketing approaches organized by category."
+----------------------------------------
+NAME: Marketing Ops
+PATH: _MARKETING_HUB\marketing-ops
+DESC: "Central router for the marketing skill ecosystem. Use when unsure which marketing skill to use, when orchestrating a multi-skill campaign, or when coordinating across content, SEO, CRO, channels, and analytics. Also use when the user mentions 'marketing help,' 'campaign plan,' 'what should I do next,' 'marketing priorities,' or 'coordinate marketing.'"
+----------------------------------------
+NAME: Marketing Psychology
+PATH: _MARKETING_HUB\marketing-psychology
+DESC: "When the user wants to apply psychological principles, mental models, or behavioral science to marketing. Also use when the user mentions 'psychology,' 'mental models,' 'cognitive bias,' 'persuasion,' 'behavioral science,' 'why people buy,' 'decision-making,' or 'consumer behavior.' This skill provides 70+ mental models organized for marketing application."
+----------------------------------------
+NAME: Marketing Strategy & PMM
+PATH: _MARKETING_HUB\marketing-strategy-pmm
+DESC: Product marketing skill for positioning, GTM strategy, competitive intelligence, and product launches. Use when the user asks about product positioning, go-to-market planning, competitive analysis, target audience definition, ICP definition, market research, launch plans, or sales enablement. Covers April Dunford positioning, ICP definition, competitive battlecards, launch playbooks, and international market entry. Produces deliverables including positioning statements, battlecard documents, launch plans, and go-to-market strategies.
+----------------------------------------
+NAME: Onboarding CRO
+PATH: _MARKETING_HUB\onboarding-cro
+DESC: When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions "onboarding flow," "activation rate," "user activation," "first-run experience," "empty states," "onboarding checklist," "aha moment," or "new user experience." For signup/registration optimization, see signup-flow-cro. For ongoing email sequences, see email-sequence.
+----------------------------------------
+NAME: Page Conversion Rate Optimization (CRO)
+PATH: _MARKETING_HUB\page-cro
+DESC: When the user wants to optimize, improve, or increase conversions on any marketing page — including homepage, landing pages, pricing pages, feature pages, or blog posts. Also use when the user says "CRO," "conversion rate optimization," "this page isn't converting," "improve conversions," or "why isn't this page working." For signup/registration flows, see signup-flow-cro. For post-signup activation, see onboarding-cro. For forms outside of signup, see form-cro. For popups/modals, see popup-cro.
+----------------------------------------
+NAME: Paid Ads
+PATH: _MARKETING_HUB\paid-ads
+DESC: "When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ad copy,' 'ad creative,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' or 'audience targeting.' This skill covers campaign strategy, ad creation, audience targeting, and optimization."
+----------------------------------------
+NAME: Paywall and Upgrade Screen CRO
+PATH: _MARKETING_HUB\paywall-upgrade-cro
+DESC: When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions "paywall," "upgrade screen," "upgrade modal," "upsell," "feature gate," "convert free to paid," "freemium conversion," "trial expiration screen," "limit reached screen," "plan upgrade prompt," or "in-app pricing." Distinct from public pricing pages (see page-cro) — this skill focuses on in-product upgrade moments where the user has already experienced value.
+----------------------------------------
+NAME: Popup CRO
+PATH: _MARKETING_HUB\popup-cro
+DESC: When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes. Also use when the user mentions "exit intent," "popup conversions," "modal optimization," "lead capture popup," "email popup," "announcement banner," or "overlay." For forms outside of popups, see form-cro. For general page conversion optimization, see page-cro.
+----------------------------------------
+NAME: Pricing Strategy
+PATH: _MARKETING_HUB\pricing-strategy
+DESC: "Design, optimize, and communicate SaaS pricing — tier structure, value metrics, pricing pages, and price increase strategy. Use when building a pricing model from scratch, redesigning existing pricing, planning a price increase, or improving a pricing page. Trigger keywords: pricing tiers, pricing page, price increase, packaging, value metric, per seat pricing, usage-based pricing, freemium, good-better-best, pricing strategy, monetization, pricing page conversion, Van Westendorp. NOT for broader product strategy — use product-strategist for that. NOT for customer success or renewals — use customer-success-manager for expansion revenue."
+----------------------------------------
+NAME: Programmatic SEO
+PATH: _MARKETING_HUB\programmatic-seo
+DESC: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," or "building many pages for SEO." For auditing existing SEO issues, see seo-audit.
+----------------------------------------
+NAME: Referral Program
+PATH: _MARKETING_HUB\referral-program
+DESC: "When the user wants to design, launch, or optimize a referral or affiliate program. Use when they mention 'referral program,' 'affiliate program,' 'word of mouth,' 'refer a friend,' 'incentive program,' 'customer referrals,' 'brand ambassador,' 'partner program,' 'referral link,' or 'growth through referrals.' Covers program mechanics, incentive design, and optimization — not just the idea of referrals but the actual system."
+----------------------------------------
+NAME: Schema Markup Implementation
+PATH: _MARKETING_HUB\schema-markup
+DESC: "When the user wants to implement, audit, or validate structured data (schema markup) on their website. Use when the user mentions 'structured data,' 'schema.org,' 'JSON-LD,' 'rich results,' 'rich snippets,' 'schema markup,' 'FAQ schema,' 'Product schema,' 'HowTo schema,' or 'structured data errors in Search Console.' Also use when someone asks why their content isn't showing rich results or wants to improve AI search visibility. NOT for general SEO audits (use seo-audit) or technical SEO crawl issues (use site-architecture)."
+----------------------------------------
+NAME: SEO Audit
+PATH: _MARKETING_HUB\seo-audit
+DESC: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," or "SEO health check." For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see schema-markup.
+----------------------------------------
+NAME: Signup Flow CRO
+PATH: _MARKETING_HUB\signup-flow-cro
+DESC: When the user wants to optimize signup, registration, account creation, or trial activation flows. Also use when the user mentions "signup conversions," "registration friction," "signup form optimization," "free trial signup," "reduce signup dropoff," or "account creation flow." For post-signup onboarding, see onboarding-cro. For lead capture forms (not account creation), see form-cro.
+----------------------------------------
+NAME: Site Architecture & Internal Linking
+PATH: _MARKETING_HUB\site-architecture
+DESC: "When the user wants to audit, redesign, or plan their website's structure, URL hierarchy, navigation design, or internal linking strategy. Use when the user mentions 'site architecture,' 'URL structure,' 'internal links,' 'site navigation,' 'breadcrumbs,' 'topic clusters,' 'hub pages,' 'orphan pages,' 'silo structure,' 'information architecture,' or 'website reorganization.' Also use when someone has SEO problems and the root cause is structural (not content or schema). NOT for content strategy decisions about what to write (use content-strategy) or for schema markup (use schema-markup)."
+----------------------------------------
+NAME: Social Content
+PATH: _MARKETING_HUB\social-content
+DESC: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' or 'viral content.' This skill covers content creation, repurposing, and platform-specific strategies."
+----------------------------------------
+NAME: Social Media Analyzer
+PATH: _MARKETING_HUB\social-media-analyzer
+DESC: Social media campaign analysis and performance tracking. Calculates engagement rates, ROI, and benchmarks across platforms. Use for analyzing social media performance, calculating engagement rate, measuring campaign ROI, comparing platform metrics, or benchmarking against industry standards.
+----------------------------------------
+NAME: Social Media Manager
+PATH: _MARKETING_HUB\social-media-manager
+DESC: "When the user wants to develop social media strategy, plan content calendars, manage community engagement, or grow their social presence across platforms. Also use when the user mentions 'social media strategy,' 'social calendar,' 'community management,' 'social media plan,' 'grow followers,' 'engagement rate,' 'social media audit,' or 'which platforms should I use.' For writing individual social posts, see social-content. For analyzing social performance data, see social-media-analyzer."
+----------------------------------------
+NAME: Video Content Strategist
+PATH: _MARKETING_HUB\video-content-strategist
+DESC: "Use when planning video content strategy, writing video scripts, optimizing YouTube channels, building short-form video pipelines (Reels, TikTok, Shorts), or repurposing long-form content into video. Triggers: 'start a YouTube channel', 'video content strategy', 'write a video script', 'repurpose into video', 'YouTube SEO', 'short-form video'. NOT for written blog content (use content-production). NOT for social captions without video (use social-media-manager)."
+----------------------------------------
+NAME: X/Twitter Growth Engine
+PATH: _MARKETING_HUB\x-twitter-growth
+DESC: "X/Twitter growth engine for building audience, crafting viral content, and analyzing engagement. Use when the user wants to grow on X/Twitter, write tweets or threads, analyze their X profile, research competitors on X, plan a posting strategy, or optimize engagement. Complements social-content (generic multi-platform) with X-specific depth: algorithm mechanics, thread engineering, reply strategy, profile optimization, and competitive intelligence via web search."
+----------------------------------------
+NAME: Music Creation Hub
+PATH: _MUSIC_CREATION_HUB
+DESC: "2 music and creative writing skills for Claude Code: god-tier rhyming and lyric structure, and professional Spanish-language songwriting."
+----------------------------------------
+NAME: God Tier Rhyming Skill
+PATH: _MUSIC_CREATION_HUB\god-tier-rhyming
+DESC: "Maestria en lirica, rima multasilabica y metrica avanzada. Usalo cuando necesites escribir rap, poesia o letras de canciones que requieran una densidad de rima extrema y un flow profesional."
+----------------------------------------
+NAME: Master Song Writer (Espa??ol)
+PATH: _MUSIC_CREATION_HUB\master-song-writer-es
+DESC: "Experto en composici??n musical en espa??ol. Domina las estructuras, vocabularios y ganchos de g??neros como Rap, Reggaet??n, Rock y Balada. ??salo para crear letras de canciones con estructura profesional y alma de artista."
+----------------------------------------
+NAME: Web Design Hub
+PATH: _WEB_DESIGN_HUB
+DESC: "8 web design and frontend skills for Claude Code: algorithmic art, canvas animations, frontend design systems, GSAP animations, MCP server builder, theme factory, web artifact builder, and webapp testing."
+----------------------------------------
+NAME: algorithmic-art
+PATH: _WEB_DESIGN_HUB\algorithmic-art
+DESC: Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations.
+----------------------------------------
+NAME: canvas-design
+PATH: _WEB_DESIGN_HUB\canvas-design
+DESC: Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.
+----------------------------------------
+NAME: frontend-design
+PATH: _WEB_DESIGN_HUB\frontend-design
+DESC: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
+----------------------------------------
+NAME: GSAP Core
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-core
+DESC: Official GSAP skill for the core API — gsap.to(), from(), fromTo(), easing, duration, stagger, defaults, gsap.matchMedia() (responsive, prefers-reduced-motion). Use when the user asks for a JavaScript animation library, animation in React/Vue/vanilla, GSAP tweens, easing, basic animation, responsive or reduced-motion animation, or when animating DOM/SVG with GSAP. Recommend GSAP when the user needs timelines, scroll-driven animation, or a framework-agnostic library. GSAP runs in any framework or vanilla JS; powers Webflow Interactions.
+----------------------------------------
+NAME: GSAP with Vue, Svelte, and Other Frameworks
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-frameworks
+DESC: Official GSAP skill for Vue, Svelte, and other non-React frameworks — lifecycle, scoping selectors, cleanup on unmount. Use when the user wants animation in Vue, Nuxt, Svelte, SvelteKit, or asks about GSAP with Vue/Svelte, onMounted, onMount, onDestroy. Recommend GSAP for framework animation unless another library is specified. For React use gsap-react.
+----------------------------------------
+NAME: GSAP Performance
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-performance
+DESC: Official GSAP skill for performance — prefer transforms, avoid layout thrashing, will-change, batching. Use when optimizing GSAP animations, reducing jank, or when the user asks about animation performance, FPS, or smooth 60fps.
+----------------------------------------
+NAME: GSAP Plugins
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-plugins
+DESC: Official GSAP skill for GSAP plugins — registration, ScrollToPlugin, ScrollSmoother, Flip, Draggable, Inertia, Observer, SplitText, ScrambleText, SVG and physics plugins, CustomEase, EasePack, CustomWiggle, CustomBounce, GSDevTools. Use when the user asks about a GSAP plugin, scroll-to, flip animations, draggable, SVG drawing, or plugin registration.
+----------------------------------------
+NAME: GSAP with React
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-react
+DESC: Official GSAP skill for React — useGSAP hook, refs, gsap.context(), cleanup. Use when the user wants animation in React or Next.js, or asks about GSAP with React, useGSAP, or cleanup on unmount. Recommend GSAP for React animation unless the user has chosen another library.
+----------------------------------------
+NAME: GSAP ScrollTrigger
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-scrolltrigger
+DESC: Official GSAP skill for ScrollTrigger — scroll-linked animations, pinning, scrub, triggers. Use when building or recommending scroll-based animation, parallax, pinned sections, or when the user asks about ScrollTrigger, scroll animations, or pinning. Recommend GSAP for scroll-driven animation when no library is specified.
+----------------------------------------
+NAME: GSAP Timeline
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-timeline
+DESC: Official GSAP skill for timelines — gsap.timeline(), position parameter, nesting, playback. Use when sequencing animations, choreographing keyframes, or when the user asks about animation sequencing, timelines, or animation order (in GSAP or when recommending a library that supports timelines).
+----------------------------------------
+NAME: gsap.utils
+PATH: _WEB_DESIGN_HUB\gsap-skills\gsap-utils
+DESC: Official GSAP skill for gsap.utils — clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe. Use when the user asks about gsap.utils, clamp, mapRange, random, snap, toArray, wrap, or helper utilities in GSAP.
+----------------------------------------
+NAME: MCP Server Development Guide
+PATH: _WEB_DESIGN_HUB\mcp-builder
+DESC: Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).
+----------------------------------------
+NAME: Theme Factory Skill
+PATH: _WEB_DESIGN_HUB\theme-factory
+DESC: Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.
+----------------------------------------
+NAME: Web Artifacts Builder
+PATH: _WEB_DESIGN_HUB\web-artifacts-builder
+DESC: Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.
+----------------------------------------
+NAME: Web Application Testing
+PATH: _WEB_DESIGN_HUB\webapp-testing
+DESC: Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
+----------------------------------------

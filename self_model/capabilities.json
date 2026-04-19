@@ -47,6 +47,18 @@
       ]
     }
   },
+  "native_claude_tools": {
+    "WebSearch": {
+      "type": "deferred_tool",
+      "use_when": "información post-2024, docs actualizadas, noticias, modelos recientes",
+      "note": "Solo disponible en sesiones Claude Code. Cargar con ToolSearch primero."
+    },
+    "WebFetch": {
+      "type": "deferred_tool",
+      "use_when": "leer README de GitHub, model cards HuggingFace, páginas públicas de docs",
+      "note": "No funciona con URLs autenticadas (Google Docs, Confluence, Jira privado)."
+    }
+  },
   "mastered_domains": [
     {
       "domain": "COMPUTER_VISION",
@@ -79,6 +91,16 @@
         "Custom Tool Creation"
       ],
       "note": "I can now extend my own brain by building custom bridges to any API or system service."
+    },
+    {
+      "domain": "OFFENSIVE_SECURITY",
+      "method": "Red-Team-MCP + SAST (Bandit/Semgrep)",
+      "features": [
+        "Secret Scanning",
+        "Code Vulnerability Audit",
+        "Dependency Integrity Check"
+      ],
+      "note": "I can now perform offensive audits on my own builds to ensure maximum system integrity."
     }
   ]
 }

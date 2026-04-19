@@ -1,9 +1,10 @@
 import pynvml
-import json
-import sys
-import time
+from mcp.server.fastmcp import FastMCP
 
-class GPUMonitor:
+mcp = FastMCP("gpu-monitor")
+
+
+class _GPUMonitor:
     def __init__(self):
         try:
             pynvml.nvmlInit()
@@ -17,11 +18,9 @@ class GPUMonitor:
     def get_stats(self):
         if not self.enabled:
             return {"error": f"NVML no inicializado: {self.error}"}
-        
         info = pynvml.nvmlDeviceGetMemoryInfo(self.handle)
         temp = pynvml.nvmlDeviceGetTemperature(self.handle, pynvml.NVML_TEMPERATURE_GPU)
         util = pynvml.nvmlDeviceGetUtilizationRates(self.handle)
-        
         return {
             "gpu_name": self.name,
             "vram_total_mb": info.total / 1024**2,
@@ -30,35 +29,18 @@ class GPUMonitor:
             "vram_percent": (info.used / info.total) * 100,
             "temperature_c": temp,
             "gpu_utilization_percent": util.gpu,
-            "memory_utilization_percent": util.memory
+            "memory_utilization_percent": util.memory,
         }
 
-monitor = GPUMonitor()
 
-def run_mcp_loop():
-    print("--- GPU MONITOR MCP SERVER ONLINE ---")
-    print(f"Monitoreando: {monitor.name if monitor.enabled else 'ERROR'}")
-    
-    while True:
-        try:
-            line = sys.stdin.readline()
-            if not line: break
-            request = json.loads(line)
-            method = request.get("method")
-            
-            if method == "get_gpu_stats":
-                result = monitor.get_stats()
-            else:
-                result = {"error": "Metodo no soportado"}
-            
-            print(json.dumps({"result": result}))
-            sys.stdout.flush()
-        except Exception as e:
-            print(json.dumps({"error": str(e)}))
-            sys.stdout.flush()
+_monitor = _GPUMonitor()
+
+
+@mcp.tool()
+def get_gpu_stats() -> dict:
+    """Devuelve temperatura, VRAM usada/libre y utilización de la RTX 4060."""
+    return _monitor.get_stats()
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--test":
-        print(json.dumps(monitor.get_stats(), indent=2))
-    else:
-        run_mcp_loop()
+    mcp.run()

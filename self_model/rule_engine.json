@@ -20,6 +20,11 @@
       "id": "AGGRESSIVE_SELF_IMPROVEMENT",
       "rule": "Trigger the self-improvement routine on: 1. Action repetition (looping). 2. Tool/Command failure. 3. User correction ('you did it wrong'). Analyze the root cause and register the new pattern in failure_patterns.json immediately.",
       "priority": "CRITICAL"
+    },
+    {
+      "id": "PYTHON_DEVELOPMENT_PROTOCOL",
+      "rule": "Before programming in Python, ALWAYS review relevant Python skills (@python-pro, @async-python-patterns, etc.) and project-specific files. If delegating to local models (Ollama), provide all identified relevant context and skill instructions within the command prompt to ensure high-quality, compliant code.",
+      "priority": "CRITICAL"
     }
   ]
 }
