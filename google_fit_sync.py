@@ -182,6 +182,6 @@ if __name__ == '__main__':
     sync.authenticate()
     health_data = sync.get_health_data()
 
-    print(f"\n📅 Fecha: {health_data['date']}")
-    print(f"👟 Pasos: {health_data['steps']:,}")
-    print(f"❤️ Pulsaciones: {health_data['heart_rate_min']}-{health_data['heart_rate_max']} bpm (avg: {health_data['heart_rate_avg']})")
+    print(f"\n[FECHA]: {health_data['date']}")
+    print(f"[PASOS]: {health_data['steps']:,}")
+    print(f"[PULSACIONES]: {health_data['heart_rate_min']}-{health_data['heart_rate_max']} bpm (avg: {health_data['heart_rate_avg']})")

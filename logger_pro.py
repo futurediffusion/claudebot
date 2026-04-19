@@ -18,13 +18,19 @@ class ColoredConsoleHandler(logging.StreamHandler):
         try:
             level = record.levelname
             color = COLORS.get(level, COLORS['RESET'])
-            # Guardamos el nivel original para no afectar otros handlers
             original_level = record.levelname
             record.levelname = f"{color}{level}{COLORS['RESET']}"
             msg = self.format(record)
-            self.stream.write(msg + self.terminator)
+            
+            # Forzamos encoding UTF-8 en la escritura de consola si es posible
+            try:
+                self.stream.write(msg + self.terminator)
+            except UnicodeEncodeError:
+                # Si falla el emoji, lo enviamos sin caracteres especiales
+                self.stream.write(msg.encode('ascii', 'replace').decode('ascii') + self.terminator)
+            
             self.flush()
-            record.levelname = original_level # Restauramos
+            record.levelname = original_level
         except Exception:
             self.handleError(record)
 
