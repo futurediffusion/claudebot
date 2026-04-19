@@ -3,7 +3,12 @@ import json
 import os
 import requests
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 from logger_pro import setup_logger
+
+load_dotenv()
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_USER_ID = os.getenv("TELEGRAM_USER_ID")
 
 # Configuración
 STATE_FILE = "heartbeat_state.json"
@@ -21,7 +26,9 @@ class HeartbeatEngine:
             {"id": "git_backup", "command": "python scripts/heartbeat/git_backup.py", "interval": 12},
             {"id": "vector_index", "command": "python scripts/heartbeat/vector_index.py", "interval": 24},
             {"id": "market_scout", "command": "python scripts/heartbeat/market_scout.py", "interval": 48},
-            {"id": "system_pruning", "command": "python scripts/heartbeat/system_pruning.py", "interval": 168}
+            {"id": "capability_evolve", "command": "python scripts/heartbeat/evo_engine.py", "interval": 24},
+            {"id": "system_pruning", "command": "python scripts/heartbeat/system_pruning.py", "interval": 168},
+            {"id": "daily_improvement", "command": "python scripts/heartbeat/agent_router.py \"Actúa como Arquitecto de Sistemas. Revisa 'self_model/failure_patterns.json' y propone 1 optimización concreta de código o arquitectura para hacer a Claudebot más rápido o seguro hoy. Sé técnico, breve y da un ejemplo de código.\"", "interval": 24}
         ]
 
     def load_state(self):
@@ -31,6 +38,22 @@ class HeartbeatEngine:
 
     def save_state(self):
         with open(STATE_FILE, 'w') as f: json.dump(self.state, f, indent=4)
+
+    async def send_telegram_alert(self, message):
+        """Envía una notificación silenciosa a Telegram si está configurado."""
+        if not TELEGRAM_TOKEN or not TELEGRAM_USER_ID:
+            return
+            
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_USER_ID,
+            "text": message,
+            "parse_mode": "Markdown"
+        }
+        try:
+            requests.post(url, json=payload, timeout=5)
+        except Exception as e:
+            log.warning(f"No se pudo enviar notificación de Telegram: {e}")
 
     async def ask_ollama_for_fix(self, task_id, error_msg):
         """Consulta a Ollama local para obtener una solución rápida."""
@@ -68,6 +91,10 @@ class HeartbeatEngine:
             log.info(f"Éxito: {task['id']}")
             self.state[task['id']] = datetime.now().isoformat()
             self.save_state()
+            
+            # Si era un reintento (auto-reparación), avisar por Telegram
+            if not retry:
+                await self.send_telegram_alert(f"✅ *AUTO-REPARACIÓN EXITOSA*\nLa tarea `{task['id']}` se arregló y ejecutó correctamente.")
         else:
             err_msg = stderr.decode(errors='replace')
             log.error(f"Fallo en {task['id']}: {err_msg}")
@@ -76,13 +103,21 @@ class HeartbeatEngine:
                 fix_command = await self.ask_ollama_for_fix(task['id'], err_msg)
                 if fix_command and fix_command != "None":
                     log.warning(f"Intentando Auto-Reparación con: {fix_command}")
+                    await self.send_telegram_alert(f"⚠️ *ALERTA DE SISTEMA*\nFallo en tarea `{task['id']}`.\nIniciando Auto-Reparación usando: `{fix_command}`")
+                    
                     repair_proc = await asyncio.create_subprocess_shell(fix_command)
                     await repair_proc.wait()
                     # Re-intentar la tarea original una vez
                     await self.run_task(task, retry=False)
+                else:
+                    # Fallo crítico sin solución aparente
+                    await self.send_telegram_alert(f"❌ *FALLO CRÍTICO*\nLa tarea `{task['id']}` falló y la IA local no encontró solución.\nError:\n`{err_msg[:500]}`")
+            else:
+                # Falló la auto-reparación
+                await self.send_telegram_alert(f"❌ *AUTO-REPARACIÓN FALLIDA*\nLa tarea `{task['id']}` no pudo ser arreglada por la IA.")
 
     async def start(self):
-        log.info("--- MOTOR PROACTIVO V2 (SELF-HEALING) INICIADO ---")
+        log.info("--- MOTOR PROACTIVO V3 (TELEGRAM & SELF-HEALING) INICIADO ---")
         while True:
             now = datetime.now()
             for task in self.tasks:
