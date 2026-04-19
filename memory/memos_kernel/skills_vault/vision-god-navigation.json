@@ -1,0 +1,12 @@
+{
+  "name": "Vision-God-Navigation",
+  "version": 1,
+  "last_updated": "Sun Apr 19 01:31:52 2026",
+  "description": "Navegaci\u00f3n visual aut\u00f3noma usando OmniParser V2 y GPU",
+  "procedure": "1. Iniciar Vision Server. 2. Capturar pantalla completa. 3. Mapear IDs interactuables. 4. Clic en el centro del ID. 5. Verificar cambio de URL.",
+  "examples": [
+    "DuckDuckGo Search",
+    "Freepik Interaction"
+  ],
+  "success_rate": 1.0
+}

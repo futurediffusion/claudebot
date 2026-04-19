@@ -1,67 +1,30 @@
 {
   "version": 1,
-  "known_signatures": {
-    "timeout": {
-      "meaning": "request or tool took too long",
-      "recommended_response": "fallback or split task"
+  "patterns": [
+    {
+      "id": "GOOGLE_ANTIBOT_TRIGGER",
+      "symptom": "Detection screen or infinite CAPTCHA",
+      "cause": "Direct navigation to result URLs or interaction with 'I am not a robot' checkboxes.",
+      "remedy": "Use Human-Flow: Home -> Type with delay -> Click results tab -> Visual selection."
     },
-    "api_key_missing": {
-      "meaning": "provider credentials were missing",
-      "recommended_response": "stop and request configuration"
+    {
+      "id": "BLIND_SCROLL_LOOP",
+      "symptom": "Agent scrolls and resets page infinitely.",
+      "cause": "Confusing visual feedback (toggles/popups) with progress. Lack of URL change validation.",
+      "reproduce": "Happened in DuckDuckGo search.",
+      "remedy": "Always validate state change via URL or specific unique element detection before scrolling."
     },
-    "tool_unavailable": {
-      "meaning": "wrapper or runtime tool was missing",
-      "recommended_response": "check local setup and bridges"
+    {
+      "id": "POWERSHELL_SYNTAX_ERROR",
+      "symptom": "Command failed with && or similar tokens.",
+      "cause": "Using bash-style separators in Windows PowerShell.",
+      "remedy": "Use semicolon (;) or run commands separately."
     },
-    "invalid_json": {
-      "meaning": "output was malformed or schema-invalid",
-      "recommended_response": "re-run formatting or validation layer"
-    },
-    "navigation_failed": {
-      "meaning": "browser or desktop navigation did not complete",
-      "recommended_response": "inspect runtime and UI drift"
-    },
-    "permission_denied": {
-      "meaning": "environment blocked the requested action",
-      "recommended_response": "check permissions or execution environment"
-    },
-    "bot_detection_triggered": {
-      "meaning": "Site detected automation (e.g. Google Abuse, Cloudflare)",
-      "recommended_response": "Use Stealth Mode, human typing delays, and avoid deep URL navigation."
-    },
-    "ui_coordinate_drift": {
-      "meaning": "Clicks failing due to static X,Y coordinates on dynamic UI",
-      "recommended_response": "Switch to DOM/Playwright automation or use real-time Vision to re-calibrate."
+    {
+      "id": "PYTORCH_CPU_FALLBACK",
+      "symptom": "Vision inference takes > 5 seconds.",
+      "cause": "Environment installed 'torch' instead of 'torch+cuXXX'.",
+      "remedy": "Force install using --index-url https://download.pytorch.org/whl/cu121."
     }
-  },
-  "observed_patterns": {
-    "google_deep_link_block": {
-      "task": "browser_search",
-      "signature": "GOOGLE_ABUSE_EXEMPTION",
-      "root_cause": "Navigating directly to search results URL instead of home page",
-      "fix": "Navigate to home, type query with delay, and click search button"
-    },
-    "edge_profiling_lock": {
-      "task": "persistent_context",
-      "signature": "Target page, context or browser has been closed",
-      "root_cause": "Edge already open blocking the User Data profile directory",
-      "fix": "Kill all msedge.exe processes before launching persistent context"
-    },
-    "shared:mouse_calibration::mouse_automation::ui_coordinate_drift": {
-      "model": "shared:mouse_calibration",
-      "task_type": "mouse_automation",
-      "signature": "ui_coordinate_drift",
-      "count": 11,
-      "last_seen": "2026-04-17T06:29:28+00:00",
-      "last_error": "ui_coordinate_drift: expected_window_not_detected after 5 attempts"
-    },
-    "worker-core:windows::windows_automation::unknown_failure": {
-      "model": "worker-core:windows",
-      "task_type": "windows_automation",
-      "signature": "unknown_failure",
-      "count": 1,
-      "last_seen": "2026-04-18T16:47:51+00:00",
-      "last_error": "Agent failed after exhausting retries: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.googl..."
-    }
-  }
+  ]
 }

@@ -9,205 +9,33 @@
         "strategy"
       ],
       "preferred_tasks": [
-        "planning",
-        "architecture"
-      ],
-      "execution_style": "deliberate"
-    },
-    "qwen3-coder:480b-cloud": {
-      "strengths": [
-        "heavy_refactor",
-        "multi_file_fix",
-        "coding",
-        "debugging"
-      ],
-      "preferred_tasks": [
-        "heavy_refactor",
-        "multi_file_fix",
-        "fast_coding"
-      ],
-      "execution_style": "deep_implementation"
-    },
-    "qwen3-coder-next:cloud": {
-      "strengths": [
-        "fast_coding",
-        "scaffolding",
-        "coding",
-        "iteration"
-      ],
-      "preferred_tasks": [
-        "fast_coding",
-        "scaffolding"
-      ],
-      "execution_style": "fast_execution"
-    },
-    "qwen3-vl:latest": {
-      "strengths": [
-        "vision",
-        "screenshot",
-        "ui_analysis"
-      ],
-      "preferred_tasks": [
-        "vision",
-        "screenshot",
-        "ui_analysis"
-      ],
-      "execution_style": "visual_analysis"
-    },
-    "gemma4:latest": {
-      "strengths": [
-        "summary",
-        "simple_classify",
-        "cheap"
-      ],
-      "preferred_tasks": [
-        "summary",
-        "simple_classify"
-      ],
-      "execution_style": "lightweight"
-    },
-    "groq_qwen_32b": {
-      "strengths": [
-        "validation",
-        "parsing",
-        "log_analysis",
-        "fast"
-      ],
-      "preferred_tasks": [
-        "validation",
-        "parsing",
-        "log_analysis"
-      ],
-      "execution_style": "fast_processing"
-    },
-    "groq_gpt_oss_20b": {
-      "strengths": [
-        "formatting",
-        "classification",
-        "json",
-        "cheap"
-      ],
-      "preferred_tasks": [
-        "formatting",
-        "classification",
-        "json"
-      ],
-      "execution_style": "transform_worker"
-    },
-    "groq_vision_scout": {
-      "strengths": [
-        "vision",
-        "screenshot",
-        "ui_analysis",
-        "fast"
-      ],
-      "preferred_tasks": [
-        "vision",
-        "screenshot",
-        "ui_analysis"
-      ],
-      "execution_style": "fast_visual_scout"
-    },
-    "worker-core:browser": {
-      "strengths": [
-        "browser_automation",
-        "navigation",
-        "web_extraction"
-      ],
-      "preferred_tasks": [
-        "browser_automation"
-      ],
-      "execution_style": "tool_execution"
-    },
-    "worker-core:windows": {
-      "strengths": [
-        "windows_automation",
-        "desktop_control",
-        "ui_interaction"
-      ],
-      "preferred_tasks": [
-        "windows_automation"
-      ],
-      "execution_style": "tool_execution"
-    },
-    "worker-core:orchestrator": {
-      "strengths": [
-        "worker_automation",
-        "multi_step",
-        "tool_orchestration"
-      ],
-      "preferred_tasks": [
-        "worker_automation"
-      ],
-      "execution_style": "tool_orchestration"
-    },
-    "shared:mouse_calibration": {
-      "strengths": [
-        "mouse_automation",
-        "coordinate_calibration",
-        "ui_interaction",
-        "verification"
-      ],
-      "preferred_tasks": [
-        "mouse_automation"
-      ],
-      "execution_style": "calibrated_tool_execution"
-    },
-    "gemini:surgical_edit": {
-      "strengths": [
-        "file_edit",
-        "surgical_edit",
-        "text_replacement"
-      ],
-      "preferred_tasks": [
-        "file_edit"
-      ],
-      "execution_style": "precise_edit"
-    },
-    "minimax_cli:entrypoint": {
-      "strengths": [],
-      "preferred_tasks": [],
-      "execution_style": "learned"
-    }
-  },
-  "agents": {
-    "claude_code": {
-      "strengths": [
-        "planning",
-        "repo_reasoning",
-        "careful_edits"
-      ],
-      "best_for": [
-        "planning",
-        "implementation",
-        "review"
+        "complex_workflow_design",
+        "system_refactoring"
       ]
     },
-    "gemini_cli": {
+    "gemini-pro-1.5:internal": {
       "strengths": [
-        "tool_execution",
-        "filesystem",
-        "desktop_automation"
+        "surgical_edits",
+        "file_operations",
+        "context_efficiency"
       ],
       "best_for": [
-        "browser_automation",
-        "windows_automation",
-        "worker_automation"
+        "precise_code_modification",
+        "real_time_vision_integration"
       ]
     },
-    "codex_cli": {
+    "claude-3.5-sonnet:external": {
       "strengths": [
-        "codebase_edits",
-        "shell_workflows",
-        "verification"
+        "logic",
+        "code_robustness",
+        "error_handling"
       ],
       "best_for": [
-        "implementation",
-        "refactor",
-        "validation"
+        "senior_level_coding",
+        "complex_debugging"
       ]
     },
-    "shared_cli": {
+    "worker-core:cli": {
       "strengths": [
         "simple_execution",
         "wrapper_access"
@@ -218,5 +46,39 @@
         "worker_automation"
       ]
     }
-  }
+  },
+  "mastered_domains": [
+    {
+      "domain": "COMPUTER_VISION",
+      "engine": "OmniParser V2.0 + GPU (CUDA 12.1)",
+      "latency": "Under 1s",
+      "features": [
+        "Interactable Object Mapping",
+        "OCR Lite",
+        "ID-based Clicking"
+      ]
+    },
+    {
+      "domain": "IMAGE_GENERATION",
+      "model": "Illustrious-XL-v2.0",
+      "config": "Euler a + Karras, 28 steps, CFG 4",
+      "preset": "amazing quality, very aesthetic, newest"
+    },
+    {
+      "domain": "BROWSER_CONTROL",
+      "method": "Playwright Stealth + Human Mouse (Bezier Curves)",
+      "security": "Low-detectability navigation",
+      "note": "Applying Karpathy discipline to state validation."
+    },
+    {
+      "domain": "MCP_SYSTEMS",
+      "method": "MCP-Server-Builder + Python/TS Scaffolding",
+      "features": [
+        "OpenAPI to MCP conversion",
+        "Server Validation",
+        "Custom Tool Creation"
+      ],
+      "note": "I can now extend my own brain by building custom bridges to any API or system service."
+    }
+  ]
 }

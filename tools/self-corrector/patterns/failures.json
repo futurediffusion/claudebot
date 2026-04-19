@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": 1776572313.157346,
+    "action": "click",
+    "target": "(960, 450)",
+    "reason": "Pantalla estatica tras la accion"
+  },
+  {
+    "timestamp": 1776572456.9734282,
+    "action": "click",
+    "target": "(960, 450)",
+    "reason": "Pantalla estatica tras la accion"
+  }
+]

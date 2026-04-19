@@ -15,18 +15,27 @@ sys.path.append(omniparser_path)
 
 from OmniParser.util.utils import check_ocr_box, get_yolo_model, get_som_labeled_img
 
-app = FastAPI(title="Vision God Core Server")
+app = FastAPI(title="Vision God Core Server (GPU Optimized)")
 
 # Global variables for models
 yolo_model = None
+# FORZAMOS CUDA
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 weights_path = os.path.join(omniparser_path, 'weights')
 
 @app.on_event("startup")
 async def load_models():
     global yolo_model
-    print(f"--- INICIALIZANDO SERVIDOR DE VISIÓN (OmniParser V2.0) en {device} ---")
+    print("="*60)
+    print(f"--- INICIALIZANDO SERVIDOR DE VISIÓN (OmniParser V2.0) ---")
+    print(f"DISPOSITIVO: {device.upper()}")
+    if device == 'cpu':
+        print("ADVERTENCIA: No se detecto GPU. La vision sera lenta.")
+    else:
+        print(f"¡POTENCIA NVIDIA DETECTADA! Usando {torch.cuda.get_device_name(0)}")
     print(f"Buscando pesos en: {weights_path}")
+    print("="*60)
+    
     yolo_model = get_yolo_model(model_path=os.path.join(weights_path, 'icon_detect', 'model.pt'))
     print("¡Sistemas Visuales CALIENTES y Listos!")
 
