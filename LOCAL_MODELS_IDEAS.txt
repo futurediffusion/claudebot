@@ -1,0 +1,69 @@
+IDEAS DE USO PARA MODELOS LOCALES (OLLAMA)
+==========================================
+Modelos instalados: Qwen 2.5 (3B, 7B), Llama3-based, Mai4
+
+Disclaimer: Son modelos locales pequenos (~1.9-7GB).
+No son GPT-4. Funciones limitadas pero utiles para tareas especificas.
+
+---
+
+QN: qwen2.5-coder:3b (1.9 GB)
+------------------------------
+- Code completion en VS Code / Cursor
+- Explicar errores de codigo pequenos
+- Generar funciones simples (Python, JS)
+- Code review rapido de snippets
+- Traducir pseudocodigo a codigo real
+
+---
+
+QWN: qwen2.5-coder:7b (4.7 GB)
+-------------------------------
+- Code generation completo (scripts pequenos)
+- Debugging assistant
+- Explicar archivos de codigo existentes
+- Escribir tests unitarios basics
+- Documentar funciones
+
+---
+
+OTROS MODELOS
+----------
+- llava-llama3: Vision + texto (imagenes -> descripcion)
+- nomic-embed-text: Embeddings para RAG local
+- mai4: Tareas generales pequenas
+
+---
+
+CASOS DE USO REALISTAS
+-------------------
+1. Code Helper: "Explain this error" → pega error, responde explicacion
+2. Script Generator: "Write a Python script to rename files by date"
+3. Code Explainer: "What does this function do?" → pega codigo
+4. Quick Refactor: "Make this more readable"
+5. Regex Builder: "Create regex for email validation"
+6. Bash Helper: "Write command to find duplicates in folder"
+7. README Writer: "Document this Python script"
+
+---
+
+INTEGRACION CON CLAUDE CODE
+------------------------
+Puedes usar ollama como fallback local cuando:
+- No quieres gastar en API
+- Trabjas offline
+- Necesitas respuesta rapida sin latencia de red
+- Tareas pequenas que no valen la pena usar API cara
+
+Ejemplo: Configurar en CLAUDE.md para routing de tareas pequenas.
+
+---
+
+LIMITACIONES CONOCIDAS
+--------------------
+- No follows instrucciones complejas bien
+- Matematicas/puzzles no son su fuerte
+- Context window pequena (se olvida conversacion larga)
+- A veces "alucina" respuestas
+
+Para estas tareas -> usar API cloud (OpenAI, Claude, etc.)
