@@ -57,9 +57,24 @@ class ClaudebotWatchHeart:
             bpm = data[1]
             self.log.info(f"CORAZÓN: {bpm} BPM")
 
+    async def _scan_for_device(self) -> bool:
+        """Verifica que el reloj esté visible antes de conectar."""
+        self.log.info("Escaneando BLE (8 seg) para verificar que el reloj esté visible...")
+        devices = await BleakScanner.discover(timeout=8.0)
+        found = any(d.address.upper() == self.address.upper() for d in devices)
+        if not found:
+            visible = [f"{d.address} ({d.name})" for d in devices]
+            self.log.error(f"Reloj {self.address} NO detectado.")
+            self.log.error(f"Dispositivos visibles: {visible or 'ninguno'}")
+            self.log.error("Posibles causas: reloj apagado, conectado al teléfono, o fuera de rango.")
+        return found
+
     async def run(self):
         self.log.info(f"Conectando a Redmi Watch 5 ({self.address})...")
-        
+
+        if not await self._scan_for_device():
+            return
+
         async with BleakClient(self.address) as client:
             self.client = client
             if not client.is_connected:

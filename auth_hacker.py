@@ -7,7 +7,7 @@ from logger_pro import setup_logger
 # CONFIGURACIÓN
 ADDRESS = "04:DA:28:A1:9F:17"
 TOKEN = bytes.fromhex("b626bc015ecb484bf3e1b2737213d11a")
-SERVICE_XIAOMI = "0000fe95-0000-1000-8000-00805f9b34fb"
+SERVICE_XIAOMI = "0000fee1-0000-1000-8000-00805f9b34fb"
 
 log = setup_logger('watch_hacker')
 

@@ -11,6 +11,7 @@ from core.automation_detection import detect_automation_route
 from core.context_manager import ContextManager
 from core.episodic_memory import EpisodicMemoryEngine
 from core.router import Router
+from core.skill_bridge import SkillBridge
 from core.task_logger import TaskLogger
 from core.world_model import WorldModelEngine
 from models.gemma4_adapter import Gemma4Adapter
@@ -63,6 +64,7 @@ class Orchestrator:
         self.self_model = self.router.self_model
         self.episodic_memory = EpisodicMemoryEngine(agent_name=agent_name)
         self.world_model = WorldModelEngine(agent_name=agent_name)
+        self.skill_bridge = SkillBridge(agent_name=agent_name)
         self.logger = TaskLogger()
         self.context = ContextManager()
 
@@ -116,7 +118,9 @@ class Orchestrator:
                     task_type=f"{automation_route}_automation",
                     refresh=True,
                 )
+                skills_brief = self.skill_bridge.build_context_brief(task)
                 self._set_world_model_context(world_brief)
+                self._set_skill_context(skills_brief)
                 self.world_model.record_task_start(
                     task=task,
                     task_type=f"{automation_route}_automation",
@@ -134,15 +138,18 @@ class Orchestrator:
                     start_time,
                     memory_brief,
                     world_brief,
+                    skills_brief,
                 )
 
         model_type, task_type, reasoning, used_fallback = self.router.route_with_fallback(task, max_fallbacks)
         decision_meta = self.router.get_last_decision_meta()
         world_brief = self.world_model.build_context_brief(task, task_type=task_type.value, refresh=True)
         memory_brief = self.episodic_memory.build_context_brief(task, task_type=task_type.value)
+        skills_brief = self.skill_bridge.build_context_brief(task)
         self._set_self_model_context(task, task_type.value, model_type.value, decision_meta)
         self._set_episodic_memory_context(memory_brief)
         self._set_world_model_context(world_brief)
+        self._set_skill_context(skills_brief)
         self.world_model.record_task_start(
             task=task,
             task_type=task_type.value,
@@ -162,6 +169,7 @@ class Orchestrator:
             decision_meta=decision_meta,
             memory_brief=memory_brief,
             world_brief=world_brief,
+            skills_brief=skills_brief,
         )
 
         if result.get("success") or max_fallbacks <= 0:
@@ -191,8 +199,10 @@ class Orchestrator:
             used_fallback=True,
             use_tools=use_tools,
             start_time=start_time,
+            decision_meta=decision_meta,
             memory_brief=memory_brief,
             world_brief=world_brief,
+            skills_brief=skills_brief,
         )
 
     def execute_with_model(
@@ -251,9 +261,11 @@ class Orchestrator:
         }
         world_brief = self.world_model.build_context_brief(task, task_type=task_type.value, refresh=True)
         memory_brief = self.episodic_memory.build_context_brief(task, task_type=task_type.value)
+        skills_brief = self.skill_bridge.build_context_brief(task)
         self._set_self_model_context(task, task_type.value, model_name, decision_meta)
         self._set_episodic_memory_context(memory_brief)
         self._set_world_model_context(world_brief)
+        self._set_skill_context(skills_brief)
         self.world_model.record_task_start(
             task=task,
             task_type=task_type.value,
@@ -273,6 +285,7 @@ class Orchestrator:
             decision_meta=decision_meta,
             memory_brief=memory_brief,
             world_brief=world_brief,
+            skills_brief=skills_brief,
         )
 
     def _execute_with_model(
@@ -287,6 +300,7 @@ class Orchestrator:
         decision_meta: Optional[Dict[str, Any]] = None,
         memory_brief: Optional[Dict[str, Any]] = None,
         world_brief: Optional[Dict[str, Any]] = None,
+        skills_brief: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Internal method to execute with a specific model."""
         if model_type not in self.adapters:
@@ -350,6 +364,7 @@ class Orchestrator:
                 "self_model": self._compact_self_model_meta(decision_meta),
                 "episodic_memory": self._compact_episodic_memory(memory_brief),
                 "world_model": self._compact_world_model(world_brief),
+                "skills": self._compact_skills(skills_brief),
                 "agent_profile_default_model": self.agent_default_model.value if self.agent_default_model else None,
             },
         )
@@ -391,6 +406,7 @@ class Orchestrator:
                 "follow_up": follow_up,
                 "decision": self._compact_self_model_meta(decision_meta),
                 "memory_hits": (memory_brief or {}).get("match_count", 0),
+                "skills_hits": (skills_brief or {}).get("match_count", 0),
             },
         )
         world_update = self.world_model.record_execution(
@@ -409,6 +425,7 @@ class Orchestrator:
                 "used_fallback": used_fallback,
                 "follow_up": follow_up,
                 "world_context": self._compact_world_model(world_brief),
+                "skills": self._compact_skills(skills_brief),
                 "agent_profile_default_model": self.agent_default_model.value if self.agent_default_model else None,
             },
         )
@@ -444,6 +461,7 @@ class Orchestrator:
             "self_model": self._compact_self_model_meta(decision_meta),
             "episodic_memory": self._compact_episodic_memory(memory_brief),
             "world_model": self._compact_world_model(world_brief),
+            "skills": self._compact_skills(skills_brief),
             "world_update": world_update,
             "episode_id": episode.get("id"),
             "agent_profile": {
@@ -462,6 +480,7 @@ class Orchestrator:
         start_time: float,
         memory_brief: Optional[Dict[str, Any]] = None,
         world_brief: Optional[Dict[str, Any]] = None,
+        skills_brief: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Run direct browser/windows/worker automation from natural language."""
         route_map = {
@@ -548,6 +567,7 @@ class Orchestrator:
                 "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
                 "episodic_memory": self._compact_episodic_memory(memory_brief),
                 "world_model": self._compact_world_model(world_brief),
+                "skills": self._compact_skills(skills_brief),
             },
         )
 
@@ -597,6 +617,7 @@ class Orchestrator:
                 "reasoning": reasoning,
                 "automation_route": route,
                 "world_context": self._compact_world_model(world_brief),
+                "skills": self._compact_skills(skills_brief),
             },
         )
 
@@ -624,6 +645,7 @@ class Orchestrator:
             "self_model": self._compact_self_model_meta({"decision_simulation": tool_plan}),
             "episodic_memory": self._compact_episodic_memory(memory_brief),
             "world_model": self._compact_world_model(world_brief),
+            "skills": self._compact_skills(skills_brief),
             "world_update": world_update,
             "episode_id": episode.get("id"),
         }
@@ -757,6 +779,10 @@ class Orchestrator:
             },
         )
 
+    def _set_skill_context(self, skills_brief: Optional[Dict[str, Any]]) -> None:
+        """Inject discoverable cross-agent skills into execution context."""
+        self.context.set_state("skills", skills_brief or {"match_count": 0, "matches": []})
+
     def _compact_self_model_meta(self, decision_meta: Optional[Dict[str, Any]]) -> Dict[str, Any]:
         """Keep only the high-signal self-model metadata in results and logs."""
         if not decision_meta:
@@ -802,6 +828,24 @@ class Orchestrator:
             "files": world_brief.get("files", [])[:3],
             "downloads_in_progress": world_brief.get("downloads_in_progress", [])[:3],
             "pending_objectives": world_brief.get("pending_objectives", [])[:3],
+        }
+
+    def _compact_skills(self, skills_brief: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Keep only the top skill matches in logs and result payloads."""
+        if not skills_brief:
+            return {}
+
+        return {
+            "match_count": skills_brief.get("match_count", 0),
+            "matches": [
+                {
+                    "skill_id": item.get("skill_id"),
+                    "provider": item.get("provider"),
+                    "kind": item.get("kind"),
+                    "executable": item.get("executable"),
+                }
+                for item in skills_brief.get("matches", [])[:3]
+            ],
         }
 
     def _infer_world_route(self, task: str, tools_used: list[str]) -> Optional[str]:

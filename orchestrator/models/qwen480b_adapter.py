@@ -27,6 +27,7 @@ Consider edge cases and potential regressions.
         """Generate a heavy coding response."""
         try:
             messages = [{"role": "system", "content": self.system_prompt}]
+            messages.extend(self._context_state_messages(context))
 
             if context and "file_context" in context:
                 # Include file context for analysis
@@ -36,8 +37,7 @@ Consider edge cases and potential regressions.
                         "content": f"File: {fc['path']}\n\n{fc['content']}"
                     })
 
-            if context and "history" in context:
-                messages.extend(context["history"])
+            messages.extend(self._history_messages(context))
 
             messages.append({"role": "user", "content": task})
 

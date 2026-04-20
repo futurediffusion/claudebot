@@ -26,9 +26,9 @@ Think before you act. Be thorough but efficient.
         """Generate a planning-oriented response."""
         try:
             messages = [{"role": "system", "content": self.system_prompt}]
+            messages.extend(self._context_state_messages(context))
 
-            if context and "history" in context:
-                messages.extend(context["history"])
+            messages.extend(self._history_messages(context))
 
             messages.append({"role": "user", "content": task})
 

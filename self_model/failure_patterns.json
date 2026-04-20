@@ -1,5 +1,7 @@
 {
   "version": 1,
+  "known_signatures": {},
+  "observed_patterns": {},
   "patterns": [
     {
       "id": "GOOGLE_ANTIBOT_TRIGGER",

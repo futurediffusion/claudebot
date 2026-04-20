@@ -22,7 +22,7 @@ class HeartbeatEngine:
         self.state = self.load_state()
         self.tasks = [
             {"id": "system_health", "command": "python skills/system-medic/scripts/medic.py status", "interval": 4},
-            {"id": "health_sync", "command": "python google_fit_sync.py", "interval": 1},
+            {"id": "health_sync", "command": "python personal_HUB/health_sync.py --days 1", "interval": 12},
             {"id": "git_backup", "command": "python scripts/heartbeat/git_backup.py", "interval": 12},
             {"id": "vector_index", "command": "python scripts/heartbeat/vector_index.py", "interval": 24},
             {"id": "market_scout", "command": "python scripts/heartbeat/market_scout.py", "interval": 48},

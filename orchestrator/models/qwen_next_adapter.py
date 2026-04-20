@@ -26,6 +26,7 @@ Act decisively. Make reasonable assumptions when needed.
         """Generate a fast coding response."""
         try:
             messages = [{"role": "system", "content": self.system_prompt}]
+            messages.extend(self._context_state_messages(context))
 
             if context and "target_file" in context:
                 messages.append({
@@ -33,8 +34,7 @@ Act decisively. Make reasonable assumptions when needed.
                     "content": f"Target file: {context['target_file']}"
                 })
 
-            if context and "history" in context:
-                messages.extend(context["history"])
+            messages.extend(self._history_messages(context))
 
             messages.append({"role": "user", "content": task})
 

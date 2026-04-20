@@ -2,8 +2,25 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Sistema
+## Bootstrap / Identidad (IMPORTANTE)
 
+Para activar el traje de **Claude Bot**, el agente DEBE ejecutar el siguiente comando al inicio de la sesión o cuando se le pida `/conocete`:
+
+```bash
+python claudebot_identity.py
+```
+
+Este comando sincroniza al agente con la **Constitución**, el **Self-Model** y el estado del hardware.
+
+## Atajos de Personal HUB
+
+Cuando el usuario pida abrir estas herramientas, usar `run_shell_command` con `is_background=true`:
+
+- **Hub de Gastos**: `personal_HUB/run_expense_tracker.bat`
+- **Journey**: `personal_HUB/run_journey.bat`
+
+## Sistema
+... (resto del archivo)
 **Claudebot** es una estación de comando autónoma personal. Arquitectura: 8 MCPs especializados (registrados en `.claude/settings.json`) + servidor Vision-God (FastAPI en puerto 8000) + self-model compartido + memoria episódica.
 
 Python runtime: `C:\Users\walva\AppData\Local\Programs\Python\Python310\python.exe`
@@ -37,6 +54,13 @@ Servidor: `tools/vision-god/server.py` — FastAPI + OmniParser V2.0 en GPU (CUD
 Arrancar: ejecutar `START_VISION_SERVER.bat` o `uvicorn server:app --host 0.0.0.0 --port 8000` dentro del venv `venv_vision`.  
 Cliente: `tools/vision-god/client.py` — captura pantalla → POST a `http://127.0.0.1:8000/analyze` → retorna elementos con coordenadas.  
 Protocolo completo: `docs/FREEPIK_VISION_PROTOCOL.md`
+
+## Shared Skill Bridge
+
+Bridge local compartido para descubrir y reutilizar skills entre `gemini_skills/`, `skills/`, `skills/.codex/skills/`, `legacy/local-agent/SKILLS/` y skills empacadas.  
+Entrypoint: `python skills_bridge.py list gemini`  
+Sugerencia contextual: `python skills_bridge.py suggest "Necesito automatizar browser y extraer datos"`  
+Gemini tambiÃ©n expone esta capa vÃ­a `python gemini_bridge.py skills` y `python gemini_bridge.py skill-run <skill_id>`.
 
 ## Self-Model (Mandatos Obligatorios)
 

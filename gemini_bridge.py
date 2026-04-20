@@ -20,6 +20,7 @@ if str(ORCHESTRATOR_ROOT) not in sys.path:
 try:
     from core.episodic_memory import EpisodicMemoryEngine
     from core.self_model_engine import SelfModelEngine
+    from core.skill_bridge import SkillBridge
     from core.world_model import WorldModelEngine
     from orchestrator.tools.mouse_calibration import MouseAutomationTool
     from orchestrator.tools.worker_core_bridge import (
@@ -46,6 +47,7 @@ class GeminiBridge:
         self.worker = WorkerOrchestratorTool()
         self.mouse = MouseAutomationTool(agent_name="gemini_cli")
         self.self_model = SelfModelEngine(agent_name="gemini_cli")
+        self.skill_bridge = SkillBridge(agent_name="gemini_cli")
         self.episodic_memory = EpisodicMemoryEngine(agent_name="gemini_cli")
         self.world_model = WorldModelEngine(agent_name="gemini_cli")
         self.log_dir = ROOT / "gemini_memory"
@@ -58,7 +60,7 @@ class GeminiBridge:
             "error": message,
             "needs_manual_agent_switch": True,
             "execution_policy": self.execution_policy,
-            "supported_tools": ["browser", "windows", "worker", "edit"],
+            "supported_tools": ["browser", "windows", "worker", "edit", "skill-run"],
         }
         if tool_plan is not None:
             payload["self_model"] = tool_plan
@@ -86,6 +88,7 @@ class GeminiBridge:
             "worker": ("worker-core:orchestrator", "worker_automation"),
             "mouse": ("shared:mouse_calibration", "mouse_automation"),
             "surgical_edit": ("gemini:surgical_edit", "file_edit"),
+            "skill_bridge": ("shared:skill_bridge", "skill_execution"),
         }
         model_name, task_type = model_map[tool_name]
         self.self_model.record_execution(
@@ -110,6 +113,7 @@ class GeminiBridge:
             "worker": ("worker-core:orchestrator", "worker_automation", "automation"),
             "mouse": ("shared:mouse_calibration", "mouse_automation", "automation"),
             "surgical_edit": ("gemini:surgical_edit", "file_edit", "file_edit"),
+            "skill_bridge": ("shared:skill_bridge", "skill_execution", "skill_execution"),
         }
         model_name, task_type, episode_type = model_map[tool_name]
         steps = [
@@ -161,6 +165,7 @@ class GeminiBridge:
             "worker": ("worker-core:orchestrator", "worker_automation", "worker"),
             "mouse": ("shared:mouse_calibration", "mouse_automation", "windows"),
             "surgical_edit": ("gemini:surgical_edit", "file_edit", None),
+            "skill_bridge": ("shared:skill_bridge", "skill_execution", None),
         }
         model_name, task_type, route = model_map[tool_name]
         self.world_model.record_execution(
@@ -300,12 +305,46 @@ class GeminiBridge:
         self._record_world_model("surgical_edit", f"Edit {file_path}", result)
         return result
 
+    def list_skills(self, query: str | None = None, provider: str | None = None, limit: int = 20):
+        """List discoverable shared skills from Gemini's perspective."""
+        return self.skill_bridge.list_skills(query=query, provider=provider, limit=limit)
+
+    def get_skill_info(self, skill_id: str, include_content: bool = False, max_chars: int = 6000):
+        """Inspect a shared skill from the Gemini bridge."""
+        return self.skill_bridge.get_skill(skill_id, include_content=include_content, max_chars=max_chars)
+
+    def suggest_skills(self, task: str, limit: int = 6):
+        """Suggest the best shared skills for a task."""
+        return self.skill_bridge.build_context_brief(task, limit=limit)
+
+    def run_skill(self, skill_id: str, skill_args: list[str] | None = None, timeout_ms: int = 30000):
+        """Execute an executable shared skill through the Gemini bridge."""
+        task_label = f"Run skill {skill_id}"
+        print(f"Gemini -> Skill Bridge: {skill_id}")
+        self.world_model.record_task_start(
+            task=task_label,
+            task_type="skill_execution",
+            route=None,
+            model_name="shared:skill_bridge",
+        )
+        result = self.skill_bridge.execute(skill_id, skill_args=skill_args or [], timeout_ms=timeout_ms)
+        self.log_action("skill_bridge", task_label, result)
+        self._record_self_model("skill_bridge", task_label, result)
+        self._record_episode("skill_bridge", task_label, result)
+        self._record_world_model("skill_bridge", task_label, result)
+        return result
+
     def summary(self):
         """Return shared self-model, episodic, and world summaries as seen by Gemini."""
+        skill_inventory = self.skill_bridge.list_skills(limit=None)
         return {
             "self_model": self.self_model.get_summary(),
             "episodic_memory": self.episodic_memory.get_summary(),
             "world_model": self.world_model.get_summary(),
+            "skill_bridge": {
+                "total_skills": len(skill_inventory),
+                "executable_skills": sum(1 for item in skill_inventory if item.get("executable")),
+            },
         }
 
 
@@ -313,10 +352,31 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Gemini Bridge CLI")
-    parser.add_argument("tool", choices=["browser", "windows", "worker", "mouse", "auto", "edit", "summary"])
+    parser.add_argument(
+        "tool",
+        choices=[
+            "browser",
+            "windows",
+            "worker",
+            "mouse",
+            "auto",
+            "edit",
+            "summary",
+            "skills",
+            "skill-info",
+            "skill-run",
+            "skill-suggest",
+        ],
+    )
     parser.add_argument("task", nargs="?", help="Task or file path")
     parser.add_argument("--old", help="Old text for edit")
     parser.add_argument("--new", help="New text for edit")
+    parser.add_argument("--provider", help="Restrict skills listing to a provider")
+    parser.add_argument("--limit", type=int, default=20, help="Maximum number of skills to return")
+    parser.add_argument("--content", action="store_true", help="Include skill content/help for skill-info")
+    parser.add_argument("--max-chars", type=int, default=6000, help="Maximum characters for skill content/help")
+    parser.add_argument("--timeout-ms", type=int, default=30000, help="Timeout for skill-run")
+    parser.add_argument("--skill-args", nargs="*", default=[], help="Extra args for skill-run")
     parser.add_argument(
         "--policy",
         choices=["gemini_primary", "legacy"],
@@ -325,7 +385,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    if args.tool != "summary" and not args.task:
+    task_required_tools = {"browser", "windows", "worker", "mouse", "auto", "edit", "skill-info", "skill-run", "skill-suggest"}
+    if args.tool in task_required_tools and not args.task:
         parser.error("task is required for this command")
     bridge = GeminiBridge(execution_policy=args.policy)
 
@@ -346,3 +407,11 @@ if __name__ == "__main__":
             print(json.dumps(bridge.surgical_edit(args.task, args.old, args.new), indent=2))
     elif args.tool == "summary":
         print(json.dumps(bridge.summary(), indent=2))
+    elif args.tool == "skills":
+        print(json.dumps(bridge.list_skills(query=args.task, provider=args.provider, limit=args.limit), indent=2))
+    elif args.tool == "skill-info":
+        print(json.dumps(bridge.get_skill_info(args.task, include_content=args.content, max_chars=args.max_chars), indent=2))
+    elif args.tool == "skill-run":
+        print(json.dumps(bridge.run_skill(args.task, skill_args=args.skill_args, timeout_ms=args.timeout_ms), indent=2))
+    elif args.tool == "skill-suggest":
+        print(json.dumps(bridge.suggest_skills(args.task, limit=args.limit), indent=2))

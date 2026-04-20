@@ -2,26 +2,61 @@
   "version": 1,
   "tools": {
     "browser": {
-      "best_for": ["browser_automation", "navigation", "web_extraction", "form_filling"],
-      "avoid_for": ["architecture", "heavy_refactor"],
-      "drivers": ["worker-core:browser", "gemini_cli"]
+      "best_for": [
+        "browser_automation",
+        "navigation",
+        "web_extraction",
+        "form_filling"
+      ],
+      "avoid_for": [
+        "architecture",
+        "heavy_refactor"
+      ],
+      "drivers": [
+        "worker-core:browser",
+        "gemini_cli"
+      ]
     },
     "windows": {
-      "best_for": ["windows_automation", "desktop_control", "ui_interaction"],
-      "avoid_for": ["architecture", "heavy_refactor"],
-      "drivers": ["worker-core:windows", "gemini_cli"]
+      "best_for": [
+        "windows_automation",
+        "desktop_control",
+        "ui_interaction"
+      ],
+      "avoid_for": [
+        "architecture",
+        "heavy_refactor"
+      ],
+      "drivers": [
+        "worker-core:windows",
+        "gemini_cli"
+      ]
     },
     "image_generation": {
       "status": "MASTERED",
-      "best_for": ["high_fidelity_inference", "illustrious_xl_v2", "stable_diffusion_forge"],
-      "drivers": ["gemini_cli", "forge_api"],
+      "best_for": [
+        "high_fidelity_inference",
+        "illustrious_xl_v2",
+        "stable_diffusion_forge"
+      ],
+      "drivers": [
+        "gemini_cli",
+        "forge_api"
+      ],
       "protocol_docs": "docs/ILLUSTRIOUS_FORGE_PROTOCOL.md",
       "config_preset": "Euler a + Karras, 28 steps, CFG 4",
       "note": "Dominio de Illustrious-XL. Consultar docs/ILLUSTRIOUS_FORGE_PROTOCOL.md para bypass de API y prompts de Willy."
     },
     "mouse": {
-      "best_for": ["mouse_automation", "coordinate_calibration", "ui_interaction"],
-      "drivers": ["shared:mouse_calibration", "gemini_cli"]
+      "best_for": [
+        "mouse_automation",
+        "coordinate_calibration",
+        "ui_interaction"
+      ],
+      "drivers": [
+        "shared:mouse_calibration",
+        "gemini_cli"
+      ]
     },
     "vision_automation": {
       "status": "MASTERED",
@@ -32,8 +67,16 @@
       "note": "I can now see and control the PC at human level. Managed from tools/vision-god/."
     },
     "shell": {
-      "best_for": ["repo_execution", "tests", "diagnostics"],
-      "drivers": ["claude_code", "codex_cli"]
+      "best_for": [
+        "repo_execution",
+        "tests",
+        "diagnostics"
+      ],
+      "drivers": [
+        "claude_code",
+        "codex_cli"
+      ]
     }
-  }
+  },
+  "agent_tooling": {}
 }

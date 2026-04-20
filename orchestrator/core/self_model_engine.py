@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import copy
 import json
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Optional
@@ -403,7 +404,26 @@ class SelfModelEngine:
         with open(temp_path, "w", encoding="utf-8") as handle:
             json.dump(payload, handle, ensure_ascii=False, indent=2)
             handle.write("\n")
-        temp_path.replace(path)
+        last_error: OSError | None = None
+        for attempt in range(5):
+            try:
+                temp_path.replace(path)
+                return
+            except PermissionError as exc:
+                last_error = exc
+                time.sleep(0.05 * (attempt + 1))
+        try:
+            with open(path, "w", encoding="utf-8") as handle:
+                json.dump(payload, handle, ensure_ascii=False, indent=2)
+                handle.write("\n")
+            if temp_path.exists():
+                try:
+                    temp_path.unlink(missing_ok=True)
+                except PermissionError:
+                    pass
+            return
+        except PermissionError:
+            raise last_error or PermissionError(f"Could not replace {path}")
 
     def _merge_with_defaults(self, defaults: dict[str, Any], current: Any) -> Any:
         if not isinstance(defaults, dict) or not isinstance(current, dict):

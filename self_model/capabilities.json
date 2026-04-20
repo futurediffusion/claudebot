@@ -47,6 +47,7 @@
       ]
     }
   },
+  "agents": {},
   "native_claude_tools": {
     "WebSearch": {
       "type": "deferred_tool",

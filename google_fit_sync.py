@@ -6,6 +6,7 @@ from typing import Optional
 import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 
 from logger_pro import setup_logger
 
@@ -66,10 +67,9 @@ class GoogleFitSync:
     def _refresh_token(self) -> Credentials:
         """Renueva el token expirado."""
         try:
-            creds = self.creds
-            creds.refresh()
+            self.creds.refresh(Request())
             self.logger.info("Token renovado exitosamente")
-            return creds
+            return self.creds
         except Exception as e:
             self.logger.warning(f"Error renovando token: {e}. Ejecutando OAuth flow...")
             return self._run_oauth_flow()
@@ -93,12 +93,10 @@ class GoogleFitSync:
             print(f"Error listando fuentes: {e}")
 
     def get_health_data(self, date: Optional[datetime] = None) -> dict:
-        """Obtiene pasos y pulsaciones del día."""
-        if date is None:
-            date = datetime.now(timezone.utc)
-
-        start_time = datetime(date.year, date.month, date.day, tzinfo=timezone.utc)
-        end_time = start_time + timedelta(days=1)
+        """Obtiene pasos y pulsaciones de las últimas 24 horas."""
+        now = datetime.now(timezone.utc)
+        start_time = now - timedelta(days=1)
+        end_time = now
 
         start_ms = int(start_time.timestamp() * 1000)
         end_ms = int(end_time.timestamp() * 1000)
@@ -113,7 +111,8 @@ class GoogleFitSync:
             'heart_rate_avg': 0,
             'heart_rate_min': 0,
             'heart_rate_max': 0,
-            'date': date.strftime('%Y-%m-%d'),
+            'date': now.strftime('%Y-%m-%d'),
+            'timestamp': now.isoformat()
         }
 
         body = {
@@ -142,23 +141,37 @@ class GoogleFitSync:
 
             results = response.json().get('bucket', [])
 
+            all_hr_values = []
             for bucket in results:
                 dataset = bucket.get('dataset', [])
                 for ds in dataset:
                     points = ds.get('point', [])
+                    source_id = ds.get('dataSourceId', '')
 
-                    if ds.get('dataSourceId') == 'derived:com.google.step_count.delta:Google:Fit':
+                    # Priorizar fuentes de Xiaomi/Wearable si están disponibles
+                    weight = 2 if 'xiaomi' in source_id.lower() or 'wearable' in source_id.lower() else 1
+
+                    if 'step_count' in source_id:
                         steps = sum(p.get('value', [{}])[0].get('intVal', 0) for p in points)
-                        data['steps'] = steps
-                        self.logger.debug(f"Pasos: {steps}")
+                        if steps > 0:
+                            data['steps'] = max(data['steps'], steps) # Tomar el máximo de las fuentes
+                        self.logger.debug(f"Pasos desde {source_id}: {steps}")
 
-                    elif ds.get('dataSourceId') == 'derived:com.google.heart_rate.bpm:Google:Fit':
-                        hr_values = [p.get('value', [{}])[0].get('fpVal', 0) for p in points]
-                        if hr_values:
-                            data['heart_rate_avg'] = round(sum(hr_values) / len(hr_values), 1)
-                            data['heart_rate_min'] = min(hr_values)
-                            data['heart_rate_max'] = max(hr_values)
-                            self.logger.debug(f"HR: avg={data['heart_rate_avg']}, min={data['heart_rate_min']}, max={data['heart_rate_max']}")
+                    elif 'heart_rate' in source_id:
+                        hr_values = [p.get('value', [{}])[0].get('fpVal', 0) for p in points if p.get('value')]
+                        # Solo agregar si no son valores erróneos (0)
+                        valid_hr = [v for v in hr_values if v > 30] # HR realista > 30
+                        if valid_hr:
+                            all_hr_values.extend(valid_hr * weight)
+                        self.logger.debug(f"HR puntos válidos desde {source_id}: {len(valid_hr)}")
+
+            if all_hr_values:
+                data['heart_rate_avg'] = round(sum(all_hr_values) / len(all_hr_values), 1)
+                data['heart_rate_min'] = round(min(all_hr_values), 1)
+                data['heart_rate_max'] = round(max(all_hr_values), 1)
+                self.logger.debug(f"HR Final: avg={data['heart_rate_avg']}, min={data['heart_rate_min']}, max={data['heart_rate_max']}")
+            else:
+                self.logger.warning("No se encontraron datos de pulsaciones válidos (>30 bpm)")
 
         except requests.RequestException as e:
             self.logger.error(f"Error en requête: {e}")
@@ -182,6 +195,28 @@ if __name__ == '__main__':
     sync.authenticate()
     health_data = sync.get_health_data()
 
+    # Calcular métricas derivadas para el dashboard
+    # Focus Score: Basado en HR estable y pasos (ejemplo simplificado)
+    focus_score = 70
+    if 50 <= health_data['heart_rate_avg'] <= 75:
+        focus_score += 20
+    
+    # Recovery Score: Basado en HR mínima
+    recovery_score = 60
+    if health_data['heart_rate_min'] < 55:
+        recovery_score += 20
+
+    health_data['focus_score'] = focus_score
+    health_data['recovery_score'] = recovery_score
+    health_data['sleep_avg_hours'] = 7.5 # Placeholder hasta que Strava/Sleep se integren
+    health_data['status'] = 'ok'
+
+    # Guardar en daily_summary.json para que el dashboard Next.js lo vea
+    summary_path = 'life_logs/daily_summary.json'
+    with open(summary_path, 'w') as f:
+        json.dump(health_data, f, indent=2)
+
     print(f"\n[FECHA]: {health_data['date']}")
     print(f"[PASOS]: {health_data['steps']:,}")
     print(f"[PULSACIONES]: {health_data['heart_rate_min']}-{health_data['heart_rate_max']} bpm (avg: {health_data['heart_rate_avg']})")
+    print(f"[SYNC]: Datos guardados en {summary_path}")

@@ -65,8 +65,8 @@ class GroqAdapter(BaseAdapter):
         if self.system_prompt:
             messages.append({"role": "system", "content": self.system_prompt})
 
-        if context and "history" in context:
-            messages.extend(context["history"])
+        messages.extend(self._context_state_messages(context))
+        messages.extend(self._history_messages(context))
 
         # Soporte para Vision: Si hay una imagen en el contexto, la añadimos al mensaje del usuario
         image_base64 = context.get("image_base64") if context else None

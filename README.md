@@ -14,6 +14,7 @@ Workspace reorganized to keep the active system separate from older experiments.
 - [run_windows.py](D:/IA/CODE/claudebot/run_windows.py): direct Windows automation wrapper.
 - [run_worker.py](D:/IA/CODE/claudebot/run_worker.py): full `worker-core` wrapper.
 - [run_agent.py](D:/IA/CODE/claudebot/run_agent.py): high-level recommended entrypoint with locked agent selection.
+- [skills_bridge.py](D:/IA/CODE/claudebot/skills_bridge.py): shared bridge to discover, read, and execute local skills from one CLI.
 - [self_model/README.md](D:/IA/CODE/claudebot/self_model/README.md): shared self-model used by Claude, Gemini, Codex, and wrappers.
 - [self_model_cli.py](D:/IA/CODE/claudebot/self_model_cli.py): inspect or simulate the shared self-model from the repo root.
 - [episodic_memory/README.md](D:/IA/CODE/claudebot/episodic_memory/README.md): shared episodic memory for concrete attempts, failures, and fixes.
@@ -98,6 +99,34 @@ python run_windows.py "Abre Notepad y escribe hola mundo"
 python run_worker.py "Abre https://example.com y guarda un resumen en tasks/output/resumen.txt"
 ```
 
+## Shared Skill Bridge
+
+The workspace now includes a local bridge that can discover and reuse skills across:
+
+- `gemini_skills/` for compatible executable skills,
+- `skills/` and `skills/.codex/skills/` for `SKILL.md`-based skills,
+- `legacy/local-agent/SKILLS/`,
+- packaged skills under `tools/browser-use/skills/` and related tooling.
+
+Examples:
+
+```bash
+python skills_bridge.py list gemini --limit 10
+python skills_bridge.py suggest "Necesito automatizar browser y extraer datos"
+python skills_bridge.py show gemini.mouse
+python skills_bridge.py run gemini.mouse -- --request-json "{\"x\":0.5,\"y\":0.8,\"coordinate_space\":\"normalized\",\"action\":\"move\"}"
+
+python gemini_bridge.py skills gemini --limit 10
+python gemini_bridge.py skill-info gemini.chatgpt --content
+python gemini_bridge.py skill-run gemini.vision_world
+```
+
+Operational rule:
+
+- `instruction` skills are discoverable and readable through the bridge.
+- `executable` skills can be launched through the bridge.
+- The orchestrator now injects relevant skill matches into model context alongside self-model, episodic memory, and world model.
+
 For direct coordinate-driven desktop control with calibration and verification:
 
 ```bash
@@ -109,6 +138,35 @@ python run_mouse.py --request-json "{\"x\":0.5,\"y\":0.8,\"coordinate_space\":\"
 `run_mouse.py` stores a learned calibration profile per app and resolution, retries around the predicted point, and records successes/failures into the shared self-model and episodic memory.
 
 Status: **deprecated** as default strategy; keep only as explicit fallback for cases where CLI/browser/OS routes are not viable.
+
+## Telegram Voice Notes
+
+`telegram_bridge.py` now accepts Telegram `voice` and `audio` messages.
+The bridge downloads the note, transcribes it locally with Whisper, and then sends the transcript through the same Gemini CLI flow used by plain text messages.
+
+Recommended local runtime:
+
+- `faster-whisper` on CTranslate2.
+- Default bridge config is `tiny` + `cpu` + `int8` to keep GPU impact close to zero while still supporting Spanish and other multilingual voice notes.
+- If you want a newer and more accurate model later, set `TELEGRAM_WHISPER_MODEL=turbo`, but expect much higher memory usage.
+
+Install:
+
+```bash
+pip install faster-whisper
+```
+
+Optional `.env` overrides:
+
+```bash
+TELEGRAM_WHISPER_MODEL=tiny
+TELEGRAM_WHISPER_DEVICE=cpu
+TELEGRAM_WHISPER_COMPUTE_TYPE=int8
+TELEGRAM_WHISPER_LANGUAGE=es
+TELEGRAM_WHISPER_BEAM_SIZE=1
+TELEGRAM_WHISPER_DOWNLOAD_ROOT=D:/IA/CODE/claudebot/models_stt/whisper
+TELEGRAM_WHISPER_VAD_FILTER=true
+```
 
 ## Capacidades avanzadas (secundario)
 

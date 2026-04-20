@@ -32,6 +32,8 @@ Focus on what you SEE in the image. Be specific about:
         """Generate a vision analysis response."""
         try:
             messages = [{"role": "system", "content": self.system_prompt}]
+            messages.extend(self._context_state_messages(context))
+            messages.extend(self._history_messages(context))
 
             # Handle image input
             image_path = None
